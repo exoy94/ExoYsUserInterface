@@ -49,7 +49,6 @@ function ExoY.OnInitialPlayerActivated()
 		local func = ExoY[module].OnInitialPlayerActivated or nil
 		if type(func) == "function" then func() end
 	end
-	EM:UnregisterForEvent(ExoY.name.."InitialPlayerActivated", EVENT_PLAYER_ACTIVATED)
 end
 
 
@@ -81,8 +80,8 @@ function ExoY.RegisterCombatStateEvents()
 		end
 	end
 
-  Lib.RegisterCombatStartCallback(OnCombatStart)
-  Lib.RegisterCombatEndCallback(OnCombatEnd)
+  Lib.RegisterCombatStart(OnCombatStart)
+  Lib.RegisterCombatEnd(OnCombatEnd)
 
 end
 
@@ -131,8 +130,10 @@ function ExoY.Initialize()
 	-- Events
 	ExoY.RegisterCombatStateEvents()
 
-	EM:RegisterForEvent(ExoY.name.."InitialPlayerActivated", EVENT_PLAYER_ACTIVATED, ExoY.OnInitialPlayerActivated)
-	EM:RegisterForEvent(ExoY.name.."PlayerActivated", EVENT_PLAYER_ACTIVATED, ExoY.OnPlayerActivated)
+	Lib.RegisterInitialPlayerActivation(OnInitialPlayerActivated) 
+	Lib.RegisterPlayerActivation(OnPlayerActivated)
+	--EM:RegisterForEvent(ExoY.name.."InitialPlayerActivated", EVENT_PLAYER_ACTIVATED, ExoY.OnInitialPlayerActivated)
+	--EM:RegisterForEvent(ExoY.name.."PlayerActivated", EVENT_PLAYER_ACTIVATED, ExoY.OnPlayerActivated)
 	--ExoY.EM:RegisterForEvent(ExoY.name.."OnPlayerCombatState", EVENT_PLAYER_COMBAT_STATE, ExoY.OnPlayerCombatState)
 end
 
