@@ -17,6 +17,9 @@ ExoY.EM = GetEventManager()
 ExoY.WM = GetWindowManager()
 ExoY.window = GetWindowManager()
 
+local EM = GetEventManager() 
+local WM = GetWindowManager() 
+
 
 -- order is also order in which modules will be initialized
 local moduleList = {
@@ -37,73 +40,16 @@ local moduleList = {
 }
 
 
---------------------
--- Initialization --
---------------------
-
-function ExoY.OnAddOnLoaded(event, addonName)
-  if addonName == ExoY.name then
-		ExoY.Initialize()
-		ExoY.EM:UnregisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED)
-  end
-end
-ExoY.EM:RegisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED, ExoY.OnAddOnLoaded)
-
-
-function ExoY.Initialize()
-	-- Load SaveVariables
-  --SafeAddString(SI_ACHIEVEMENT_EARNED_FORMATTER, "|c00FF00You are awesome!|r", 2)
-  --ZO_PreHook(Achievement, "RefreshTooltip", function()
-  --  return true --suppress call to original function
-  --end)
-
-	local defaults = ExoY.GetDefaults()
-	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
-
-	ExoY.moduleList = moduleList
- 	--ExoY.festival = ExoY.vars.festivals["anniversary"]
-
-	-- Tables
-	ExoY.callbackList = {}
-	ExoY.combat = {}
-
-
-	-- Initializing modules
-	for _, module in ipairs(moduleList) do
-		local init = ExoY[module].Initialize or nil
-		if type(init) == "function" then init() end
-	end
-
-	-- Events
-  ExoY.RegisterCombatStateEvents()
-
-	ExoY.EM:RegisterForEvent(ExoY.name.."InitialPlayerActivated", EVENT_PLAYER_ACTIVATED, ExoY.OnInitialPlayerActivated)
-	ExoY.EM:RegisterForEvent(ExoY.name.."PlayerActivated", EVENT_PLAYER_ACTIVATED, ExoY.OnPlayerActivated)
-	--ExoY.EM:RegisterForEvent(ExoY.name.."OnPlayerCombatState", EVENT_PLAYER_COMBAT_STATE, ExoY.OnPlayerCombatState)
-end
-
-
-function ExoY.GetDefaults()
-	local defaults = {}
-	for _, module in ipairs(moduleList) do
-		local getDefaults = ExoY[module].GetDefaults or nil
-		if type(getDefaults) == "function" then
-			defaults[module] = getDefaults()
-		end
-	end
-	return defaults
-end
-
-------------
--- Events --
-------------
+--[[ ------------ ]]
+--[[ -- Events -- ]]
+--[[ ------------ ]]
 
 function ExoY.OnInitialPlayerActivated()
 	for _, module in ipairs(moduleList) do
 		local func = ExoY[module].OnInitialPlayerActivated or nil
 		if type(func) == "function" then func() end
 	end
-	ExoY.EM:UnregisterForEvent(ExoY.name.."InitialPlayerActivated", EVENT_PLAYER_ACTIVATED)
+	EM:UnregisterForEvent(ExoY.name.."InitialPlayerActivated", EVENT_PLAYER_ACTIVATED)
 end
 
 
@@ -135,10 +81,74 @@ function ExoY.RegisterCombatStateEvents()
 		end
 	end
 
-  Lib.RegisterCombatStartCallback("ExoYUI", OnCombatStart)
-  Lib.RegisterCombatEndCallback("ExoYUI", OnCombatEnd)
+  Lib.RegisterCombatStartCallback(OnCombatStart)
+  Lib.RegisterCombatEndCallback(OnCombatEnd)
 
 end
+
+
+
+--[[ -------------------- ]]
+--[[ -- Initialization -- ]]
+--[[ -------------------- ]]
+
+function ExoY.GetDefaults()
+	local defaults = {}
+	for _, module in ipairs(moduleList) do
+		local getDefaults = ExoY[module].GetDefaults or nil
+		if type(getDefaults) == "function" then
+			defaults[module] = getDefaults()
+		end
+	end
+	return defaults
+end
+
+
+function ExoY.Initialize()
+	-- Load SaveVariables
+  --SafeAddString(SI_ACHIEVEMENT_EARNED_FORMATTER, "|c00FF00You are awesome!|r", 2)
+  --ZO_PreHook(Achievement, "RefreshTooltip", function()
+  --  return true --suppress call to original function
+  --end)
+
+	local defaults = ExoY.GetDefaults()
+	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
+
+	ExoY.moduleList = moduleList
+ 	--ExoY.festival = ExoY.vars.festivals["anniversary"]
+
+	-- Tables
+	ExoY.callbackList = {}
+	ExoY.combat = {}
+
+
+	-- Initializing modules
+	for _, module in ipairs(moduleList) do
+		local init = ExoY[module].Initialize or nil
+		if type(init) == "function" then init() end
+	end
+
+	-- Events
+	ExoY.RegisterCombatStateEvents()
+
+	EM:RegisterForEvent(ExoY.name.."InitialPlayerActivated", EVENT_PLAYER_ACTIVATED, ExoY.OnInitialPlayerActivated)
+	EM:RegisterForEvent(ExoY.name.."PlayerActivated", EVENT_PLAYER_ACTIVATED, ExoY.OnPlayerActivated)
+	--ExoY.EM:RegisterForEvent(ExoY.name.."OnPlayerCombatState", EVENT_PLAYER_COMBAT_STATE, ExoY.OnPlayerCombatState)
+end
+
+
+
+function ExoY.OnAddOnLoaded(event, addonName)
+  if addonName == ExoY.name then
+		ExoY.Initialize()
+		EM:UnregisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED)
+  end
+end
+EM:RegisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED, ExoY.OnAddOnLoaded)
+
+
+
+
 
 
 ---------------
