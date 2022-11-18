@@ -174,15 +174,6 @@ function ExoY.GetFont( layout )
 end
 
 
-function ExoY.IsPlayerNameAccountName( playerName )
-	if string.find(playerName, "@") then
-		return true
-	else
-		return false
-	end
-end
-
-
 function ExoY.AnalyseDuration( duration, InMilliseconds)
 	local factor = InMilliseconds and 1000 or 1
 	local timeUnits = {
