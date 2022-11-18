@@ -1,0 +1,6 @@
+## Title: |c00FF00ExoY|rs Combat Protocol
+## Author: @|c00FF00ExoY|r94 (PC/EU)
+## Description: Database Module for CombatProtocol by ExoYs UserInterface.
+## DependsOn: ExoYsUserInterface
+## APIVersion: 100035
+## SavedVariables: ExoYsCombatProtocolDatabase
