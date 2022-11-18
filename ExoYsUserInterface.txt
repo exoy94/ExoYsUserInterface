@@ -1,0 +1,46 @@
+## Title: |c00FF00ExoY|rs User Interface
+## Author: @|c00FF00ExoY|r94 (PC/EU)
+## Description: Numquam Desperare! Numquam Dedere! Lupus Es!
+## APIVersion: 101032
+## Version: Infinity
+## SavedVariables: ExoYSaveVariables
+
+## DependsOn: LibAddonMenu-2.0
+## DependsOn: LibCustomMenu
+## DependsOn: LibSkillBlocker
+## DependsOn: LibExoYsUtilities
+## DependsOn: LibSetDetection
+
+## OptionalDependsOn: FancyActionBar
+## OptionalDependsOn: IIfA
+## OptionalDependsOn: ItemBrowser
+## OptionalDependsOn: TraitBuddy
+## OptionalDependsOn: CombatMetrics
+## OptionalDependsOn: WizardsWardrobe
+
+\data\vars.lua
+
+\modules\CharacterInfo.lua
+\modules\Chat.lua
+\modules\Cyrodiil.lua
+\modules\Display.lua
+\modules\Group.lua
+\modules\Misc.lua
+\modules\Screen.lua
+\modules\Settings.lua
+\modules\SmartCast.lua
+\modules\StatusPanel.lua
+\modules\UnitFrames.lua
+\modules\Widgets.lua
+\modules\WorldMap.lua
+
+\development\DecodeGlobalVariables.lua
+\development\Events.lua
+\development\CombatProtocol.lua
+\development\Development.lua
+\development\Prototype.lua
+\development\abilityIgnolist.lua
+
+\modules\bindings.xml
+
+ExoYsUserInterface.lua

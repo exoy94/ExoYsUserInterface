@@ -1,0 +1,47 @@
+<Bindings>
+    <Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
+
+        <Category name="|c40FF00ExoY|rs User Interface">
+            <Action name="EXOY_DISPLAY_TAB_ONE">
+                <Down>ExoY.display.Management(1)</Down>
+            </Action>
+        </Category>
+
+        <Category name="|c40FF00ExoY|rs User Interface">
+            <Action name="EXOY_DISPLAY_TAB_TWO">
+                <Down>ExoY.display.Management(2)</Down>
+            </Action>
+        </Category>
+
+        <Category name="|c40FF00ExoY|rs User Interface">
+            <Action name="EXOY_DISPLAY_TAB_THREE">
+                <Down>ExoY.display.Management(3)</Down>
+            </Action>
+        </Category>
+
+        <Category name="|c40FF00ExoY|rs User Interface">
+            <Action name="EXOY_DISPLAY_TAB_FOUR">
+                <Down>ExoY.display.Management(4)</Down>
+            </Action>
+        </Category>
+
+        <Category name="|c40FF00ExoY|rs User Interface">
+            <Action name="EXOY_DISPLAY_TAB_FIVE">
+                <Down>ExoY.display.Management(5)</Down>
+            </Action>
+        </Category>
+
+        <Category name="|c40FF00ExoY|rs User Interface">
+            <Action name="EXOY_SKILL_BLOCK_OVERWRITE">
+                <Down>ExoY.smartCast.ToggleOverwrite()</Down>
+            </Action>
+        </Category>
+
+        <Category name="|c40FF00ExoY|rs User Interface">
+            <Action name="EXOY_UNDRESS_VIA_WW">
+                <Down>ExoY.misc.Undress()</Down>
+            </Action>
+        </Category>
+
+    </Layer>
+</Bindings>
