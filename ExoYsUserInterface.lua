@@ -13,12 +13,14 @@ ExoY.name = "ExoYsUserInterface"
 ExoY.displayName = "|c00FF00ExoY|rs User Interface"
 ExoY.author = "@|c00FF00ExoY|r94 (PC/EU)"
 ExoY.version = "Infinity"
-ExoY.EM = GetEventManager()
-ExoY.WM = GetWindowManager()
-ExoY.window = GetWindowManager()
 
 local EM = GetEventManager() 
 local WM = GetWindowManager() 
+
+--TODO Cleanup
+ExoY.EM = GetEventManager()
+ExoY.WM = GetWindowManager()
+ExoY.window = GetWindowManager()
 
 
 --[[ ---------------- ]]
@@ -68,14 +70,15 @@ end
 
 
 local function Initialize()
+
 	local defaults = GetDefaults()
 
 	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
 
-	ExoY.moduleList = moduleList
+	--TODO graphical interface
  	--ExoY.festival = ExoY.vars.festivals["anniversary"]
 
-	-- Tables
+	-- TODO Investivate
 	ExoY.callbackList = {}
 
 	ExecuteForAllModuls('Initialize')
@@ -83,8 +86,6 @@ local function Initialize()
 	Lib.RegisterCombatStart(function() ExecuteForAllModuls('OnCombatStart') end)
 	Lib.RegisterCombatEnd(function() ExecuteForAllModules('OnCombatEnd') end)
 	
-
-	--TODO chang to Activation for consistency
 	Lib.RegisterInitialPlayerActivation(function() ExecuteForAllModuls('OnInitialPlayerActivated') end) 
 	Lib.RegisterPlayerActivation(function() ExecuteForAllModuls('OnPlayerActivated') end)
 
@@ -93,8 +94,8 @@ local function Initialize()
 	ExoY.combat.state = true
 	ExoY.combat.startTime = GetGameTimeMilliseconds()
 	ExoY.combat.EndTime = GetGameTimeMilliseconds()
-end
 
+end
 
 
 local function OnAddOnLoaded(event, addonName)
@@ -104,10 +105,6 @@ local function OnAddOnLoaded(event, addonName)
   end
 end
 EM:RegisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)
-
-
-
-
 
 
 ---------------
