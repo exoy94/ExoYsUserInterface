@@ -47,7 +47,7 @@ local moduleList = {
 local function OnInitialPlayerActivated()
 	for _, module in ipairs(moduleList) do
 		local func = ExoY[module].OnInitialPlayerActivated or nil
-		if type(func) == "function" then func() end
+		Lib.ExeFunc(func)
 	end
 end
 
@@ -55,7 +55,7 @@ end
 local function OnPlayerActivated()
 	for _, module in ipairs(moduleList) do
 		local func = ExoY[module].OnPlayerActivated or nil
-		if type(func) == "function" then func() end
+		Lib.ExeFunc(func)
 	end
 end
 
@@ -67,7 +67,7 @@ local function RegisterCombatStateEvents()
 		ExoY.combat.startTime = GetGameTimeMilliseconds()
 		for _, module in ipairs(moduleList) do
 			local func = ExoY[module].OnCombatStart or nil
-			if type(func) == "function" then func() end
+			Lib.ExeFunc(func)
 		end
 	end
 
@@ -76,7 +76,7 @@ local function RegisterCombatStateEvents()
 		ExoY.combat.endTime = GetGameTimeMilliseconds()
 		for _, module in ipairs(moduleList) do
 			local func = ExoY[module].OnCombatEnd or nil
-			if type(func) == "function" then func() end
+			Lib.ExeFunc(func)
 		end
 	end
 
@@ -95,7 +95,7 @@ local function GetDefaults()
 	local defaults = {}
 	for _, module in ipairs(moduleList) do
 		local getDefaults = ExoY[module].GetDefaults or nil
-		if type(getDefaults) == "function" then
+		if Lib.IsFunc(getDefaults) then
 			defaults[module] = getDefaults()
 		end
 	end
@@ -123,7 +123,7 @@ local function Initialize()
 	-- Initializing modules
 	for _, module in ipairs(moduleList) do
 		local init = ExoY[module].Initialize or nil
-		if type(init) == "function" then init() end
+		Lib.ExeFunc(init)
 	end
 
 	-- Events
