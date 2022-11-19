@@ -6,23 +6,7 @@ local Lib = LibExoYsUtilities
 
 function Prototype.Initialize()
   Prototype.name = ExoY.name.."Prototype"
-  Prototype.LibTest()
-  Prototype.AutoJoinCampaign()
-  Prototype.LibSetDetectionTest()
-  Prototype.InitTribute()
-  Prototype.CallbackManagerTest() 
-  Prototype.TestFunc() 
---  Prototype.FindAbilityId()
---  Prototype.FindStacks()
---  Prototype.DomeLocations()
-  --Prototype.BlockInteract()
-  --/script LibAddonMenu2.OpenToPanel()
-  --Prototype.HandleTributeSearch()
-    --SLASH_COMMANDS["/exoytest"] = function()
-    --local lam = LibAddonMenu2
-    --lam.OpenToPanel("EPT_TEST")
-  --end
-  --Prototype.TributeResults()
+
   --[[ExoY.testVar = {}
 
   local function TestFunc(self, control, data)
@@ -51,57 +35,10 @@ function Prototype.Initialize()
 
 end
 
-function Prototype.TestFunc() 
-
-
-  
-end
-
-
-
-
-function Prototype.CallbackManagerTest() 
-  Lib.RegisterInitialPlayerActivation(function() ExoY.testVar = true end)
-
-  local function OnCallback() 
-    ExoY.testVar = GetGameTimeMilliseconds() 
-  end
-  Lib.RegisterInitialPlayerActivation(function() ExoY.testVar = true end)
-
-  SLASH_COMMANDS["/exoytest"] = function()
-    Lib.UnregisterPlayerActivation("test")
-  end
-end
-
-function Prototype.FindStacks()
-  local function OnEvent(event, changeType, effectSlot, effectName, unitTag, beginTime, endTime, stackCount, iconName, buffType, effectType, abilityType, statusEffectType, unitName, unitId, abilityId, sourceType)
-    d(GetAbilityName(abilityId) )
-    d(abilityId)
-    d(stackCount)
-    d("-----")
-  end
-
-  ExoY.EM:RegisterForEvent("ExoYStackTest", EVENT_EFFECT_CHANGED, OnEvent)
-
-end
-
-
-
-function Prototype.FindAbilityId()
-  local function OnEvent(event, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log, sourceUnitId, targetUnitId, abilityId, overflow)
-    local name = string.lower( GetAbilityName(abilityId) )
-    if string.find(name, "nirn") then
-      if (result == ACTION_RESULT_EFFECT_GAINED) or (result == ACTION_RESULT_EFFECT_GAINED_DURATION) then
-      d( abilityId )
-      d( GetAbilityDuration(abilityId) )
-      d("---")
-      end
-    end
-  end
-  ExoY.EM:RegisterForEvent("ExoYTest", EVENT_COMBAT_EVENT, OnEvent)
-end
-
-
+--SLASH_COMMANDS["/exoytest"] = function()
+    --local lam = LibAddonMenu2
+    --lam.OpenToPanel("EPT_TEST")
+  --end
 
 function Prototype.DomeLocations()
   if OSI then
@@ -136,92 +73,6 @@ function Prototype.DomeLocations()
 end
 
 --/script d( GetTributeMatchStatistics() )
-function Prototype.TributeResults()
-  --local function OnResultEvent(...)
-  --  d("Tribute Match End ready")
-  --  ExoY.testVar = {...}
-  --end
-  --ExoY.EM:RegisterForEvent( Prototype.name.."TributeResult", EVENT_TRIBUTE_MATCH_END_SUMMARY_READY, OnResultEvent)
-  SLASH_COMMANDS["/exoytest_old"] = function()
-    --if GetTributeMatchType() == TRIBUTE_MATCH_TYPE_CLIENT then return end
-    local opponentName, opponentType = GetTributePlayerInfo(TRIBUTE_PLAYER_PERSPECTIVE_OPPONENT)
-    --if not opponentType == TRIBUTE_PLAYER_TYPE_REMOTE_PLAYER then return end
-    d("opponentName: "..tostring(opponentName))
-    d("opponentType: "..tostring(opponentType))
-    d("matchType: "..tostring(GetTributeMatchType()))
-  end
-
-  local function OnFlowChange(_, flowState)
-    d("flow state: "..tostring(flowState) )
-    if flowState == TRIBUTE_GAME_FLOW_STATE_INTRO then
-      local opponentName, opponentType = GetTributePlayerInfo(TRIBUTE_PLAYER_PERSPECTIVE_OPPONENT)
-      --if not opponentType == TRIBUTE_PLAYER_TYPE_REMOTE_PLAYER then return end
-      d("opponentName: "..tostring(opponentName))
-      d("opponentType: "..tostring(opponentType))
-      d("matchType: "..tostring(GetTributeMatchType()))
-    end
-
-    if flowState == TRIBUTE_GAME_FLOW_STATE_GAME_OVER then
-      local victoryPerspective, victoryType = GetTributeResultsWinnerInfo()
-
-      if victoryPerspective == TRIBUTE_PLAYER_PERSPECTIVE_SELF then
-          d("Player Victory")
-          d(victoryType)
-      else
-          d("Player Defeat")
-          d(victoryType)
-      end
-    end
-  end
-  ExoY.EM:RegisterForEvent(Prototype.name.."TributeResult", EVENT_TRIBUTE_GAME_FLOW_STATE_CHANGE ,OnFlowChange)
-end
-
-function Prototype.HandleTributeSearch()
-  local function OnUpdate(_, finderStatus)
-    --d("finderStatus: "..tostring(finderStatus))
-    if finderStatus == ACTIVITY_FINDER_STATUS_READY_CHECK then
-      --local activityType = GetLFGReadyCheckNotificationInfo()
-      -- ACTIVITY_FINDER_STATUS_NONE = abort
-
-      local activityType = GetLFGReadyCheckActivityType()
-      d("Ready Check Detected for: "..tostring(activityType) )
-
-      if activityType == LFG_ACTIVITY_TRIBUTE_CASUAL then
-        d("ToT Casual Game Ready Check")
-        zo_callLater(function() AcceptTribute() end, 4000 )
-      elseif activityType == LFG_ACTIVITY_TRIBUTE_COMPETITIVE then
-        zo_callLater(function() AcceptTribute() end, 4000 )
-        d("ToT Ranked Game Ready Check")
-      end
-      -- determin if LFG activity is tribute game
-    end
-  end
-
-
-
-  ExoY.EM:RegisterForEvent( Prototype.name.."TributeSearch", EVENT_ACTIVITY_FINDER_STATUS_UPDATE, OnUpdate)
-  ExoY.EM:RegisterForEvent( Prototype.name.."TributeSearch2", EVENT_ACTIVITY_QUEUE_RESULT, function(_, var) d("activity result: "..tostring(var)) end )
-  -- Hook into encounterlog toogle and update indicator accordingly
-  ZO_PostHook("AcceptLFGReadyCheckNotification", function()
-    d("LFG accepted")
-  end)
-
-  ZO_PostHook("AcceptTribute", function()
-    d("Tribute accepted")
-  end)
-
-  -- Hook into encounterlog toogle and update indicator accordingly
-  ZO_PostHook("DeclineLFGReadyCheckNotification", function()
-    d("LFG declined")
-  end)
-end
-
-function  Prototype.InitTribute()
-  --ExoY.EM:RegisterForEvent("TributePatron", EVENT_TRIBUTE_PATRON_PROGRESSION_DATA_CHANGED, function(event, id) d("patron: "..tostring(id)) end )
-  --ExoY.EM:RegisterForEvent("TributeFlowState", EVENT_TRIBUTE_GAME_FLOW_STATE_CHANGE, function(event, flowState) d("flowState: "..tostring(flowState) ) end)
-  --ExoY.EM:RegisterForEvent("TributeTurn", EVENT_TRIBUTE_PLAYER_TURN_STARTED, function(event, localPlayer) d("turn: "..tostring(localPlayer) ) end)
-end
-
 
 function Prototype.AutoJoinCampaign()
   local function OnCampaignChange(eventId, campaignId, isGroup, state)
@@ -250,52 +101,4 @@ function Prototype.LibTest()
   }
 
   --Lib.RegisterCustomEvent( eventData, EventTest)
-
-end
-
-
-function Prototype.LibSetDetectionTest()
-  local function callback(slotTable)
-    d("ExoY - LibSetDetection")
-    d(slotTable)
-    d("---")
-  end
-
-  --LibSetDetection.RegisterForCustomSlotUpdateEvent("ExoY", callback)
-
-  local function callback2(setId, status)
-    d("ExoY2 - LSD")
-    d(setId )
-    d(status)
-    d("-----")
-
-  end
-  --LibSetDetection.RegisterForSetChanges("ExoY2", callback2)
-
-
-end
-
-function Prototype.CustomMapPin()
-  PinManager=ZO_WorldMap_GetPinManager()
-end
-
-function Prototype.BlockInteract()
-  local function DisableReticleTake_Hook(interactionPossible)
-    d(interactionPossible)
-    interactionPossible.interactionBlocked = true
-    if interactionPossible then
-      local action,text,empty,_,addinfo,_,_,crime = GetGameCameraInteractableActionInfo()
-      if action == "Activate" then
-        return true
-      end
-      --if text ~= '' and text ~= nil then
-      --  if text == "Destructive Ember" then
-      --    return true
-      --  end
-      --end
-    end
-    return false
-  end
-  --ZO_PreHook(ZO_Reticle, "UpdateInteractText", function() return true end )
-  --ZO_PreHook(RETICLE, "TryHandlingInteraction", DisableReticleTake_Hook)
 end

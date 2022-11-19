@@ -18,7 +18,7 @@ function Screen.Initialize()
 
       return true
     else
-        return false
+      return false
     end
   end)
 end
