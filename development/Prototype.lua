@@ -52,28 +52,25 @@ function Prototype.Initialize()
 end
 
 function Prototype.TestFunc() 
-  local function OnCombatStart() 
-    d("CombatStart")
-  end
 
-  local function OnCombatEnd() 
-    d("CombatEnd")
-  end
 
-  Lib.RegisterCombatStartCallback(OnCombatStart)
-  Lib.RegisterCombatEndCallback(OnCombatEnd)
-
-  SLASH_COMMANDS["/exoytest"] = function()
-    Lib.UnregisterCombatStartCallback(OnCombatStart)
-  end
+  
 end
 
 
 
 
 function Prototype.CallbackManagerTest() 
-  Lib.RegisterInitialActivationCallback(true)
-  Lib.RegisterInitialActivationCallback(function() ExoY.testVar = true end)
+  Lib.RegisterInitialPlayerActivation(function() ExoY.testVar = true end)
+
+  local function OnCallback() 
+    ExoY.testVar = GetGameTimeMilliseconds() 
+  end
+  Lib.RegisterInitialPlayerActivation(function() ExoY.testVar = true end)
+
+  SLASH_COMMANDS["/exoytest"] = function()
+    Lib.UnregisterPlayerActivation("test")
+  end
 end
 
 function Prototype.FindStacks()
