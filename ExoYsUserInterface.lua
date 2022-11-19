@@ -68,12 +68,6 @@ end
 
 
 local function Initialize()
-	-- Load SaveVariables
-  --SafeAddString(SI_ACHIEVEMENT_EARNED_FORMATTER, "|c00FF00You are awesome!|r", 2)
-  --ZO_PreHook(Achievement, "RefreshTooltip", function()
-  --  return true --suppress call to original function
-  --end)
-
 	local defaults = GetDefaults()
 
 	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
@@ -83,21 +77,22 @@ local function Initialize()
 
 	-- Tables
 	ExoY.callbackList = {}
-	ExoY.combat = {}
 
 	ExecuteForAllModuls('Initialize')
 
 	Lib.RegisterCombatStart(function() ExecuteForAllModuls('OnCombatStart') end)
 	Lib.RegisterCombatEnd(function() ExecuteForAllModules('OnCombatEnd') end)
 	
-	--TODO remove (only used in CombatProtocolFiles)
-	ExoY.combat.state = true
-	ExoY.combat.startTime = GetGameTimeMilliseconds()
-	ExoY.combat.EndTime = GetGameTimeMilliseconds()
 
 	--TODO chang to Activation for consistency
 	Lib.RegisterInitialPlayerActivation(function() ExecuteForAllModuls('OnInitialPlayerActivated') end) 
 	Lib.RegisterPlayerActivation(function() ExecuteForAllModuls('OnPlayerActivated') end)
+
+	--TODO remove (only used in CombatProtocolFiles)
+	ExoY.combat = {}
+	ExoY.combat.state = true
+	ExoY.combat.startTime = GetGameTimeMilliseconds()
+	ExoY.combat.EndTime = GetGameTimeMilliseconds()
 end
 
 
@@ -135,24 +130,6 @@ function ExoY.GetFont( layout )
 		size = sizes[layout]
 	end
   return string.format( "%s|%d|%s", font , size , outline )
-end
-
-
-function ExoY.AnalyseDuration( duration, InMilliseconds)
-	local factor = InMilliseconds and 1000 or 1
-	local timeUnits = {
-		["days"] = 86400,
-		["hours"] = 3600,
-		["minutes"] = 60,
-	}
-	local result = {}
-	for unit, ratio in pairs(timeUnits) do
-		local inter = math.floor(duration/(ratio*factor) )
-		result[unit] = inter > ratio and inter%ratio or inter
-	end
-	result.seconds = math.floor((duration/factor)%60)
-	result.milliSeconds = InMilliseconds and duration%1000 or 0
-	return result.days, result.hours, result.minutes, result.seconds, result.milliSeconds
 end
 
 

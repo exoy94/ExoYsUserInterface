@@ -1,6 +1,8 @@
 ExoY = ExoY or {}
 ExoY.misc = ExoY.misc or {}
 
+local Lib = LibExoYsUtilities
+
 local Misc = ExoY.misc
 
 function Misc.Initialize()
@@ -139,8 +141,8 @@ function Misc.OnUpdateStopwatch()
   else
     duration = store.timeSaved
   end
-  local days, hours, minutes, seconds = ExoY.AnalyseDuration(duration, false)
-  label:SetText( zo_strformat("<<1>>:<<2>>:<<3>>", hours, string.format("%02d", minutes), string.format("%02d", seconds) ) )
+  local durationTable = Lib.ConvertDuration(duration*1000) 
+  label:SetText( zo_strformat("<<1>>:<<2>>:<<3>>", durationTable.hour, string.format("%02d", durationTable.minute), string.format("%02d", durationTable.second) ) )
 end
 
 function Misc.OnStopwatchStartStop()
