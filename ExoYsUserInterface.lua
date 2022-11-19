@@ -46,7 +46,7 @@ local moduleList = {
 }
 
 
-local function ExecuteForAllModuls( funcName )
+local function ExecuteForAllModules( funcName )
 	for _,moduleName in ipairs(moduleList) do
 		Lib.ExeFunc( ExoY[moduleName][funcName] or nil )
 	end
@@ -81,13 +81,13 @@ local function Initialize()
 	-- TODO Investivate
 	ExoY.callbackList = {}
 
-	ExecuteForAllModuls('Initialize')
+	ExecuteForAllModules('Initialize')
 
-	Lib.RegisterCombatStart(function() ExecuteForAllModuls('OnCombatStart') end)
+	Lib.RegisterCombatStart(function() ExecuteForAllModules('OnCombatStart') end)
 	Lib.RegisterCombatEnd(function() ExecuteForAllModules('OnCombatEnd') end)
 	
-	Lib.RegisterInitialPlayerActivation(function() ExecuteForAllModuls('OnInitialPlayerActivated') end) 
-	Lib.RegisterPlayerActivation(function() ExecuteForAllModuls('OnPlayerActivated') end)
+	Lib.RegisterInitialPlayerActivation(function() ExecuteForAllModules('OnInitialPlayerActivated') end) 
+	Lib.RegisterPlayerActivation(function() ExecuteForAllModules('OnPlayerActivated') end)
 
 	--TODO remove (only used in CombatProtocolFiles)
 	ExoY.combat = {}
