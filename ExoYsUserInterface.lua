@@ -44,7 +44,7 @@ local moduleList = {
 --[[ -- Events -- ]]
 --[[ ------------ ]]
 
-function ExoY.OnInitialPlayerActivated()
+local function OnInitialPlayerActivated()
 	for _, module in ipairs(moduleList) do
 		local func = ExoY[module].OnInitialPlayerActivated or nil
 		if type(func) == "function" then func() end
@@ -52,7 +52,7 @@ function ExoY.OnInitialPlayerActivated()
 end
 
 
-function ExoY.OnPlayerActivated()
+local function OnPlayerActivated()
 	for _, module in ipairs(moduleList) do
 		local func = ExoY[module].OnPlayerActivated or nil
 		if type(func) == "function" then func() end
@@ -60,7 +60,7 @@ function ExoY.OnPlayerActivated()
 end
 
 
-function ExoY.RegisterCombatStateEvents()
+local function RegisterCombatStateEvents()
 
 	local function OnCombatStart()
 		ExoY.combat.state = true
@@ -91,7 +91,7 @@ end
 --[[ -- Initialization -- ]]
 --[[ -------------------- ]]
 
-function ExoY.GetDefaults()
+local function GetDefaults()
 	local defaults = {}
 	for _, module in ipairs(moduleList) do
 		local getDefaults = ExoY[module].GetDefaults or nil
@@ -103,14 +103,14 @@ function ExoY.GetDefaults()
 end
 
 
-function ExoY.Initialize()
+local function Initialize()
 	-- Load SaveVariables
   --SafeAddString(SI_ACHIEVEMENT_EARNED_FORMATTER, "|c00FF00You are awesome!|r", 2)
   --ZO_PreHook(Achievement, "RefreshTooltip", function()
   --  return true --suppress call to original function
   --end)
 
-	local defaults = ExoY.GetDefaults()
+	local defaults = GetDefaults()
 	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
 
 	ExoY.moduleList = moduleList
@@ -120,7 +120,6 @@ function ExoY.Initialize()
 	ExoY.callbackList = {}
 	ExoY.combat = {}
 
-
 	-- Initializing modules
 	for _, module in ipairs(moduleList) do
 		local init = ExoY[module].Initialize or nil
@@ -128,7 +127,7 @@ function ExoY.Initialize()
 	end
 
 	-- Events
-	ExoY.RegisterCombatStateEvents()
+	RegisterCombatStateEvents()
 
 	Lib.RegisterInitialPlayerActivation(OnInitialPlayerActivated) 
 	Lib.RegisterPlayerActivation(OnPlayerActivated)
@@ -139,13 +138,13 @@ end
 
 
 
-function ExoY.OnAddOnLoaded(event, addonName)
+local function OnAddOnLoaded(event, addonName)
   if addonName == ExoY.name then
-		ExoY.Initialize()
+		Initialize()
 		EM:UnregisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED)
   end
 end
-EM:RegisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED, ExoY.OnAddOnLoaded)
+EM:RegisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)
 
 
 
