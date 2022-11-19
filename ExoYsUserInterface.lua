@@ -51,29 +51,6 @@ local function ExecuteForAllModuls( funcName )
 end
 
 
-
---[[ ------------ ]]
---[[ -- Events -- ]]
---[[ ------------ ]]
-
-
-local function RegisterCombatStateEvents()
-	local function OnCombatStart()
-		ExoY.combat.state = true
-		ExoY.combat.startTime = GetGameTimeMilliseconds()
-	end
-
-	local function OnCombatEnd()
-		ExoY.combat.state = false
-		ExoY.combat.endTime = GetGameTimeMilliseconds()
-	end
-
-	Lib.RegisterCombatStart(OnCombatStart)
-	Lib.RegisterCombatEnd(OnCombatEnd)
-end
-
-
-
 --[[ -------------------- ]]
 --[[ -- Initialization -- ]]
 --[[ -------------------- ]]
@@ -113,8 +90,10 @@ local function Initialize()
 	Lib.RegisterCombatStart(function() ExecuteForAllModuls('OnCombatStart') end)
 	Lib.RegisterCombatEnd(function() ExecuteForAllModules('OnCombatEnd') end)
 	
-	--TODO remove
-	RegisterCombatStateEvents() 
+	--TODO remove (only used in CombatProtocolFiles)
+	ExoY.combat.state = true
+	ExoY.combat.startTime = GetGameTimeMilliseconds()
+	ExoY.combat.EndTime = GetGameTimeMilliseconds()
 
 	--TODO chang to Activation for consistency
 	Lib.RegisterInitialPlayerActivation(function() ExecuteForAllModuls('OnInitialPlayerActivated') end) 
