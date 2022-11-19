@@ -21,6 +21,10 @@ local EM = GetEventManager()
 local WM = GetWindowManager() 
 
 
+--[[ ---------------- ]]
+--[[ -- Modularity -- ]]
+--[[ ---------------- ]]
+
 -- order is also order in which modules will be initialized
 local moduleList = {
 	"display",
@@ -40,47 +44,29 @@ local moduleList = {
 }
 
 
+local function ExecuteForAllModuls( funcName ) 
+	for _,module in ipairs(moduleList) do
+		Lib.ExeFunc( ExoY[module][funcName] or nil )
+	end
+end
+
 
 
 --[[ ------------ ]]
 --[[ -- Events -- ]]
 --[[ ------------ ]]
 
-local function OnInitialPlayerActivated()
-	for _, module in ipairs(moduleList) do
-		Lib.ExeFunc( ExoY[module].OnInitialPlayerActivated or nil )
-	end
-end
-
-
-local function OnPlayerActivated()
-	for _, module in ipairs(moduleList) do
-		Lib.ExeFunc( ExoY[module].OnPlayerActivated or nil )
-	end
-end
-
 
 local function RegisterCombatStateEvents()
-
 	local function OnCombatStart()
 		ExoY.combat.state = true
 		ExoY.combat.startTime = GetGameTimeMilliseconds()
-		for _, module in ipairs(moduleList) do
-			Lib.ExeFunc( ExoY[module].OnCombatStart or nil )
-		end
 	end
 
 	local function OnCombatEnd()
 		ExoY.combat.state = false
 		ExoY.combat.endTime = GetGameTimeMilliseconds()
-		for _, module in ipairs(moduleList) do
-			Lib.ExeFunc( ExoY[module].OnCombatEnd or nil )
-		end
 	end
-
-  Lib.RegisterCombatStart(OnCombatStart)
-  Lib.RegisterCombatEnd(OnCombatEnd)
-
 end
 
 
@@ -109,6 +95,7 @@ local function Initialize()
   --end)
 
 	local defaults = GetDefaults()
+
 	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
 
 	ExoY.moduleList = moduleList
@@ -119,19 +106,17 @@ local function Initialize()
 	ExoY.combat = {}
 
 	-- Initializing modules
-	for _, module in ipairs(moduleList) do
-		local init = ExoY[module].Initialize or nil
-		Lib.ExeFunc(init)
-	end
+	ExecuteForAllModuls('Initialize')
 
-	-- Events
-	RegisterCombatStateEvents()
+	Lib.RegisterCombatStart(function() ExecuteForAllModuls('OnCombatStart') end)
+	Lib.RegisterCombatEnd(function() ExecuteForAllModules('OnCombatEnd') end)
+	
+	--TODO remove
+	RegisterCombatStateEvents() 
 
-	Lib.RegisterInitialPlayerActivation(OnInitialPlayerActivated) 
-	Lib.RegisterPlayerActivation(OnPlayerActivated)
-	--EM:RegisterForEvent(ExoY.name.."InitialPlayerActivated", EVENT_PLAYER_ACTIVATED, ExoY.OnInitialPlayerActivated)
-	--EM:RegisterForEvent(ExoY.name.."PlayerActivated", EVENT_PLAYER_ACTIVATED, ExoY.OnPlayerActivated)
-	--ExoY.EM:RegisterForEvent(ExoY.name.."OnPlayerCombatState", EVENT_PLAYER_COMBAT_STATE, ExoY.OnPlayerCombatState)
+	--TODO chang to Activation for consistency
+	Lib.RegisterInitialPlayerActivation(function() ExecuteForAllModuls('OnInitialPlayerActivated') end) 
+	Lib.RegisterPlayerActivation(function() ExecuteForAllModuls('OnPlayerActivated') end)
 end
 
 
