@@ -40,22 +40,22 @@ local moduleList = {
 }
 
 
+
+
 --[[ ------------ ]]
 --[[ -- Events -- ]]
 --[[ ------------ ]]
 
 local function OnInitialPlayerActivated()
 	for _, module in ipairs(moduleList) do
-		local func = ExoY[module].OnInitialPlayerActivated or nil
-		Lib.ExeFunc(func)
+		Lib.ExeFunc( ExoY[module].OnInitialPlayerActivated or nil )
 	end
 end
 
 
 local function OnPlayerActivated()
 	for _, module in ipairs(moduleList) do
-		local func = ExoY[module].OnPlayerActivated or nil
-		Lib.ExeFunc(func)
+		Lib.ExeFunc( ExoY[module].OnPlayerActivated or nil )
 	end
 end
 
@@ -66,8 +66,7 @@ local function RegisterCombatStateEvents()
 		ExoY.combat.state = true
 		ExoY.combat.startTime = GetGameTimeMilliseconds()
 		for _, module in ipairs(moduleList) do
-			local func = ExoY[module].OnCombatStart or nil
-			Lib.ExeFunc(func)
+			Lib.ExeFunc( ExoY[module].OnCombatStart or nil )
 		end
 	end
 
@@ -75,8 +74,7 @@ local function RegisterCombatStateEvents()
 		ExoY.combat.state = false
 		ExoY.combat.endTime = GetGameTimeMilliseconds()
 		for _, module in ipairs(moduleList) do
-			local func = ExoY[module].OnCombatEnd or nil
-			Lib.ExeFunc(func)
+			Lib.ExeFunc( ExoY[module].OnCombatEnd or nil )
 		end
 	end
 
