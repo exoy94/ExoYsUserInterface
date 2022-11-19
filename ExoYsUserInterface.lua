@@ -67,6 +67,9 @@ local function RegisterCombatStateEvents()
 		ExoY.combat.state = false
 		ExoY.combat.endTime = GetGameTimeMilliseconds()
 	end
+
+	Lib.RegisterCombatStart(OnCombatStart)
+	Lib.RegisterCombatEnd(OnCombatEnd)
 end
 
 
