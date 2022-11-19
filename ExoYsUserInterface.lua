@@ -44,9 +44,9 @@ local moduleList = {
 }
 
 
-local function ExecuteForAllModuls( funcName ) 
-	for _,module in ipairs(moduleList) do
-		Lib.ExeFunc( ExoY[module][funcName] or nil )
+local function ExecuteForAllModuls( funcName )
+	for _,moduleName in ipairs(moduleList) do
+		Lib.ExeFunc( ExoY[moduleName][funcName] or nil )
 	end
 end
 
@@ -77,10 +77,10 @@ end
 
 local function GetDefaults()
 	local defaults = {}
-	for _, module in ipairs(moduleList) do
-		local getDefaults = ExoY[module].GetDefaults or nil
+	for _, moduleName in ipairs(moduleList) do
+		local getDefaults = ExoY[moduleName].GetDefaults or nil
 		if Lib.IsFunc(getDefaults) then
-			defaults[module] = getDefaults()
+			defaults[moduleName] = getDefaults()
 		end
 	end
 	return defaults
@@ -105,7 +105,6 @@ local function Initialize()
 	ExoY.callbackList = {}
 	ExoY.combat = {}
 
-	-- Initializing modules
 	ExecuteForAllModuls('Initialize')
 
 	Lib.RegisterCombatStart(function() ExecuteForAllModuls('OnCombatStart') end)
