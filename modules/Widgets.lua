@@ -12,6 +12,8 @@ local Widgets = ExoY.widgets
 --[[Companions
     Mirri Elandis - 9353
     Bastian Hallix - 9245
+    Ember - 9911
+    Isobel Veloise - 9912 
 ]]
 
 function Widgets.Initialize()
