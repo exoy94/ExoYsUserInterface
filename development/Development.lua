@@ -167,6 +167,19 @@ end
 --[[ -- ProcSetTimer Workflow -- ]]
 --[[ --------------------------- ]]
 
+local function GetSlotId( var )
+	if not var then return 0 end
+	if Lib.IsNumber(var) then return var end 
+	if Lib.IsString(var) then 
+		local slotList = LibSetDetection.GetEquipSlotList() 
+		for bar, barList in pairs(slotList) do 
+			for id, name in pairs(barList) do 
+				if var == name then return id end
+			end
+		end
+	end
+end
+
 
 function Development.SaveItemLink( slotId, bagId )
 	slotId = slotId or EQUIP_SLOT_HEAD
