@@ -4,16 +4,22 @@ ExoY.dev = ExoY.dev or {}
 
 local Development = ExoY.dev
 local Lib = LibExoYsUtilities
+local LSD = LibSetDetection 
 
 
 function Development.Initialize()
 	Development.name = ExoY.name.."Development"
 
-	ExoY.prototype.Initialize()
-	ExoY.combatProtocol.Initialize()
+	-- if prototype saveVar then 
+	-- ExoY.Initialize_Prototype() 
+	-- ExoY.Initialize_Prototype = nil 
+	-- end
+	-- Add Button to initialize prototype later 
 
-	Development.CreateDisplayTab()
-	Development.CreateDisplayTabForDebug()
+	--ExoY.combatProtocol.Initialize()
+
+	--Development.CreateDisplayTab()
+	--Development.CreateDisplayTabForDebug()
 end
 
 
@@ -21,6 +27,7 @@ end
 -- Display --
 -------------
 
+--[[
 function Development.CreateDisplayTab()
 
 	local tabSettings = {
@@ -71,25 +78,7 @@ function Development.CreateDisplayTabForDebug()
 	ExoY.EM:RegisterForUpdate(Development.name.."DebugUpdate", 100, UpdateDebugOutput)
 
 	line = line + 2
-
-end
-
---
-
-function Development.DecodeTargetUnitId( var )
-	--return ExoY.group.GetDisplayNameByUnitId( var)
-	return var
-end
-
-function Development.DecodeSourceUnitId( var )
-	return var
-end
-
-function Development.DecodeAbilityId( var )
-	return zo_strformat("<<1>> (<<2>>)", GetAbilityName(var), var)
-	--return var
-end
-
+end]]
 
 
 --[[ ---------------- ]]
@@ -167,11 +156,15 @@ end
 --[[ -- ProcSetTimer Workflow -- ]]
 --[[ --------------------------- ]]
 
+-- EPT interface 
+-- 1. debug equip slot list 
+-- 2. 
+
 local function GetSlotId( var )
 	if not var then return 0 end
 	if Lib.IsNumber(var) then return var end 
 	if Lib.IsString(var) then 
-		local slotList = LibSetDetection.GetEquipSlotList() 
+		local slotList = LSD.GetEquipSlotList() 
 		for bar, barList in pairs(slotList) do 
 			for id, name in pairs(barList) do 
 				if var == name then return id end
@@ -180,6 +173,26 @@ local function GetSlotId( var )
 	end
 end
 
+local GetSetInfo(param)
+	local slotId = GetSlotId(param) 
+	local link = GetItemLink(BAG_WORN, slotId)
+	local _, name, _, _, _, id = GetItemLinkSetInfo(link)
+	return {id = id, name = name, link = link}
+end 
+
+SLASH_COMMANDS["/exoy_setid"] = function(param) 
+	local setInfo = GetSetInfo(param) 
+	--Debug
+end 
+
+SLASH_COMMANDS["/exoy_itemlink"] = function(param) 
+	local setInf = GetSetInfo(param)
+	--Debug
+end 
+
+
+
+--[[ -- OLD -- ]]
 
 function Development.SaveItemLink( slotId, bagId )
 	slotId = slotId or EQUIP_SLOT_HEAD
@@ -198,11 +211,6 @@ function Development.GetSetId( slotId, bagId )
 	local _, setName, _, _, _, setId = GetItemLinkSetInfo(GetItemLink(bagId, slotId))
 	ExoY.chat.Debug( setName, setId)
 end
-
-
-
-
-
 
 function Development.FindEmoteIndex( collectibleId )
 	--for i = 1, GetNumEmotes() do
