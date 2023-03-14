@@ -33,8 +33,33 @@ function Prototype.Initialize()
     --ExoY.testVar = back
   end)]]
 
+  ExoY.blub = "hallo"
 end
 
+SLASH_COMMANDS["/exoytest"] = function()
+  local gemId = 0
+  for slotId = 0, GetBagSize(BAG_BACKPACK) do
+    local name = GetItemName(BAG_BACKPACK, slotId)
+    -- if name ~= "" then 
+    --  d( zo_strformat("[<<1>>] <<2>>", slotId, GetItemName(BAG_BACKPACK, slotId) ) )
+    --end
+    if IsItemSoulGem(SOUL_GEM_TYPE_FILLED, BAG_BACKPACK, slotId) then
+     -- d( zo_strformat("Soulgem at: <<1>>", slotId ))
+			gemId = slotId
+			df("found gems %s", gemId) -- <<<<<< returning 0 to chat as well which makes no sense to me.. it should be the slot# i would think
+			return gemId
+	  end
+  end
+end
+SLASH_COMMANDS["/exoytest2"] = function()
+for slotId = 0, GetBagSize(BAG_BACKPACK) do
+  if IsItemSoulGem(SOUL_GEM_TYPE_FILLED, BAG_BACKPACK, slotId) then
+    gemId = slotId
+    df("found gems %s", gemId) -- <<<<<< returning 0 to chat as well which makes no sense to me.. it should be the slot# i would think
+    return gemId
+  end
+      end
+    end
 --SLASH_COMMANDS["/exoytest"] = function()
     --local lam = LibAddonMenu2
     --lam.OpenToPanel("EPT_TEST")
