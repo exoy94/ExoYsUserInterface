@@ -67,7 +67,7 @@ function Misc.CreateDisplayTab()
   elseif ExoY.store.misc.stopwatch.lastStart == 0 then labelStartStop = "Start"
   else labelStartStop = "Resume" end
 
-  Misc.stopwatch.gui.label = Display.CreateLabel(guiName.."StopWatchLabel", ctrl, {1,2}, line, {font = "big", align = TEXT_ALIGN_CENTER} )
+  Misc.stopwatch.gui.label = Display.CreateLabel(guiName.."StopWatchLabel", ctrl, {1,2}, line, {font = 20, align = TEXT_ALIGN_CENTER} )
   Misc.stopwatch.gui.buttonStartStop = Display.CreateButton(guiName.."StopWatchStartStop", ctrl, {3,4} , line, {text = labelStartStop, texture = "esoui/art/cadwell/cadwell_indexicon_gold", handler = function() Misc.OnStopwatchStartStop() end, })
   Misc.stopwatch.gui.buttonReset = Display.CreateButton(guiName.."StopWatchReset", ctrl, {4,4} , line, {text = "Reset", texture = "esoui/art/cadwell/cadwell_indexicon_silver", handler = function() Misc.OnStopwatchReset() end, })
 

@@ -122,12 +122,12 @@ function CombatProtocol.AddToDisplayTab(guiName, ctrl, line)
   local Display = ExoY.display
 
   line = line + 1
-  CombatProtocol.recordLabel = Display.CreateLabel(guiName.."RecordLabel", ctrl, {1,2}, line, {font = "big", align = TEXT_ALIGN_CENTER, text = "Off", color = {1,0,0,1}})
+  CombatProtocol.recordLabel = Display.CreateLabel(guiName.."RecordLabel", ctrl, {1,2}, line, {font = 20, align = TEXT_ALIGN_CENTER, text = "Off", color = {1,0,0,1}})
   Display.CreateButton(guiName.."ToggleRecord", ctrl, {2,2}, line, {text = "Toggle Record", texture = "esoui/art/cadwell/cadwell_indexicon_gold", handler = CombatProtocol.ToggleRecord, })
 
   line = line + 2
-  local combatTime = Display.CreateLabel(guiName.."combatTime", ctrl, {1,2}, line, {font = "normal", align = TEXT_ALIGN_CENTER} )
-  local protocolEntries = Display.CreateLabel(guiName.."protocol", ctrl, {2,2}, line, {font = "normal", align = TEXT_ALIGN_CENTER} )
+  local combatTime = Display.CreateLabel(guiName.."combatTime", ctrl, {1,2}, line, {align = TEXT_ALIGN_CENTER} )
+  local protocolEntries = Display.CreateLabel(guiName.."protocol", ctrl, {2,2}, line, {align = TEXT_ALIGN_CENTER} )
 
   local function UpdateCombatTime()
     local time = "no fight"
