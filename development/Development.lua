@@ -10,6 +10,8 @@ local LSD = LibSetDetection
 function Development.Initialize()
 	Development.name = ExoY.name.."Development"
 
+	ExoY.prototype.Initialize()
+
 	-- if prototype saveVar then 
 	-- ExoY.Initialize_Prototype() 
 	-- ExoY.Initialize_Prototype = nil 
@@ -173,7 +175,7 @@ local function GetSlotId( var )
 	end
 end
 
-local GetSetInfo(param)
+local function eGetSetInfo(param)
 	local slotId = GetSlotId(param) 
 	local link = GetItemLink(BAG_WORN, slotId)
 	local _, name, _, _, _, id = GetItemLinkSetInfo(link)

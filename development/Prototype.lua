@@ -34,9 +34,40 @@ function Prototype.Initialize()
   end)]]
 
   ExoY.blub = "hallo"
+
+  Prototype.SkillTargetMarker() 
+end
+
+
+function Prototype.SkillTargetMarker() 
+  local demoTarget = ""
+  local function AssignMarker(_, result) 
+    if not IsUnitAttackable("reticleover") then return end
+    if demoTarget == GetUnitName("reticleover") then return end
+    demoTarget = GetUnitName("reticleover") 
+    AssignTargetMarkerToReticleTarget(1)
+  end
+  EVENT_MANAGER:RegisterForEvent("skilltarget", EVENT_COMBAT_EVENT, AssignMarker) 
+  EVENT_MANAGER:AddFilterForEvent("skilltarget", EVENT_COMBAT_EVENT, REGISTER_FILTER_ABILITY_ID, 21763)
+  EVENT_MANAGER:AddFilterForEvent("skilltarget", EVENT_COMBAT_EVENT, REGISTER_FILTER_SOURCE_COMBAT_UNIT_TYPE , COMBAT_UNIT_TYPE_PLAYER)
+  EVENT_MANAGER:AddFilterForEvent("skilltarget", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT,  ACTION_RESULT_EFFECT_GAINED) 
+  -- find abilityId with "/script d(GetSlotBoundId(3))", when skill is on first abilitySlot
 end
 
 SLASH_COMMANDS["/exoytest"] = function()
+  local function test(a,b,c,e) 
+    d(a)
+    d(b)
+    d(c)
+    d(e)
+
+    
+  end
+
+  test( GetUnitRawWorldPosition("player") )
+end
+
+SLASH_COMMANDS["/exoytest3"] = function()
   local gemId = 0
   for slotId = 0, GetBagSize(BAG_BACKPACK) do
     local name = GetItemName(BAG_BACKPACK, slotId)

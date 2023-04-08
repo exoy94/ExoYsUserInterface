@@ -6,7 +6,8 @@ Variables.festivals =
   {
     ["jester"] = {collectible = 1167, buff = 91369},
     -- ["anniversary"] = {collectible = 9012, buff = 152514}, -- 2021
-    ["anniversary"] = {collectible = 10287, buff = 167846}, -- 2022
+    --["anniversary"] = {collectible = 10287, buff = 167846}, -- 2022
+    ["anniversary"] = {collectible = 11089, buff = 181478}, -- 2023
     ["witch"] = {collectible = 479, buff = 96118 },
     ["newLife"] = {collectible = 1168, buff = 91449}
   }

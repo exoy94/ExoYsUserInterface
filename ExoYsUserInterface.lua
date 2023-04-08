@@ -76,7 +76,7 @@ local function Initialize()
 	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
 
 	--TODO graphical interface
- 	--ExoY.festival = ExoY.vars.festivals["anniversary"]
+ 	ExoY.festival = ExoY.vars.festivals["anniversary"]
 
 	-- TODO Investivate
 	ExoY.callbackList = {}
