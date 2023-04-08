@@ -242,7 +242,7 @@ function Misc.UpdateCollectionProgress()
     label:ClearAnchors()
     label:SetAnchor(TOPLEFT, win , TOPLEFT, 0, 0)
     label:SetColor(1,1,1,1)
-    label:SetFont(ExoY.GetFont("normal"))
+    label:SetFont( Lib.GetFont() )
 
     return label
   end
@@ -314,7 +314,7 @@ function Misc.InitiateCpSlotableChangeCooldown()
   label:ClearAnchors()
   label:SetAnchor(TOPLEFT, win , TOPLEFT, 0, 0)
   label:SetColor(1,0,0,1)
-  label:SetFont(ExoY.GetFont("normal"))
+  label:SetFont( Lib.GetFont() )
 
   local lastHotbarUpdate = 0
   local cooldownEnd = 0

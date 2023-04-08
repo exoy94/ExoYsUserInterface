@@ -4,6 +4,7 @@ ExoY.unitFrames= ExoY.unitFrames or {}
 
 local UnitFrames = ExoY.unitFrames
 
+local Lib = LibExoYsUtilities
 
 function UnitFrames.Initialize()
   UnitFrames.name = ExoY.name.."UnitFrames"
@@ -55,7 +56,7 @@ local function CreateLabel(power, parent)
   label:ClearAnchors()
   label:SetAnchor(CENTER, parent, CENTER, 0, 0)
   label:SetColor(1,1,1,1)
-  label:SetFont( ExoY.GetFont("normal") )
+  label:SetFont( Lib.GetFont() )
   local current, max, effMax = GetUnitPower("player", power)
   local text = string.format( "%.1f k", current/1000)
   label:SetText(text)
@@ -167,7 +168,7 @@ function UnitFrames.InitializeShield()
   label:ClearAnchors()
   label:SetAnchor(TOPLEFT, UnitFrames.player.win, TOPLEFT, 70, -30)
   label:SetColor(1,1,1,1)
-  label:SetFont( ExoY.GetFont("header") )
+  label:SetFont( Lib.GetFont(24) )
 
   local function OnShieldUpdate(unitAttributeVisual, value, maxValue)
     if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then

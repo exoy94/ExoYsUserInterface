@@ -85,13 +85,6 @@ local function Initialize()
 	
 	Lib.RegisterInitialPlayerActivation(function() ExecuteForAllModules('OnInitialPlayerActivated') end) 
 	Lib.RegisterPlayerActivation(function() ExecuteForAllModules('OnPlayerActivated') end)
-
-	--TODO remove (only used in CombatProtocolFiles)
-	ExoY.combat = {}
-	ExoY.combat.state = true
-	ExoY.combat.startTime = GetGameTimeMilliseconds()
-	ExoY.combat.EndTime = GetGameTimeMilliseconds()
-
 end
 
 
@@ -103,28 +96,6 @@ local function OnAddOnLoaded(event, addonName)
 end
 EM:RegisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)
 
-
----------------
--- Utilities --
----------------
-
-function ExoY.GetFont( layout )
-  local sizes = {
-		["small"] = 16,
-		["normal"] = 18,
-		["big"] = 20,
-		["header"] = 24,
-	}
-	local font = "/EsoUI/Common/Fonts/Univers67.otf"
-  local outline = "soft-shadow-thick"
-	local size
-	if type(layout) == "number" then
-		size = layout
-	else
-		size = sizes[layout]
-	end
-  return string.format( "%s|%d|%s", font , size , outline )
-end
 
 
 --IDEA for purge Tracking (gameuiart/siege)

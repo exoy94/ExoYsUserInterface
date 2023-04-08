@@ -3,6 +3,7 @@ ExoY = ExoY or {}
 ExoY.display = ExoY.display or {}
 local Display = ExoY.display
 
+local Lib = LibExoYsUtilities
 local wm = GetWindowManager()
 
 --TODO change variable names
@@ -203,7 +204,7 @@ function Display.AddTab( tabSettings )
   header:ClearAnchors()
   header:SetAnchor(TOP, ctrl, TOP, 0, 5 )
   header:SetColor( 1, 1, 1, 0.7 )
-  header:SetFont( ExoY.GetFont("header") )
+  header:SetFont( Lib.GetFont(24) )
   header:SetVerticalAlignment( TEXT_ALIGN_CENTER )
   header:SetHorizontalAlignment( TEXT_ALIGN_CENTER )
   header:SetText( tabSettings.header and tabSettings.header or "" )
@@ -265,7 +266,7 @@ function Display.CreateLabel(name, parent, column, line, data)
   local label = ExoY.window:CreateControl(name.."label", parent, CT_LABEL)
   label:ClearAnchors()
   label:SetAnchor(TOPLEFT, parent, TOPLEFT, GetOffsetX(column), GetOffsetY(line) )
-  label:SetFont( ExoY.GetFont(data.font and data.font or "normal") )
+  label:SetFont( Lib.GetFont(data.font) )
   label:SetVerticalAlignment( TEXT_ALIGN_CENTER )
   label:SetDimensions(DISPLAY_WIDTH/column[2] -20, lineHeight)
   label:SetHorizontalAlignment( data.align and data.align or TEXT_ALIGN_LEFT )
@@ -308,7 +309,7 @@ function Display.CreateButton( name, parent, column, line, data )
   local label = ExoY.window:CreateControl(name.."label", parent, CT_LABEL)
   label:ClearAnchors()
   label:SetAnchor(LEFT, button, RIGHT, 0,0)
-  label:SetFont( ExoY.GetFont("small") )
+  label:SetFont( Lib.GetFont(16) )
   label:SetVerticalAlignment( TEXT_ALIGN_CENTER )
   label:SetHorizontalAlignment( TEXT_ALIGN_LEFT )
   label:SetColor( 1, 1, 1, 0.7)

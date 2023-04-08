@@ -2,6 +2,8 @@ ExoY = ExoY or {}
 ExoY.screen = ExoY.screen or {}
 
 local Screen = ExoY.screen
+local Lib = LibExoYsUtilities
+
 
 function Screen.Initialize()
   Screen.name = ExoY.name.."Screen"
@@ -166,7 +168,7 @@ function Screen.TogglePositionIndicator()
     local label = ExoY.window:CreateControl( name.."label", win, CT_LABEL)
     label:ClearAnchors()
     label:SetAnchor(TOPLEFT, win , TOPLEFT, 0, 0)
-    label:SetFont(ExoY.GetFont("normal"))
+    label:SetFont( Lib.GetFont() )
 
     return { ["win"]=win, ["label"]=label }
   end
