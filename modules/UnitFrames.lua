@@ -6,6 +6,7 @@ local UnitFrames = ExoY.unitFrames
 
 local Lib = LibExoYsUtilities
 local EM = GetEventManager()
+local WM = GetWindowManager()
 
 function UnitFrames.Initialize()
   UnitFrames.name = ExoY.name.."UnitFrames"
@@ -30,19 +31,19 @@ function UnitFrames.CreateUnitBar( name, parent, info)
   local barHeight = 29
   local barWidth = 240
 
-  local ctrl = ExoY.WM:CreateControl(name.."Control", parent, CT_CONTROL)
+  local ctrl = WM:CreateControl(name.."Control", parent, CT_CONTROL)
   ctrl:ClearAnchors()
   ctrl:SetAnchor(TOPLEFT, parent, TOPLEFT, 0, info.y)
   ctrl:SetDimensions()
 
-  local back = ExoY.window:CreateControl(name.."Back", ctrl, CT_BACKDROP)
+  local back = WM:CreateControl(name.."Back", ctrl, CT_BACKDROP)
   back:ClearAnchors()
   back:SetAnchor(TOPLEFT, ctrl, TOPLEFT, 0, 0)
   back:SetDimensions(  barWidth, barHeight )
   back:SetCenterColor(0,0,0,0.5)
   back:SetEdgeColor(0,0,0,1)
 
-  local bar = ExoY.window:CreateControl(name.."Bar", ctrl, CT_STATUSBAR)
+  local bar = WM:CreateControl(name.."Bar", ctrl, CT_STATUSBAR)
   bar:ClearAnchors()
   bar:SetAnchor(TOPLEFT, ctrl, TOPLEFT, 0, 0)
   bar:SetDimensions( barWidth, barHeight )
@@ -53,7 +54,7 @@ function UnitFrames.CreateUnitBar( name, parent, info)
 end
 
 local function CreateLabel(power, parent)
-  local label = ExoY.WM:CreateControl("attributeLabel"..power, parent, CT_LABEL)
+  local label = WM:CreateControl("attributeLabel"..power, parent, CT_LABEL)
   label:ClearAnchors()
   label:SetAnchor(CENTER, parent, CENTER, 0, 0)
   label:SetColor(1,1,1,1)
@@ -72,7 +73,7 @@ function UnitFrames.InitializePlayerFrame()
   local name = UnitFrames.name.."PlayerFrame"
   UnitFrames.player = {}
 
-  local win = ExoY.window:CreateTopLevelWindow(name.."Win")
+  local win = WM:CreateTopLevelWindow(name.."Win")
   win:ClearAnchors()
   win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, 600, 800)
   win:SetDimensions(200, 90)
@@ -165,7 +166,7 @@ end
 function UnitFrames.InitializeShield()
   local name = UnitFrames.name.."PlayerShield"
 
-  local label = ExoY.WM:CreateControl(name.."Label", UnitFrames.player.win, CT_LABEL)
+  local label = WM:CreateControl(name.."Label", UnitFrames.player.win, CT_LABEL)
   label:ClearAnchors()
   label:SetAnchor(TOPLEFT, UnitFrames.player.win, TOPLEFT, 70, -30)
   label:SetColor(1,1,1,1)
@@ -208,7 +209,7 @@ function UnitFrames.InitializeShield()
 end
 
 
---[
+--[[]
 function UnitFrames.InitializePlayerFrame()
   local name = UnitFrames.name.."PlayerFrame"
 
@@ -218,7 +219,7 @@ function UnitFrames.InitializePlayerFrame()
     bars = {width = 200, height = 30},
   }
 
-  local win = ExoY.window:CreateTopLevelWindow(name.."Win")
+  local win = WM:CreateTopLevelWindow(name.."Win")
   win:ClearAnchors()
   win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, data.position.x, data.position.y)
   win:SetDimensions(data.dimensions.width, data.dimensions.height)
