@@ -1,5 +1,7 @@
 ExoY = ExoY or {}
 
+local EM = GetEventManager()
+
 ExoY.widgets = ExoY.widgets or {}
 local Widgets = ExoY.widgets
 
@@ -26,9 +28,9 @@ function Widgets.Initialize()
   if ExoY.festival then
     Widgets.eventBonusDurationCallbackId = nil
     Widgets.CheckEventBuffDuration()
-    ExoY.EM:RegisterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, Widgets.CheckEventBuffDuration)
-    ExoY.EM:AddFilterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, REGISTER_FILTER_UNIT_TAG, "player")
-    ExoY.EM:AddFilterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, REGISTER_FILTER_ABILITY_ID, ExoY.festival.buff)
+    EM:RegisterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, Widgets.CheckEventBuffDuration)
+    EM:AddFilterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, REGISTER_FILTER_UNIT_TAG, "player")
+    EM:AddFilterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, REGISTER_FILTER_ABILITY_ID, ExoY.festival.buff)
   end
 end
 

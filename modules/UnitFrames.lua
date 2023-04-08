@@ -5,6 +5,7 @@ ExoY.unitFrames= ExoY.unitFrames or {}
 local UnitFrames = ExoY.unitFrames
 
 local Lib = LibExoYsUtilities
+local EM = GetEventManager()
 
 function UnitFrames.Initialize()
   UnitFrames.name = ExoY.name.."UnitFrames"
@@ -113,8 +114,8 @@ function UnitFrames.InitializePlayerFrame()
 
   end
 
-  ExoY.EM:RegisterForEvent(name.."PowerUpdate", EVENT_POWER_UPDATE, OnPlayerPowerUpdate)
-  ExoY.EM:AddFilterForEvent(name.."PowerUpdate", EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
+  EM:RegisterForEvent(name.."PowerUpdate", EVENT_POWER_UPDATE, OnPlayerPowerUpdate)
+  EM:AddFilterForEvent(name.."PowerUpdate", EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
 end
 
 
@@ -150,9 +151,9 @@ function UnitFrames.InitializeTargetFrame()
 
   end
 
-  ExoY.EM:RegisterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, OnPlayerPowerUpdate)
-  ExoY.EM:AddFilterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "reticleover")
-  ExoY.EM:AddFilterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , POWERTYPE_HEALTH)
+  EM:RegisterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, OnPlayerPowerUpdate)
+  EM:AddFilterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "reticleover")
+  EM:AddFilterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , POWERTYPE_HEALTH)
 end
 
 
@@ -185,29 +186,29 @@ function UnitFrames.InitializeShield()
     OnShieldUpdate(unitAttributeVisual, value, maxValue)
   end
 
-  ExoY.EM:RegisterForEvent(name.."added", EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, OnAdded)
-  ExoY.EM:AddFilterForEvent(name.."added", EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, REGISTER_FILTER_UNIT_TAG, "player")
+  EM:RegisterForEvent(name.."added", EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, OnAdded)
+  EM:AddFilterForEvent(name.."added", EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, REGISTER_FILTER_UNIT_TAG, "player")
 
 
   local function OnRemoved(eventCode, unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue)
     OnShieldUpdate(unitAttributeVisual, 0, maxValue)
   end
 
-  ExoY.EM:RegisterForEvent(name.."removed", EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, OnRemoved)
-  ExoY.EM:AddFilterForEvent(name.."removed", EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, REGISTER_FILTER_UNIT_TAG, "player")
+  EM:RegisterForEvent(name.."removed", EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, OnRemoved)
+  EM:AddFilterForEvent(name.."removed", EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, REGISTER_FILTER_UNIT_TAG, "player")
 
 
   local function OnUpdated(eventCode, unitTag, unitAttributeVisual, statType, attributeType, powerType, oldValue, newValue, oldMaxValue, newMaxValue)
     OnShieldUpdate(unitAttributeVisual, newValue, newMaxValue)
   end
 
-  ExoY.EM:RegisterForEvent(name.."Updated", EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, OnUpdated)
-  ExoY.EM:AddFilterForEvent(name.."Updated", EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, REGISTER_FILTER_UNIT_TAG, "player")
+  EM:RegisterForEvent(name.."Updated", EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, OnUpdated)
+  EM:AddFilterForEvent(name.."Updated", EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, REGISTER_FILTER_UNIT_TAG, "player")
 
 end
 
 
---[[
+--[
 function UnitFrames.InitializePlayerFrame()
   local name = UnitFrames.name.."PlayerFrame"
 
@@ -239,9 +240,9 @@ function UnitFrames.InitializePlayerFrame()
       bar:SetValue(powerValue)
     end
 
-    ExoY.EM:RegisterForEvent(barName, EVENT_POWER_UPDATE, OnPowerUpdate)
-    ExoY.EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
-    ExoY.EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , info.power)
+    EM:RegisterForEvent(barName, EVENT_POWER_UPDATE, OnPowerUpdate)
+    EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
+    EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , info.power)
   end
 end
 
@@ -301,9 +302,9 @@ function UnitFrames.CreatePlayerFrame()
     end
 
     -- register tracking events
-    ExoY.EM:RegisterForEvent(barName, EVENT_POWER_UPDATE, OnPowerUpdate)
-    ExoY.EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
-    ExoY.EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , barPowerType)
+    EM:RegisterForEvent(barName, EVENT_POWER_UPDATE, OnPowerUpdate)
+    EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
+    EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , barPowerType)
   end
 
   CreateBar( name.."playerHealth", 1, POWERTYPE_HEALTH,{1,0,0,1} )

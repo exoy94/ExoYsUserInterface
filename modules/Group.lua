@@ -4,13 +4,15 @@ ExoY.group = ExoY.group or {}
 local Lib = LibExoYsUtilities
 local Group = ExoY.group
 
+local EM = GetEventManager()
+
 function Group.Initialize()
   Group.name = ExoY.name.."Group"
 
   Group.unitList = {}
 
-  ExoY.EM:RegisterForEvent(Group.name.."EffectChanged", EVENT_EFFECT_CHANGED, Group.OnEffectChanged)
-  ExoY.EM:AddFilterForEvent(Group.name.."EffectChanged", EVENT_EFFECT_CHANGED, REGISTER_FILTER_UNIT_TAG_PREFIX, "group")
+  EM:RegisterForEvent(Group.name.."EffectChanged", EVENT_EFFECT_CHANGED, Group.OnEffectChanged)
+  EM:AddFilterForEvent(Group.name.."EffectChanged", EVENT_EFFECT_CHANGED, REGISTER_FILTER_UNIT_TAG_PREFIX, "group")
 end
 
 function Group.OnEffectChanged(event, changeType, effectSlot, effectName, unitTag, beginTime, endTime, stackCount, iconName, buffType, effectType, abilityType, statusEffectType, unitName, unitId, abilityId, sourceType)

@@ -18,7 +18,6 @@ local EM = GetEventManager()
 local WM = GetWindowManager() 
 
 --TODO Cleanup
-ExoY.EM = GetEventManager()
 ExoY.WM = GetWindowManager()
 ExoY.window = GetWindowManager()
 
@@ -72,14 +71,13 @@ local function Initialize()
 	--TODO graphical interface
  	ExoY.festival = ExoY.vars.festivals["anniversary"]
 
-	-- TODO Investivate
-	ExoY.callbackList = {}
-
 	-- initialize display 
 	Lib.ExeFunc( ExoY.display.Initialize )
 
+	-- initialize modules 
 	ExecuteForAllModules('Initialize')
 
+	-- register callbacks
 	Lib.RegisterCombatStart(function() ExecuteForAllModules('OnCombatStart') end)
 	Lib.RegisterCombatEnd(function() ExecuteForAllModules('OnCombatEnd') end)
 	

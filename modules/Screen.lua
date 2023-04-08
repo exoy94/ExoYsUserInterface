@@ -179,7 +179,7 @@ function Screen.TogglePositionIndicator()
   end
   if Screen.positionIndicator.win:IsHidden() then
     Screen.positionIndicator.win:SetHidden(false)
-    ExoY.EM:RegisterForUpdate(Screen.name.."PositionIndicatorUpdate", 10, function()
+    EM:RegisterForUpdate(Screen.name.."PositionIndicatorUpdate", 10, function()
         local x,y = GetUIMousePosition()
         Screen.positionIndicator.win:ClearAnchors()
         Screen.positionIndicator.win:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, x+20 , y)
@@ -188,7 +188,7 @@ function Screen.TogglePositionIndicator()
       end)
   else
     Screen.positionIndicator.win:SetHidden(true)
-    ExoY.EM:UnregisterForUpdate(Screen.name.."PositionIndicatorUpdate")
+    EM:UnregisterForUpdate(Screen.name.."PositionIndicatorUpdate")
   end
 end
 

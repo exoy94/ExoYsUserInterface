@@ -2,7 +2,7 @@ ExoY = ExoY or {}
 ExoY.misc = ExoY.misc or {}
 
 local Lib = LibExoYsUtilities
-
+local EM = GetEventManager()
 local Misc = ExoY.misc
 
 function Misc.Initialize()
@@ -18,7 +18,7 @@ function Misc.Initialize()
   --Misc.LockArmoyBuilds() --TODO
 
   Misc.OnUpdateStopwatch()
-  ExoY.EM:RegisterForUpdate(Misc.name.."UpdateStopwatch", 1000, Misc.OnUpdateStopwatch)
+  EM:RegisterForUpdate(Misc.name.."UpdateStopwatch", 1000, Misc.OnUpdateStopwatch)
 
 end
 
@@ -266,7 +266,7 @@ function Misc.UpdateCollectionProgress()
   -- initial check
   if not Misc.collection then
     Misc.collection = Initialize()
-    ExoY.EM:RegisterForEvent(name, EVENT_ITEM_SET_COLLECTION_UPDATED, UpdateCollectionProgressGui)
+    EM:RegisterForEvent(name, EVENT_ITEM_SET_COLLECTION_UPDATED, UpdateCollectionProgressGui)
   end
 
   UpdateCollectionProgressGui()
@@ -284,9 +284,9 @@ function Misc.SoundOnKillingBlow()
     end
   end
 
-  ExoY.EM:RegisterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, OnKill)
-  ExoY.EM:AddFilterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_KILLING_BLOW)
-  ExoY.EM:AddFilterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, REGISTER_FILTER_SOURCE_COMBAT_UNIT_TYPE , COMBAT_UNIT_TYPE_PLAYER)
+  EM:RegisterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, OnKill)
+  EM:AddFilterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_KILLING_BLOW)
+  EM:AddFilterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, REGISTER_FILTER_SOURCE_COMBAT_UNIT_TYPE , COMBAT_UNIT_TYPE_PLAYER)
 end
 
 -------------------------------------
@@ -318,7 +318,7 @@ function Misc.InitiateCpSlotableChangeCooldown()
 
   local lastHotbarUpdate = 0
   local cooldownEnd = 0
-  ExoY.EM:RegisterForEvent(name.."HotbarsUpdated", EVENT_ACTION_SLOTS_ALL_HOTBARS_UPDATED, function() lastHotbarUpdate = GetGameTimeMilliseconds() end)
+  EM:RegisterForEvent(name.."HotbarsUpdated", EVENT_ACTION_SLOTS_ALL_HOTBARS_UPDATED, function() lastHotbarUpdate = GetGameTimeMilliseconds() end)
 
   local function OnChampionPurchaseResult()
     if GetGameTimeMilliseconds() - lastHotbarUpdate > 100 then return end
@@ -334,13 +334,13 @@ function Misc.InitiateCpSlotableChangeCooldown()
       else
         ExoY.characterInfo.cp.cooldown:SetText( "" )
         label:SetText( "" )
-        ExoY.EM:UnregisterForUpdate(name.."cooldown")
+        EM:UnregisterForUpdate(name.."cooldown")
       end
     end
-    ExoY.EM:RegisterForUpdate(name.."cooldown", 500, function() OnCooldown() end)
+    EM:RegisterForUpdate(name.."cooldown", 500, function() OnCooldown() end)
   end
 
-  ExoY.EM:RegisterForEvent(name.."CpPurchaseResult", EVENT_CHAMPION_PURCHASE_RESULT, function() zo_callLater(function() OnChampionPurchaseResult() end, 10) end)
+  EM:RegisterForEvent(name.."CpPurchaseResult", EVENT_CHAMPION_PURCHASE_RESULT, function() zo_callLater(function() OnChampionPurchaseResult() end, 10) end)
 end
 
 ---------------
@@ -355,7 +355,7 @@ function Misc.AutoBindItems()
     if IsItemSetCollectionPieceUnlocked(GetItemLinkItemId(itemLink)) then return end
     BindItem(bagId, slotIndex)
   end
-  ExoY.EM:RegisterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnSlotUpdate)
-  ExoY.EM:AddFilterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_IS_NEW_ITEM, true)
-  ExoY.EM:AddFilterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BAG_BACKPACK)
+  EM:RegisterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnSlotUpdate)
+  EM:AddFilterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_IS_NEW_ITEM, true)
+  EM:AddFilterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BAG_BACKPACK)
 end

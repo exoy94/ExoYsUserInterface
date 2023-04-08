@@ -4,6 +4,9 @@ ExoY.prototype = ExoY.prototype or {}
 local Prototype = ExoY.prototype
 local Lib = LibExoYsUtilities
 
+local EM = GetEventManager()
+local WM = GetWindowManager()
+
 function Prototype.Initialize()
   Prototype.name = ExoY.name.."Prototype"
 
@@ -136,7 +139,7 @@ function Prototype.AutoJoinCampaign()
       zo_callLater(function() ConfirmCampaignEntry(campaignId, isGroup, true) end, 4000)
     end
   end
-  ExoY.EM:RegisterForEvent(Prototype.name.."AutoJoin", EVENT_CAMPAIGN_QUEUE_STATE_CHANGED, OnCampaignChange)
+  EM:RegisterForEvent(Prototype.name.."AutoJoin", EVENT_CAMPAIGN_QUEUE_STATE_CHANGED, OnCampaignChange)
 end
 
 

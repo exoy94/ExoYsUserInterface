@@ -3,14 +3,17 @@ ExoY.characterInfo = ExoY.characterInfo or {}
 
 local CharacterInfo = ExoY.characterInfo
 
+local EM = GetEventManager()
+local WM = GetEventManager() 
+
 function CharacterInfo.Initialize()
   CharacterInfo.name = ExoY.name.."CharacterInfo"
 
   CharacterInfo.CreateDisplayTab()
 
-  ExoY.EM:RegisterForEvent(CharacterInfo.name.."CpPurchase", EVENT_CHAMPION_PURCHASE_RESULT, CharacterInfo.OnCpPurchase)
-  ExoY.EM:RegisterForEvent(CharacterInfo.name.."CpGain", EVENT_CHAMPION_POINT_GAINED, CharacterInfo.UpdateCpUnspendPointsIndicator)
-  ExoY.EM:RegisterForEvent(CharacterInfo.name.."ArmoryBuildChange", EVENT_ARMORY_BUILD_OPERATION_STARTED, CharacterInfo.OnArmoryBuildChange)
+  EM:RegisterForEvent(CharacterInfo.name.."CpPurchase", EVENT_CHAMPION_PURCHASE_RESULT, CharacterInfo.OnCpPurchase)
+  EM:RegisterForEvent(CharacterInfo.name.."CpGain", EVENT_CHAMPION_POINT_GAINED, CharacterInfo.UpdateCpUnspendPointsIndicator)
+  EM:RegisterForEvent(CharacterInfo.name.."ArmoryBuildChange", EVENT_ARMORY_BUILD_OPERATION_STARTED, CharacterInfo.OnArmoryBuildChange)
 
   LibSetDetection.RegisterForCustomSlotUpdateEvent("ExoYUICharacterInfo", CharacterInfo.OnCustomSlotUpdate)
 
