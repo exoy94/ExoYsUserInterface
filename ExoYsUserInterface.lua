@@ -27,12 +27,7 @@ ExoY.window = GetWindowManager()
 --[[ -- Modularity -- ]]
 --[[ ---------------- ]]
 
--- order is also order in which modules will be initialized
 local moduleList = {
-	"display",
-
-	"dev",
-
 	"characterInfo",
 	"chat",
 	"group",
@@ -44,14 +39,13 @@ local moduleList = {
 	"widgets",
 	"worldMap",
 }
-
+--"dev",
 
 local function ExecuteForAllModules( funcName )
 	for _,moduleName in ipairs(moduleList) do
 		Lib.ExeFunc( ExoY[moduleName][funcName] or nil )
 	end
 end
-
 
 --[[ -------------------- ]]
 --[[ -- Initialization -- ]]
@@ -80,6 +74,9 @@ local function Initialize()
 
 	-- TODO Investivate
 	ExoY.callbackList = {}
+
+	-- initialize display 
+	Lib.ExeFunc( ExoY.display.Initialize )
 
 	ExecuteForAllModules('Initialize')
 

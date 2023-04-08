@@ -3,6 +3,7 @@ ExoY = ExoY or {}
 ExoY.display = ExoY.display or {}
 local Display = ExoY.display
 
+local wm = GetWindowManager()
 
 --TODO change variable names
 -- Display Settings
@@ -35,7 +36,6 @@ local function GetOffsetY( line )
 end
 
 
-
 function Display.Initialize()
   Display.name = ExoY.name.."Display"
 
@@ -46,8 +46,7 @@ function Display.Initialize()
   Display.header = Display.CreateHeader()
 
   Display.tabs = {}
-
-end
+end 
 
 
 function Display.OnPlayerActivated()
@@ -257,6 +256,7 @@ function Display.AddToHeader( data )
   return indicator
 end
 
+
 -----------------------
 -- Creating Controls --
 -----------------------
@@ -274,6 +274,7 @@ function Display.CreateLabel(name, parent, column, line, data)
   label:SetText( data.text and data.text or "" )
   return label
 end
+
 
 function Display.CreateButton( name, parent, column, line, data )
   local texture = data.texture and data.texture or "esoui/art/menubar/menubar_help"
@@ -293,7 +294,6 @@ function Display.CreateButton( name, parent, column, line, data )
     end)
     button:SetHandler("OnMouseExit", function() ZO_Tooltips_HideTextTooltip() end )
   end
-
 
   if data.collectible then
     button:SetHandler( "OnClicked", function() UseCollectible(data.collectible) end)
@@ -317,6 +317,7 @@ function Display.CreateButton( name, parent, column, line, data )
   return { ["button"] = button, ["label"] = label,}
 end
 
+
 function Display.CreateDivider(parent, line)
   dividerCounter = dividerCounter + 1
   local name = ExoY.name.."divider"..tostring(dividerCounter)
@@ -329,6 +330,11 @@ function Display.CreateDivider(parent, line)
 end
 
 
+
+--[[ ------------------------------- ]]
+--[[ -- CP Slotable Visualization -- ]]
+--[[ ------------------------------- ]]
+
 function Display.CreateChampionSlotableIndicator(name, parent, discipline, index, offsetX, line )
   local function GetCpSlotableTooltip(index, control)
     local cpId = GetSlotBoundId(index, HOTBAR_CATEGORY_CHAMPION)
@@ -340,7 +346,7 @@ function Display.CreateChampionSlotableIndicator(name, parent, discipline, index
     local currentBonus = GetChampionSkillCurrentBonusText( cpId, GetNumPointsSpentOnChampionSkill(cpId) )
     if currentBonus ~= "" then
       ZO_Tooltip_AddDivider(InformationTooltip)
-      InformationTooltip:AddLine( currentBonus ) --TODO schöneres Design, evelt bar anzeigen mit jumping Points
+      InformationTooltip:AddLine( currentBonus ) 
     end
   end
 
@@ -350,21 +356,21 @@ function Display.CreateChampionSlotableIndicator(name, parent, discipline, index
   local ringTexture = zo_strformat(format, path, discipline, "selection.dds")
   local starTexture = zo_strformat(format, path, discipline, "slotted.dds")
 
-  local frame = ExoY.window:CreateControl(name.."frame" , parent, CT_TEXTURE)
+  local frame = wm:CreateControl(name.."frame" , parent, CT_TEXTURE)
   frame:ClearAnchors()
   frame:SetAnchor(CENTER, parent, TOPLEFT, offsetX, GetOffsetY(line))
   frame:SetHidden(false)
   frame:SetDimensions(27, 27)
   frame:SetTexture(frameTexture)
 
-  local ring = ExoY.window:CreateControl(name.."ring" , parent, CT_TEXTURE)
+  local ring = wm:CreateControl(name.."ring" , parent, CT_TEXTURE)
   ring:ClearAnchors()
   ring:SetAnchor(CENTER, parent, TOPLEFT, offsetX, GetOffsetY(line))
   ring:SetHidden(true)
   ring:SetDimensions(27, 27)
   ring:SetTexture(ringTexture)
 
-  local star = ExoY.window:CreateControl(name.."star" , parent, CT_TEXTURE)
+  local star = wm:CreateControl(name.."star" , parent, CT_TEXTURE)
   star:ClearAnchors()
   star:SetAnchor(CENTER, parent, TOPLEFT, offsetX, GetOffsetY(line))
   star:SetHidden(true)
