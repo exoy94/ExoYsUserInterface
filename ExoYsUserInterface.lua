@@ -26,7 +26,10 @@ ExoY.window = GetWindowManager()
 --[[ -- Modularity -- ]]
 --[[ ---------------- ]]
 
+-- entry order defines module loop order
 local moduleList = {
+	"display", 
+	---
 	"characterInfo",
 	"chat",
 	"group",
@@ -40,44 +43,29 @@ local moduleList = {
 }
 --"dev",
 
-local function ExecuteForAllModules( funcName )
+local function ExecuteForAllModules( funcName, param)
+	local r = {}
 	for _,moduleName in ipairs(moduleList) do
-		Lib.ExeFunc( ExoY[moduleName][funcName] or nil )
+		r[moduleName] = Lib.ExeFunc( ExoY[moduleName][funcName], param )
 	end
+	return r
 end
 
 --[[ -------------------- ]]
 --[[ -- Initialization -- ]]
 --[[ -------------------- ]]
 
-local function GetDefaults()
-	local defaults = {}
-	for _, moduleName in ipairs(moduleList) do
-		local getDefaults = ExoY[moduleName].GetDefaults or nil
-		if Lib.IsFunc(getDefaults) then
-			defaults[moduleName] = getDefaults()
-		end
-	end
-	return defaults
-end
-
-
 local function Initialize()
 
-	local defaults = GetDefaults()
+	local defaults = ExecuteForAllModules('GetDefaults')
 
 	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
 
 	--TODO graphical interface
  	ExoY.festival = ExoY.vars.festivals["anniversary"]
 
-	-- initialize display 
-	Lib.ExeFunc( ExoY.display.Initialize )
-
-	-- initialize modules 
 	ExecuteForAllModules('Initialize')
 
-	-- register callbacks
 	Lib.RegisterCombatStart(function() ExecuteForAllModules('OnCombatStart') end)
 	Lib.RegisterCombatEnd(function() ExecuteForAllModules('OnCombatEnd') end)
 	
@@ -97,4 +85,3 @@ EM:RegisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)
 
 
 --IDEA for purge Tracking (gameuiart/siege)
--- IDEA Collection Set Book Total
