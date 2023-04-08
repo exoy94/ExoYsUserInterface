@@ -125,7 +125,7 @@ function UnitFrames.InitializeTargetFrame()
   local name = UnitFrames.name.."TargetFrame"
   UnitFrames.player = {}
 
-  local win = ExoY.window:CreateTopLevelWindow(name.."Win")
+  local win = WM:CreateTopLevelWindow(name.."Win")
   win:ClearAnchors()
   win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, 700, 900)
   win:SetDimensions(200, 90)

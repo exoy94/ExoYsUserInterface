@@ -17,10 +17,6 @@ ExoY.version = "Infinity"
 local EM = GetEventManager() 
 local WM = GetWindowManager() 
 
---TODO Cleanup
-ExoY.WM = GetWindowManager()
-ExoY.window = GetWindowManager()
-
 
 --[[ ---------------- ]]
 --[[ -- Modularity -- ]]

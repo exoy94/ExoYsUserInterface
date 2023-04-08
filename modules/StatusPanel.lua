@@ -4,6 +4,7 @@ ExoY.statusPanel = ExoY.statusPanel or {}
 local Status = ExoY.statusPanel
 local Lib = LibExoYsUtilities
 local EM = GetEventManager()
+local WM = GetWindowManager()
 
 function Status.Initialize()
   Status.name = ExoY.name.."StatusPanel"
@@ -54,7 +55,7 @@ end
 function Status.CreateGui()
   local name = Status.name
 
-  local win = ExoY.WM:CreateTopLevelWindow( name.."Window" )
+  local win = WM:CreateTopLevelWindow( name.."Window" )
   win:SetClampedToScreen(true)
   win:SetMouseEnabled(true)
   win:ClearAnchors()
@@ -62,13 +63,13 @@ function Status.CreateGui()
   win:SetDimensions( 200 , 40 )
   win:SetHidden(false)
 
-  local ctrl = ExoY.WM:CreateControl(name.."Control", win, CT_CONTROL )
+  local ctrl = WM:CreateControl(name.."Control", win, CT_CONTROL )
   ctrl:ClearAnchors()
   ctrl:SetAnchor(CENTER , win, CENTER, 0, 0 )
   ctrl:SetDimensions( 120, 40)
 
 
-  local back = ExoY.WM:CreateControl(name.."Back", ctrl, CT_BACKDROP)
+  local back = WM:CreateControl(name.."Back", ctrl, CT_BACKDROP)
   back:ClearAnchors()
   back:SetAnchor(CENTER, ctrl, CENTER, -70, 0)
   back:SetDimensions(930,40)
@@ -77,7 +78,7 @@ function Status.CreateGui()
   back:SetEdgeTexture(nil, 2,2,2)
 
 
-  local clock = ExoY.WM:CreateControl(name.."Clock", ctrl, CT_LABEL)
+  local clock = WM:CreateControl(name.."Clock", ctrl, CT_LABEL)
   clock:ClearAnchors()
   clock:SetAnchor( CENTER, ctrl, CENTER, 0, 0)
   clock:SetColor( 1, 1, 1, 1 )
@@ -86,13 +87,13 @@ function Status.CreateGui()
   clock:SetFont( Lib.GetFont(30) )
 
   local function CreateInfo( name, offsetX, texture, size, gap)
-    local icon = ExoY.WM:CreateControl(name.."icon", ctrl, CT_TEXTURE)
+    local icon = WM:CreateControl(name.."icon", ctrl, CT_TEXTURE)
     icon:ClearAnchors()
     icon:SetAnchor( CENTER, ctrl, CENTER, offsetX, 0)
     icon:SetDimensions(size , size)
     icon:SetTexture( texture )
 
-    local label = ExoY.WM:CreateControl(name.."label", ctrl, CT_LABEL)
+    local label = WM:CreateControl(name.."label", ctrl, CT_LABEL)
     label:ClearAnchors()
     label:SetAnchor( LEFT, icon, RIGHT, gap and gap or 0, 0)
     label:SetColor( 1, 1, 1, 1 )

@@ -225,7 +225,7 @@ end
 function Misc.UpdateCollectionProgress()
   local name = Misc.name.."CollectionProgress"
   local function Initialize()
-    local win = ExoY.window:CreateTopLevelWindow( name.."Win")
+    local win = WM:CreateTopLevelWindow( name.."Win")
     win:ClearAnchors()
     win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, 2430, 135)
     win:SetClampedToScreen(true)
@@ -238,7 +238,7 @@ function Misc.UpdateCollectionProgress()
     local scene = SCENE_MANAGER:GetScene("itemSetsBook")
     scene:AddFragment( frag )
 
-    local label = ExoY.window:CreateControl( name.."label", win, CT_LABEL)
+    local label = WM:CreateControl( name.."label", win, CT_LABEL)
     label:ClearAnchors()
     label:SetAnchor(TOPLEFT, win , TOPLEFT, 0, 0)
     label:SetColor(1,1,1,1)
@@ -298,7 +298,7 @@ end
 
 function Misc.InitiateCpSlotableChangeCooldown()
   local name = Misc.name.."CpSlotableChangeCooldown"
-  local win = ExoY.window:CreateTopLevelWindow( name.."win")
+  local win = WM:CreateTopLevelWindow( name.."win")
   win:ClearAnchors()
   win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, 1270, 110)
   win:SetClampedToScreen(true)
@@ -310,7 +310,7 @@ function Misc.InitiateCpSlotableChangeCooldown()
   local frag = ZO_HUDFadeSceneFragment:New( win )
   CHAMPION_PERKS_SCENE:AddFragment( frag )
 
-  local label = ExoY.window:CreateControl( name.."label", win, CT_LABEL)
+  local label = WM:CreateControl( name.."label", win, CT_LABEL)
   label:ClearAnchors()
   label:SetAnchor(TOPLEFT, win , TOPLEFT, 0, 0)
   label:SetColor(1,0,0,1)
