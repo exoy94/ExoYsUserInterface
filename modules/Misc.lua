@@ -3,6 +3,7 @@ ExoY.misc = ExoY.misc or {}
 
 local Lib = LibExoYsUtilities
 local EM = GetEventManager()
+local WM = GetWindowManager()
 local Misc = ExoY.misc
 
 function Misc.Initialize()
