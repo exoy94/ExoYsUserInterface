@@ -244,7 +244,7 @@ SLASH_COMMANDS["/exoy"] = function(options)
     ["position"] = {ExoY.screen.TogglePositionIndicator, "toggle mouse position"},
     ["settings"] = {ExoY.settings.Apply, "applies game settings"},
     ["centerline"] = {ExoY.screen.ToggleCenterLine, "toggle center line"},
-    ["decode"] = {ExoY.combatProtocol.DecodeDatabase, "decode combat protocol database"},
+   -- ["decode"] = {ExoY.combatProtocol.DecodeDatabase, "decode combat protocol database"},
   }
 
   -- displays all possible commands with description if no additional parameter is given --TODO Design

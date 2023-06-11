@@ -193,6 +193,22 @@ SLASH_COMMANDS["/exoy_itemlink"] = function(param)
 end 
 
 
+--[[ Working on LFI ]]
+
+SLASH_COMMANDS["/exoylfi1"] = function()
+	local LFI = LibFloatingIcons
+	local zone, wX, wY, wZ = GetUnitRawWorldPosition("player") 
+	LFI.RegisterPositionIcon( zone, "ExoYTest", {wX, wY, wZ} ) 
+end
+
+SLASH_COMMANDS["/exoylfi2"] = function(name)
+	name = name ~= "" and name or "@ExoY94"
+	local LFI = LibFloatingIcons
+	local zone, wX, wY, wZ = GetUnitRawWorldPosition("player") 
+	LFI.RegisterPlayerIcon( LFI_ID, "ExoYTest", name ) 
+	LFI.RegisterPlayerIcon( LFI_BUFF, "ExoYTest", name ) 
+	LFI.RegisterPlayerIcon( LFI_MECH, "ExoYTest", name ) 
+end
 
 --[[ -- OLD -- ]]
 
@@ -222,4 +238,7 @@ function Development.FindEmoteIndex( collectibleId )
 		end
 	end
 end
+
+
+
 
