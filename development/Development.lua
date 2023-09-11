@@ -104,7 +104,7 @@ end
 
 function Development.FindCollectibles( str, limit)
 	local output = false
-	for id=1, Lib.IsNumber(limit) and limit or 11000 do
+	for id=1, Lib.IsNumber(limit) and limit or 100000 do
 	  local collectible = string.lower( GetCollectibleName(id) )
 	  if string.find(collectible, string.lower(str)) then
 		d( zo_strformat("<<1>> <<2>>", id, collectible) )
