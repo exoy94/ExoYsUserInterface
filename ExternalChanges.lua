@@ -1,3 +1,6 @@
+
+--[[ Das ist ein kommentar ]]
+
 Fancy Action Bar:
 
 + ui.xml: Anchor for Duration: Bottom and Bottom

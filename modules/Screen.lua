@@ -2,6 +2,8 @@ ExoY = ExoY or {}
 ExoY.screen = ExoY.screen or {}
 
 local Screen = ExoY.screen
+local Lib = LibExoYsUtilities
+
 
 function Screen.Initialize()
   Screen.name = ExoY.name.."Screen"
@@ -18,7 +20,7 @@ function Screen.Initialize()
 
       return true
     else
-        return false
+      return false
     end
   end)
 end
@@ -122,7 +124,7 @@ local defaultPanels = {
     [ZO_LootHistoryControl_Keyboard] = {BOTTOMRIGHT, BOTTOMRIGHT, -35, -355}, -- -415, -18
     [ZO_ActionBar1] = {TOP, TOP, 0, 1125},
     [ZO_PlayerToPlayerAreaPromptContainer] = {BOTTOM, BOTTOM, 0, -100},
-    [ZO_SynergyTopLevelContainer] = {TOP, TOP, 0, 1000},
+    [ZO_SynergyTopLevelContainer] = {TOP, TOP, 0, 950},
     [ZO_ObjectiveCaptureMeter] = { TOP, TOP, 0, 500 },
     [ZO_BuffDebuffTopLevelSelfContainerContainer1] = {TOP, TOP, 0, 920},
     [ZO_HUDInfamyMeter] = {BOTTOMRIGHT, BOTTOMRIGHT, -400,0},
@@ -154,7 +156,7 @@ end
 function Screen.TogglePositionIndicator()
   local function InitializePositionIndicator()
     local name = Screen.name.."PositionIndicator"
-    local win = ExoY.window:CreateTopLevelWindow( name.."win")
+    local win = WM:CreateTopLevelWindow( name.."win")
     win:ClearAnchors()
     win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, 0, 0)
     win:SetClampedToScreen(true)
@@ -163,10 +165,10 @@ function Screen.TogglePositionIndicator()
     win:SetDimensions(70,25)
     win:SetHidden(true)
 
-    local label = ExoY.window:CreateControl( name.."label", win, CT_LABEL)
+    local label = WM:CreateControl( name.."label", win, CT_LABEL)
     label:ClearAnchors()
     label:SetAnchor(TOPLEFT, win , TOPLEFT, 0, 0)
-    label:SetFont(ExoY.GetFont("normal"))
+    label:SetFont( Lib.GetFont() )
 
     return { ["win"]=win, ["label"]=label }
   end
@@ -177,7 +179,7 @@ function Screen.TogglePositionIndicator()
   end
   if Screen.positionIndicator.win:IsHidden() then
     Screen.positionIndicator.win:SetHidden(false)
-    ExoY.EM:RegisterForUpdate(Screen.name.."PositionIndicatorUpdate", 10, function()
+    EM:RegisterForUpdate(Screen.name.."PositionIndicatorUpdate", 10, function()
         local x,y = GetUIMousePosition()
         Screen.positionIndicator.win:ClearAnchors()
         Screen.positionIndicator.win:SetAnchor(TOPLEFT, GuiRoot, TOPLEFT, x+20 , y)
@@ -186,7 +188,7 @@ function Screen.TogglePositionIndicator()
       end)
   else
     Screen.positionIndicator.win:SetHidden(true)
-    ExoY.EM:UnregisterForUpdate(Screen.name.."PositionIndicatorUpdate")
+    EM:UnregisterForUpdate(Screen.name.."PositionIndicatorUpdate")
   end
 end
 
@@ -198,7 +200,7 @@ function Screen.ToggleCenterLine()
   local function InitializeCenterLine()
     local name = Screen.name.."CenterLine"
     local width, height = GuiRoot:GetDimensions()
-    local win = ExoY.window:CreateTopLevelWindow( name.."win" )
+    local win = WM:CreateTopLevelWindow( name.."win" )
     win:SetClampedToScreen(true)
     win:SetMouseEnabled(false)
     win:SetMovable(false)
@@ -207,7 +209,7 @@ function Screen.ToggleCenterLine()
     win:SetHidden(true)
     win:SetDimensions( 0 , 0 )
 
-    local back = ExoY.window:CreateControl( name.."line", win, CT_BACKDROP)
+    local back = WM:CreateControl( name.."line", win, CT_BACKDROP)
     back:ClearAnchors()
     back:SetAnchor( CENTER, ctrl, CENTER, 0, 0)
     back:SetDimensions( 1, height)

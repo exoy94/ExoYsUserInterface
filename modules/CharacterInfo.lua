@@ -3,14 +3,17 @@ ExoY.characterInfo = ExoY.characterInfo or {}
 
 local CharacterInfo = ExoY.characterInfo
 
+local EM = GetEventManager()
+local WM = GetEventManager() 
+
 function CharacterInfo.Initialize()
   CharacterInfo.name = ExoY.name.."CharacterInfo"
 
   CharacterInfo.CreateDisplayTab()
 
-  ExoY.EM:RegisterForEvent(CharacterInfo.name.."CpPurchase", EVENT_CHAMPION_PURCHASE_RESULT, CharacterInfo.OnCpPurchase)
-  ExoY.EM:RegisterForEvent(CharacterInfo.name.."CpGain", EVENT_CHAMPION_POINT_GAINED, CharacterInfo.UpdateCpUnspendPointsIndicator)
-  ExoY.EM:RegisterForEvent(CharacterInfo.name.."ArmoryBuildChange", EVENT_ARMORY_BUILD_OPERATION_STARTED, CharacterInfo.OnArmoryBuildChange)
+  EM:RegisterForEvent(CharacterInfo.name.."CpPurchase", EVENT_CHAMPION_PURCHASE_RESULT, CharacterInfo.OnCpPurchase)
+  EM:RegisterForEvent(CharacterInfo.name.."CpGain", EVENT_CHAMPION_POINT_GAINED, CharacterInfo.UpdateCpUnspendPointsIndicator)
+  EM:RegisterForEvent(CharacterInfo.name.."ArmoryBuildChange", EVENT_ARMORY_BUILD_OPERATION_STARTED, CharacterInfo.OnArmoryBuildChange)
 
   LibSetDetection.RegisterForCustomSlotUpdateEvent("ExoYUICharacterInfo", CharacterInfo.OnCustomSlotUpdate)
 
@@ -65,17 +68,17 @@ function CharacterInfo.CreateDisplayTab()
   end
 
   line = line + 2.5
-  CharacterInfo.cp.cooldown = Display.CreateLabel(guiName.."cpCooldown", ctrl, {1,1}, line, {font = "big", align = TEXT_ALIGN_LEFT, color = {1,0,0,1} } )
+  CharacterInfo.cp.cooldown = Display.CreateLabel(guiName.."cpCooldown", ctrl, {1,1}, line, {font = 20, align = TEXT_ALIGN_LEFT, color = {1,0,0,1} } )
 
 
   line = line + 1.8
   Display.CreateDivider(ctrl, line)
   line = line + 1
   CharacterInfo.sets = {}
-  CharacterInfo.sets.left = Display.CreateLabel(guiName.."SetsLeft", ctrl, {1,2}, line, {font = "small", align = TEXT_ALIGN_LEFT} )
+  CharacterInfo.sets.left = Display.CreateLabel(guiName.."SetsLeft", ctrl, {1,2}, line, {font = 16, align = TEXT_ALIGN_LEFT} )
   CharacterInfo.sets.left:SetDimensions(150, 200)
   CharacterInfo.sets.left:SetVerticalAlignment(TEXT_ALIGN_TOP)
-  CharacterInfo.sets.right = Display.CreateLabel(guiName.."SetsRight", ctrl, {2,2}, line, {font = "small", align = TEXT_ALIGN_LEFT} )
+  CharacterInfo.sets.right = Display.CreateLabel(guiName.."SetsRight", ctrl, {2,2}, line, {font = 16, align = TEXT_ALIGN_LEFT} )
   CharacterInfo.sets.right:SetDimensions(150, 200)
   CharacterInfo.sets.right:SetVerticalAlignment(TEXT_ALIGN_TOP)
 end

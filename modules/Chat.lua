@@ -3,6 +3,7 @@ ExoY.chat = ExoY.chat or {}
 
 local Chat = ExoY.chat
 local Lib = LibExoYsUtilities
+local EM = GetEventManager() 
 
 local defaultChatEventDebug =
 {
@@ -29,16 +30,16 @@ function Chat.Initialize()
   CHAT_SYSTEM.maxContainerWidth, CHAT_SYSTEM.maxContainerHeight = GuiRoot:GetDimensions()
   -- Unregister ZOS handlers for events I dont want notifications of in system chat
   for eventCode, _ in pairs (defaultChatEventDebug) do
-      ExoY.EM:UnregisterForEvent("ChatRouter", eventCode)
+      EM:UnregisterForEvent("ChatRouter", eventCode)
   end
   -- changing Chat format
   CHAT_ROUTER:RegisterMessageFormatter(EVENT_CHAT_MESSAGE_CHANNEL, Chat.MessageFormatter)
   -- loot tracker
-  ExoY.EM:RegisterForEvent(Chat.name.."LootReceived", EVENT_LOOT_RECEIVED, Chat.OnLootReceived)
+  EM:RegisterForEvent(Chat.name.."LootReceived", EVENT_LOOT_RECEIVED, Chat.OnLootReceived)
   -- adding options when clicking on a name in chat
   LibCustomMenu:RegisterPlayerContextMenu(Chat.PlayerContextMenu, MENU_ADD_OPTION_LABEL)
 
-  ExoY.EM:RegisterForEvent(Chat.name.."AutoGroupInivte", EVENT_CHAT_MESSAGE_CHANNEL, Chat.AutoGroupInvite)
+  EM:RegisterForEvent(Chat.name.."AutoGroupInivte", EVENT_CHAT_MESSAGE_CHANNEL, Chat.AutoGroupInvite)
 
   --TODO Why does ist only work this way?
   -- maybe put in "onPlayer Activated"
@@ -243,7 +244,7 @@ SLASH_COMMANDS["/exoy"] = function(options)
     ["position"] = {ExoY.screen.TogglePositionIndicator, "toggle mouse position"},
     ["settings"] = {ExoY.settings.Apply, "applies game settings"},
     ["centerline"] = {ExoY.screen.ToggleCenterLine, "toggle center line"},
-    ["decode"] = {ExoY.combatProtocol.DecodeDatabase, "decode combat protocol database"},
+   -- ["decode"] = {ExoY.combatProtocol.DecodeDatabase, "decode combat protocol database"},
   }
 
   -- displays all possible commands with description if no additional parameter is given --TODO Design

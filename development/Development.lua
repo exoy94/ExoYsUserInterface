@@ -3,15 +3,25 @@ ExoY = ExoY or {}
 ExoY.dev = ExoY.dev or {}
 
 local Development = ExoY.dev
+local Lib = LibExoYsUtilities
+local LSD = LibSetDetection 
+
 
 function Development.Initialize()
 	Development.name = ExoY.name.."Development"
 
 	ExoY.prototype.Initialize()
-	ExoY.combatProtocol.Initialize()
 
-	Development.CreateDisplayTab()
-	Development.CreateDisplayTabForDebug()
+	-- if prototype saveVar then 
+	-- ExoY.Initialize_Prototype() 
+	-- ExoY.Initialize_Prototype = nil 
+	-- end
+	-- Add Button to initialize prototype later 
+
+	--ExoY.combatProtocol.Initialize()
+
+	--Development.CreateDisplayTab()
+	--Development.CreateDisplayTabForDebug()
 end
 
 
@@ -19,6 +29,7 @@ end
 -- Display --
 -------------
 
+--[[
 function Development.CreateDisplayTab()
 
 	local tabSettings = {
@@ -69,122 +80,42 @@ function Development.CreateDisplayTabForDebug()
 	ExoY.EM:RegisterForUpdate(Development.name.."DebugUpdate", 100, UpdateDebugOutput)
 
 	line = line + 2
+end]]
 
-	--[[
 
-	local flare = Display.CreateLabel(guiName.."flare", ctrl, {1,2}, line, { font = "header", align = TEXT_ALIGN_LEFT})
-	line = line + 1
-	local flareExecute = Display.CreateLabel(guiName.."flareExecute", ctrl, {1,2}, line, { font = "header", align = TEXT_ALIGN_LEFT})
+--[[ ---------------- ]]
+--[[ -- Chat Debug -- ]]
+--[[ ---------------- ]]
 
-	local Lib = LibExoYsUtilities
-
-	local function OnFlare(event, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log, sourceUnitId, targetUnitId, abilityId, overflow)
-		--local params = Lib.GetEventParamter(...)
-		--local targetUnitId = params["targetUnitId"]
-		--local targetUnitId = Lib.GetEventParameter(...)["targetUnitId"]
-		local displayName = GetUnitDisplayName( Lib.GetGroupMemberTagById(targetUnitId) )
-		flare:SetText(displayName)
-	end
-
-	local function OnFlareExecute(event, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log, sourceUnitId, targetUnitId, abilityId, overflow)
-		--local targetUnitId = Lib.GetEventParameter(...)["targetUnitId"]
-		local displayName = GetUnitDisplayName( Lib.GetGroupMemberTagById(targetUnitId) )
-		flareExecute:SetText(displayName)
-	end
-
-	ExoY.EM:RegisterForEvent("ExoYFlare", EVENT_COMBAT_EVENT, OnFlare)
-	ExoY.EM:AddFilterForEvent("ExoYFlare", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_BEGIN)
-	ExoY.EM:AddFilterForEvent("ExoYFlare", EVENT_COMBAT_EVENT, REGISTER_FILTER_ABILITY_ID, 103531)
-
-	ExoY.EM:RegisterForEvent("ExoYFlareExecute", EVENT_COMBAT_EVENT, OnFlareExecute)
-	ExoY.EM:AddFilterForEvent("ExoYFlareExecute", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_BEGIN)
-	ExoY.EM:AddFilterForEvent("ExoYFlareExecute", EVENT_COMBAT_EVENT, REGISTER_FILTER_ABILITY_ID, 110431)
-	]]
-
-	local boss1 = Display.CreateLabel(guiName.."boss1", ctrl, {1,2}, line, { font = "header", align = TEXT_ALIGN_LEFT})
-	line = line + 1
-	local boss2 = Display.CreateLabel(guiName.."boss2", ctrl, {1,2}, line, { font = "header", align = TEXT_ALIGN_LEFT})
-
-	local function UpdateBossHp()
-		--local currentHp, maxHp = GetUnitPower("boss1")
-		--boss1:SetText( zo_strformat("<<1>>% (<<2>>)", currentHp*100/maxHp, GetUnitName("boss1") )
-		--local currentHp, maxHp = GetUnitPower("boss2" )
-		--boss2:SetText( zo_strformat("<<1>>% (<<2>>)", currentHp*100/maxHp, GetUnitName("boss2") )
-	end
-
-	ExoY.EM:RegisterForUpdate("ExoYBossHp", 100, UpdateBossHp)
-
-end
-
---
-
-function Development.DecodeTargetUnitId( var )
-	--return ExoY.group.GetDisplayNameByUnitId( var)
-	return var
-end
-
-function Development.DecodeSourceUnitId( var )
-	return var
-end
-
-function Development.DecodeAbilityId( var )
-	return zo_strformat("<<1>> (<<2>>)", GetAbilityName(var), var)
-	--return var
-end
-
-----------------
--- Chat Debug --
-----------------
-
-function Development.DisplayTestVariable()	--TODO use debug function
-	local var = ExoY.testVar
-	if type(var)=="table" then
-		d("TestVar is Table:")
-		for key, cont in pairs(var) do
-			d("["..tostring(key).."] "..tostring(cont) )
+function Development.DebugVar( var ) 
+	if not var then var = ExoY.testVar end
+	if Lib.IsTable(var) then 
+		Lib.DebugMsg(true, 'Var', 'table')
+		for k, v in pairs(var) do 
+			d( zo_strformat('[<<1>>] <<2>>', k, v))
 		end
-	elseif type(var) == "string" and var=="" then
-    d("TestVar is empty string")
-  else
-		d(tostring(var))
+	elseif Lib.IsString(var) and var=='' then 
+		Lib.DebugMsg(true, 'Var', 'empty string')
+	else 
+		Lib.DebugMsg(true, 'Var', tostring(var) )
 	end
 end
 
----------------
--- Utilities --
----------------
 
-function Development.SaveItemLink( slotId, bagId )
-	slotId = slotId or EQUIP_SLOT_HEAD
-	bagId = bagId or BAG_WORN
-	local link = GetItemLink(bagId, slotId)
-	local _, setName = GetItemLinkSetInfo( link )
-	local store = ExoY.store.dev.itemLink
-	store.setName = setName
-	store.link = link
-	ExoY.chat.Debug( "itemLink saved", link )
-end
-
-function Development.GetSetId( slotId, bagId )
-	slotId = slotId or EQUIP_SLOT_HEAD
-	bagId = bagId or BAG_WORN
-	local _, setName, _, _, _, setId = GetItemLinkSetInfo(GetItemLink(bagId, slotId))
-	ExoY.chat.Debug( setName, setId)
-end
-
-function Development.FindCollectibles( str, limit)	--TODO use debug function
-  local output = false
-  for id=1,type(limit)=="number" and limit or 11000 do
-    local collectible = string.lower( GetCollectibleName(id) )
-    if string.find(collectible, string.lower(str)) then
-      d( zo_strformat("<<1>> <<2>>", id, collectible) )
-      output = true
-    end
+function Development.FindCollectibles( str, limit)
+	local output = false
+	for id=1, Lib.IsNumber(limit) and limit or 100000 do
+	  local collectible = string.lower( GetCollectibleName(id) )
+	  if string.find(collectible, string.lower(str)) then
+		d( zo_strformat("<<1>> <<2>>", id, collectible) )
+		output = true
+	  end
+	end
+	if not output then d("no collectible found") end
   end
-  if not output then d("no collectible found") end
-end
+  
 
-function Development.FindAbilityId( str )
+  function Development.FindAbilityId( str )
 	local output = false
 	for id=1,type(limit)=="number" and limit or 200000 do
 		local abilityName = string.lower( GetAbilityName(id) )
@@ -223,6 +154,82 @@ function Development.FindAbilityIcon(str)
 	if not output then d("no ability found") end
 end
 
+--[[ --------------------------- ]]
+--[[ -- ProcSetTimer Workflow -- ]]
+--[[ --------------------------- ]]
+
+-- EPT interface 
+-- 1. debug equip slot list 
+-- 2. 
+
+local function GetSlotId( var )
+	if not var then return 0 end
+	if Lib.IsNumber(var) then return var end 
+	if Lib.IsString(var) then 
+		local slotList = LSD.GetEquipSlotList() 
+		for bar, barList in pairs(slotList) do 
+			for id, name in pairs(barList) do 
+				if var == name then return id end
+			end
+		end
+	end
+end
+
+local function eGetSetInfo(param)
+	local slotId = GetSlotId(param) 
+	local link = GetItemLink(BAG_WORN, slotId)
+	local _, name, _, _, _, id = GetItemLinkSetInfo(link)
+	return {id = id, name = name, link = link}
+end 
+
+SLASH_COMMANDS["/exoy_setid"] = function(param) 
+	local setInfo = GetSetInfo(param) 
+	--Debug
+end 
+
+SLASH_COMMANDS["/exoy_itemlink"] = function(param) 
+	local setInf = GetSetInfo(param)
+	--Debug
+end 
+
+
+--[[ Working on LFI ]]
+
+SLASH_COMMANDS["/exoylfi1"] = function()
+	local LFI = LibFloatingIcons
+	local zone, wX, wY, wZ = GetUnitRawWorldPosition("player") 
+	LFI.RegisterPositionIcon( zone, "ExoYTest", {wX, wY, wZ} ) 
+end
+
+SLASH_COMMANDS["/exoylfi2"] = function(name)
+	name = name ~= "" and name or "@ExoY94"
+	local LFI = LibFloatingIcons
+	local zone, wX, wY, wZ = GetUnitRawWorldPosition("player") 
+	LFI.RegisterPlayerIcon( LFI_ID, "ExoYTest", name ) 
+	LFI.RegisterPlayerIcon( LFI_BUFF, "ExoYTest", name ) 
+	LFI.RegisterPlayerIcon( LFI_MECH, "ExoYTest", name ) 
+end
+
+--[[ -- OLD -- ]]
+
+function Development.SaveItemLink( slotId, bagId )
+	slotId = slotId or EQUIP_SLOT_HEAD
+	bagId = bagId or BAG_WORN
+	local link = GetItemLink(bagId, slotId)
+	local _, setName = GetItemLinkSetInfo( link )
+	local store = ExoY.store.dev.itemLink
+	store.setName = setName
+	store.link = link
+	ExoY.chat.Debug( "itemLink saved", link )
+end
+
+function Development.GetSetId( slotId, bagId )
+	slotId = slotId or EQUIP_SLOT_HEAD
+	bagId = bagId or BAG_WORN
+	local _, setName, _, _, _, setId = GetItemLinkSetInfo(GetItemLink(bagId, slotId))
+	ExoY.chat.Debug( setName, setId)
+end
+
 function Development.FindEmoteIndex( collectibleId )
 	--for i = 1, GetNumEmotes() do
 	for i = 1, 1000 do
@@ -231,9 +238,7 @@ function Development.FindEmoteIndex( collectibleId )
 		end
 	end
 end
---[[
-local function callAlert(abilityId, text, duration)
-  if not CombatAlerts then return end
-  local durationMax = duration
-  CombatAlerts.CastAlertsStart(abilityId, text , duration, durationMax, {1,0,0,1})
-end]]
+
+
+
+

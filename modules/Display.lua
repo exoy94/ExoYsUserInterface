@@ -3,6 +3,8 @@ ExoY = ExoY or {}
 ExoY.display = ExoY.display or {}
 local Display = ExoY.display
 
+local Lib = LibExoYsUtilities
+local WM = GetWindowManager()
 
 --TODO change variable names
 -- Display Settings
@@ -35,7 +37,6 @@ local function GetOffsetY( line )
 end
 
 
-
 function Display.Initialize()
   Display.name = ExoY.name.."Display"
 
@@ -46,8 +47,7 @@ function Display.Initialize()
   Display.header = Display.CreateHeader()
 
   Display.tabs = {}
-
-end
+end 
 
 
 function Display.OnPlayerActivated()
@@ -123,7 +123,7 @@ end
 function Display.CreateMain()
   local name = Display.name.."Main"
 
-  local win = ExoY.WM:CreateTopLevelWindow( name.."Window" )
+  local win = WM:CreateTopLevelWindow( name.."Window" )
   win:SetClampedToScreen(true)
   win:SetMouseEnabled(true)
   win:ClearAnchors()
@@ -134,12 +134,12 @@ function Display.CreateMain()
   HUD_UI_SCENE:AddFragment( frag )
   HUD_SCENE:AddFragment( frag )
 
-  local ctrl = ExoY.WM:CreateControl(name.."Control", win, CT_CONTROL )
+  local ctrl = WM:CreateControl(name.."Control", win, CT_CONTROL )
   ctrl:ClearAnchors()
   ctrl:SetAnchor( BOTTOMRIGHT, win, BOTTOMRIGHT, 0, 0 )
   ctrl:SetDimensions(tabSize, tabSize)
 
-  local back = ExoY.WM:CreateControl( name.."Background", ctrl, CT_BACKDROP )
+  local back = WM:CreateControl( name.."Background", ctrl, CT_BACKDROP )
   back:ClearAnchors()
   back:SetAnchor( BOTTOMRIGHT, ctrl, BOTTOMRIGHT, 0, 0)
   back:SetDimensions( tabSize, DISPLAY_HIGHT)
@@ -147,7 +147,7 @@ function Display.CreateMain()
   back:SetEdgeTexture(nil, 2, 2, 2)
   back:SetCenterColor(0,0,0, BACKGROUND_ALPHA)
 
-  local icon = ExoY.WM:CreateControl( name.."Icon", ctrl, CT_TEXTURE )
+  local icon = WM:CreateControl( name.."Icon", ctrl, CT_TEXTURE )
   icon:ClearAnchors()
   icon:SetAnchor( CENTER, ctrl, CENTER, 0, 0)
   icon:SetDimensions( ICON_SIZE-10, ICON_SIZE-10)
@@ -168,7 +168,7 @@ function Display.AddTab( tabSettings )
   local gui = {}
   local icon = tabSettings.icon and tabSettings.icon or "esoui/art/menubar/menubar_help"
 
-	local button = ExoY.window:CreateControl( guiName.."Button", Display.main.ctrl, CT_BUTTON )
+	local button = WM:CreateControl( guiName.."Button", Display.main.ctrl, CT_BUTTON )
   button:ClearAnchors()
   button:SetAnchor(CENTER, Display.main.ctrl, CENTER, 0, -(TAB_NUMBER-tabNo+1)*(tabSize) )
   button:SetDimensions( ICON_SIZE, ICON_SIZE )
@@ -178,7 +178,7 @@ function Display.AddTab( tabSettings )
       Display.Management( tabNo )
     end)
 
-  local win = ExoY.window:CreateTopLevelWindow( guiName )
+  local win = WM:CreateTopLevelWindow( guiName )
   win:SetMouseEnabled(true)
   win:ClearAnchors()
   win:SetAnchor( BOTTOMRIGHT , Display.main.win , BOTTOMLEFT, 2, 0)
@@ -187,12 +187,12 @@ function Display.AddTab( tabSettings )
 
   local frag = ZO_HUDFadeSceneFragment:New( win )
 
-  local ctrl = ExoY.window:CreateControl( guiName.."Control", win, CT_CONTROL )
+  local ctrl = WM:CreateControl( guiName.."Control", win, CT_CONTROL )
   ctrl:ClearAnchors()
   ctrl:SetAnchor( CENTER, win, CENTER, 0, 0 )
   ctrl:SetDimensions( DISPLAY_WIDTH , DISPLAY_HIGHT )
 
-  local back = ExoY.window:CreateControl( guiName.."Background", ctrl, CT_BACKDROP )
+  local back = WM:CreateControl( guiName.."Background", ctrl, CT_BACKDROP )
   back:ClearAnchors()
   back:SetAnchor( CENTER, ctrl, CENTER, 0, 0)
   back:SetDimensions( DISPLAY_WIDTH , DISPLAY_HIGHT )
@@ -200,11 +200,11 @@ function Display.AddTab( tabSettings )
   back:SetEdgeTexture(nil, 2, 2, 2)
   back:SetCenterColor(0,0,0, BACKGROUND_ALPHA)
 
-  local header = ExoY.window:CreateControl( guiName.."Header", ctrl, CT_LABEL )
+  local header = WM:CreateControl( guiName.."Header", ctrl, CT_LABEL )
   header:ClearAnchors()
   header:SetAnchor(TOP, ctrl, TOP, 0, 5 )
   header:SetColor( 1, 1, 1, 0.7 )
-  header:SetFont( ExoY.GetFont("header") )
+  header:SetFont( Lib.GetFont(24) )
   header:SetVerticalAlignment( TEXT_ALIGN_CENTER )
   header:SetHorizontalAlignment( TEXT_ALIGN_CENTER )
   header:SetText( tabSettings.header and tabSettings.header or "" )
@@ -222,7 +222,7 @@ function Display.CreateHeader()
   local name = Display.name.."Header"
   local height = 45
 
-  local win = ExoY.window:CreateTopLevelWindow( name.."Window" )
+  local win = WM:CreateTopLevelWindow( name.."Window" )
   win:ClearAnchors()
   win:SetAnchor( BOTTOMRIGHT, GuiRoot, BOTTOMRIGHT, -tabSize, -DISPLAY_HIGHT+50)
   win:SetHidden(false)
@@ -233,7 +233,7 @@ function Display.CreateHeader()
   HUD_UI_SCENE:AddFragment( frag )
   HUD_SCENE:AddFragment( frag )
 
-  local ctrl = ExoY.window:CreateControl(name.."Control", win, CT_CONTROL )
+  local ctrl = WM:CreateControl(name.."Control", win, CT_CONTROL )
   ctrl:ClearAnchors()
   ctrl:SetAnchor( TOPLEFT, win, TOPLEFT, 0, 0 )
   ctrl:SetDimensions( DISPLAY_WIDTH, height)
@@ -247,7 +247,7 @@ end
 
 function Display.AddToHeader( data )
   local gui = Display.header
-  local indicator = ExoY.window:CreateControl(Display.name.."Header"..data.name, gui.ctrl, CT_TEXTURE)
+  local indicator = WM:CreateControl(Display.name.."Header"..data.name, gui.ctrl, CT_TEXTURE)
   indicator:ClearAnchors()
   indicator:SetAnchor( TOPLEFT, gui.ctrl, TOPLEFT, data.offsetX, data.offsetY)
   indicator:SetDimensions(data.dimensionX, data.dimensionY)
@@ -257,15 +257,16 @@ function Display.AddToHeader( data )
   return indicator
 end
 
+
 -----------------------
 -- Creating Controls --
 -----------------------
 
 function Display.CreateLabel(name, parent, column, line, data)
-  local label = ExoY.window:CreateControl(name.."label", parent, CT_LABEL)
+  local label = WM:CreateControl(name.."label", parent, CT_LABEL)
   label:ClearAnchors()
   label:SetAnchor(TOPLEFT, parent, TOPLEFT, GetOffsetX(column), GetOffsetY(line) )
-  label:SetFont( ExoY.GetFont(data.font and data.font or "normal") )
+  label:SetFont( Lib.GetFont(data.font) ) 
   label:SetVerticalAlignment( TEXT_ALIGN_CENTER )
   label:SetDimensions(DISPLAY_WIDTH/column[2] -20, lineHeight)
   label:SetHorizontalAlignment( data.align and data.align or TEXT_ALIGN_LEFT )
@@ -275,10 +276,11 @@ function Display.CreateLabel(name, parent, column, line, data)
   return label
 end
 
+
 function Display.CreateButton( name, parent, column, line, data )
   local texture = data.texture and data.texture or "esoui/art/menubar/menubar_help"
 
-  local button = ExoY.window:CreateControl(name.."button", parent, CT_BUTTON)
+  local button = WM:CreateControl(name.."button", parent, CT_BUTTON)
   button:ClearAnchors()
   button:SetAnchor(TOPLEFT, parent, TOPLEFT, GetOffsetX(column), GetOffsetY(line) )
   button:SetDimensions(33,33)
@@ -294,7 +296,6 @@ function Display.CreateButton( name, parent, column, line, data )
     button:SetHandler("OnMouseExit", function() ZO_Tooltips_HideTextTooltip() end )
   end
 
-
   if data.collectible then
     button:SetHandler( "OnClicked", function() UseCollectible(data.collectible) end)
   elseif data.emote then
@@ -305,10 +306,10 @@ function Display.CreateButton( name, parent, column, line, data )
     button:SetHandler( "OnClicked", function() ExoY.chat.Warning("no function") end)
   end
 
-  local label = ExoY.window:CreateControl(name.."label", parent, CT_LABEL)
+  local label = WM:CreateControl(name.."label", parent, CT_LABEL)
   label:ClearAnchors()
   label:SetAnchor(LEFT, button, RIGHT, 0,0)
-  label:SetFont( ExoY.GetFont("small") )
+  label:SetFont( Lib.GetFont(16) )
   label:SetVerticalAlignment( TEXT_ALIGN_CENTER )
   label:SetHorizontalAlignment( TEXT_ALIGN_LEFT )
   label:SetColor( 1, 1, 1, 0.7)
@@ -317,10 +318,11 @@ function Display.CreateButton( name, parent, column, line, data )
   return { ["button"] = button, ["label"] = label,}
 end
 
+
 function Display.CreateDivider(parent, line)
   dividerCounter = dividerCounter + 1
   local name = ExoY.name.."divider"..tostring(dividerCounter)
-  local divider = ExoY.window:CreateControl(name , parent, CT_TEXTURE)
+  local divider = WM:CreateControl(name , parent, CT_TEXTURE)
   divider:ClearAnchors()
   divider:SetAnchor(TOP, parent, TOP, 0, GetOffsetY(line)+15)
   divider:SetDimensions(DISPLAY_WIDTH+80, 7)
@@ -328,6 +330,11 @@ function Display.CreateDivider(parent, line)
   return divider
 end
 
+
+
+--[[ ------------------------------- ]]
+--[[ -- CP Slotable Visualization -- ]]
+--[[ ------------------------------- ]]
 
 function Display.CreateChampionSlotableIndicator(name, parent, discipline, index, offsetX, line )
   local function GetCpSlotableTooltip(index, control)
@@ -340,7 +347,7 @@ function Display.CreateChampionSlotableIndicator(name, parent, discipline, index
     local currentBonus = GetChampionSkillCurrentBonusText( cpId, GetNumPointsSpentOnChampionSkill(cpId) )
     if currentBonus ~= "" then
       ZO_Tooltip_AddDivider(InformationTooltip)
-      InformationTooltip:AddLine( currentBonus ) --TODO schöneres Design, evelt bar anzeigen mit jumping Points
+      InformationTooltip:AddLine( currentBonus ) 
     end
   end
 
@@ -350,21 +357,21 @@ function Display.CreateChampionSlotableIndicator(name, parent, discipline, index
   local ringTexture = zo_strformat(format, path, discipline, "selection.dds")
   local starTexture = zo_strformat(format, path, discipline, "slotted.dds")
 
-  local frame = ExoY.window:CreateControl(name.."frame" , parent, CT_TEXTURE)
+  local frame = WM:CreateControl(name.."frame" , parent, CT_TEXTURE)
   frame:ClearAnchors()
   frame:SetAnchor(CENTER, parent, TOPLEFT, offsetX, GetOffsetY(line))
   frame:SetHidden(false)
   frame:SetDimensions(27, 27)
   frame:SetTexture(frameTexture)
 
-  local ring = ExoY.window:CreateControl(name.."ring" , parent, CT_TEXTURE)
+  local ring = WM:CreateControl(name.."ring" , parent, CT_TEXTURE)
   ring:ClearAnchors()
   ring:SetAnchor(CENTER, parent, TOPLEFT, offsetX, GetOffsetY(line))
   ring:SetHidden(true)
   ring:SetDimensions(27, 27)
   ring:SetTexture(ringTexture)
 
-  local star = ExoY.window:CreateControl(name.."star" , parent, CT_TEXTURE)
+  local star = WM:CreateControl(name.."star" , parent, CT_TEXTURE)
   star:ClearAnchors()
   star:SetAnchor(CENTER, parent, TOPLEFT, offsetX, GetOffsetY(line))
   star:SetHidden(true)

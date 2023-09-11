@@ -1,6 +1,9 @@
 ExoY = ExoY or {}
 ExoY.misc = ExoY.misc or {}
 
+local Lib = LibExoYsUtilities
+local EM = GetEventManager()
+local WM = GetWindowManager()
 local Misc = ExoY.misc
 
 function Misc.Initialize()
@@ -16,7 +19,7 @@ function Misc.Initialize()
   --Misc.LockArmoyBuilds() --TODO
 
   Misc.OnUpdateStopwatch()
-  ExoY.EM:RegisterForUpdate(Misc.name.."UpdateStopwatch", 1000, Misc.OnUpdateStopwatch)
+  EM:RegisterForUpdate(Misc.name.."UpdateStopwatch", 1000, Misc.OnUpdateStopwatch)
 
 end
 
@@ -65,7 +68,7 @@ function Misc.CreateDisplayTab()
   elseif ExoY.store.misc.stopwatch.lastStart == 0 then labelStartStop = "Start"
   else labelStartStop = "Resume" end
 
-  Misc.stopwatch.gui.label = Display.CreateLabel(guiName.."StopWatchLabel", ctrl, {1,2}, line, {font = "big", align = TEXT_ALIGN_CENTER} )
+  Misc.stopwatch.gui.label = Display.CreateLabel(guiName.."StopWatchLabel", ctrl, {1,2}, line, {font = 20, align = TEXT_ALIGN_CENTER} )
   Misc.stopwatch.gui.buttonStartStop = Display.CreateButton(guiName.."StopWatchStartStop", ctrl, {3,4} , line, {text = labelStartStop, texture = "esoui/art/cadwell/cadwell_indexicon_gold", handler = function() Misc.OnStopwatchStartStop() end, })
   Misc.stopwatch.gui.buttonReset = Display.CreateButton(guiName.."StopWatchReset", ctrl, {4,4} , line, {text = "Reset", texture = "esoui/art/cadwell/cadwell_indexicon_silver", handler = function() Misc.OnStopwatchReset() end, })
 
@@ -139,8 +142,8 @@ function Misc.OnUpdateStopwatch()
   else
     duration = store.timeSaved
   end
-  local days, hours, minutes, seconds = ExoY.AnalyseDuration(duration, false)
-  label:SetText( zo_strformat("<<1>>:<<2>>:<<3>>", hours, string.format("%02d", minutes), string.format("%02d", seconds) ) )
+  local durationTable = Lib.ConvertDuration(duration*1000) 
+  label:SetText( zo_strformat("<<1>>:<<2>>:<<3>>", durationTable.hour, string.format("%02d", durationTable.minute), string.format("%02d", durationTable.second) ) )
 end
 
 function Misc.OnStopwatchStartStop()
@@ -223,7 +226,7 @@ end
 function Misc.UpdateCollectionProgress()
   local name = Misc.name.."CollectionProgress"
   local function Initialize()
-    local win = ExoY.window:CreateTopLevelWindow( name.."Win")
+    local win = WM:CreateTopLevelWindow( name.."Win")
     win:ClearAnchors()
     win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, 2430, 135)
     win:SetClampedToScreen(true)
@@ -236,11 +239,11 @@ function Misc.UpdateCollectionProgress()
     local scene = SCENE_MANAGER:GetScene("itemSetsBook")
     scene:AddFragment( frag )
 
-    local label = ExoY.window:CreateControl( name.."label", win, CT_LABEL)
+    local label = WM:CreateControl( name.."label", win, CT_LABEL)
     label:ClearAnchors()
     label:SetAnchor(TOPLEFT, win , TOPLEFT, 0, 0)
     label:SetColor(1,1,1,1)
-    label:SetFont(ExoY.GetFont("normal"))
+    label:SetFont( Lib.GetFont() )
 
     return label
   end
@@ -264,7 +267,7 @@ function Misc.UpdateCollectionProgress()
   -- initial check
   if not Misc.collection then
     Misc.collection = Initialize()
-    ExoY.EM:RegisterForEvent(name, EVENT_ITEM_SET_COLLECTION_UPDATED, UpdateCollectionProgressGui)
+    EM:RegisterForEvent(name, EVENT_ITEM_SET_COLLECTION_UPDATED, UpdateCollectionProgressGui)
   end
 
   UpdateCollectionProgressGui()
@@ -282,9 +285,9 @@ function Misc.SoundOnKillingBlow()
     end
   end
 
-  ExoY.EM:RegisterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, OnKill)
-  ExoY.EM:AddFilterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_KILLING_BLOW)
-  ExoY.EM:AddFilterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, REGISTER_FILTER_SOURCE_COMBAT_UNIT_TYPE , COMBAT_UNIT_TYPE_PLAYER)
+  EM:RegisterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, OnKill)
+  EM:AddFilterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_KILLING_BLOW)
+  EM:AddFilterForEvent(Misc.name.."OnKillingBlow", EVENT_COMBAT_EVENT, REGISTER_FILTER_SOURCE_COMBAT_UNIT_TYPE , COMBAT_UNIT_TYPE_PLAYER)
 end
 
 -------------------------------------
@@ -296,7 +299,7 @@ end
 
 function Misc.InitiateCpSlotableChangeCooldown()
   local name = Misc.name.."CpSlotableChangeCooldown"
-  local win = ExoY.window:CreateTopLevelWindow( name.."win")
+  local win = WM:CreateTopLevelWindow( name.."win")
   win:ClearAnchors()
   win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, 1270, 110)
   win:SetClampedToScreen(true)
@@ -308,15 +311,15 @@ function Misc.InitiateCpSlotableChangeCooldown()
   local frag = ZO_HUDFadeSceneFragment:New( win )
   CHAMPION_PERKS_SCENE:AddFragment( frag )
 
-  local label = ExoY.window:CreateControl( name.."label", win, CT_LABEL)
+  local label = WM:CreateControl( name.."label", win, CT_LABEL)
   label:ClearAnchors()
   label:SetAnchor(TOPLEFT, win , TOPLEFT, 0, 0)
   label:SetColor(1,0,0,1)
-  label:SetFont(ExoY.GetFont("normal"))
+  label:SetFont( Lib.GetFont() )
 
   local lastHotbarUpdate = 0
   local cooldownEnd = 0
-  ExoY.EM:RegisterForEvent(name.."HotbarsUpdated", EVENT_ACTION_SLOTS_ALL_HOTBARS_UPDATED, function() lastHotbarUpdate = GetGameTimeMilliseconds() end)
+  EM:RegisterForEvent(name.."HotbarsUpdated", EVENT_ACTION_SLOTS_ALL_HOTBARS_UPDATED, function() lastHotbarUpdate = GetGameTimeMilliseconds() end)
 
   local function OnChampionPurchaseResult()
     if GetGameTimeMilliseconds() - lastHotbarUpdate > 100 then return end
@@ -332,13 +335,13 @@ function Misc.InitiateCpSlotableChangeCooldown()
       else
         ExoY.characterInfo.cp.cooldown:SetText( "" )
         label:SetText( "" )
-        ExoY.EM:UnregisterForUpdate(name.."cooldown")
+        EM:UnregisterForUpdate(name.."cooldown")
       end
     end
-    ExoY.EM:RegisterForUpdate(name.."cooldown", 500, function() OnCooldown() end)
+    EM:RegisterForUpdate(name.."cooldown", 500, function() OnCooldown() end)
   end
 
-  ExoY.EM:RegisterForEvent(name.."CpPurchaseResult", EVENT_CHAMPION_PURCHASE_RESULT, function() zo_callLater(function() OnChampionPurchaseResult() end, 10) end)
+  EM:RegisterForEvent(name.."CpPurchaseResult", EVENT_CHAMPION_PURCHASE_RESULT, function() zo_callLater(function() OnChampionPurchaseResult() end, 10) end)
 end
 
 ---------------
@@ -353,7 +356,7 @@ function Misc.AutoBindItems()
     if IsItemSetCollectionPieceUnlocked(GetItemLinkItemId(itemLink)) then return end
     BindItem(bagId, slotIndex)
   end
-  ExoY.EM:RegisterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnSlotUpdate)
-  ExoY.EM:AddFilterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_IS_NEW_ITEM, true)
-  ExoY.EM:AddFilterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BAG_BACKPACK)
+  EM:RegisterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnSlotUpdate)
+  EM:AddFilterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_IS_NEW_ITEM, true)
+  EM:AddFilterForEvent(Misc.name.."AutoBind", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BAG_BACKPACK)
 end

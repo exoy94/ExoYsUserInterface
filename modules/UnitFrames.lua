@@ -4,6 +4,9 @@ ExoY.unitFrames= ExoY.unitFrames or {}
 
 local UnitFrames = ExoY.unitFrames
 
+local Lib = LibExoYsUtilities
+local EM = GetEventManager()
+local WM = GetWindowManager()
 
 function UnitFrames.Initialize()
   UnitFrames.name = ExoY.name.."UnitFrames"
@@ -28,19 +31,19 @@ function UnitFrames.CreateUnitBar( name, parent, info)
   local barHeight = 29
   local barWidth = 240
 
-  local ctrl = ExoY.WM:CreateControl(name.."Control", parent, CT_CONTROL)
+  local ctrl = WM:CreateControl(name.."Control", parent, CT_CONTROL)
   ctrl:ClearAnchors()
   ctrl:SetAnchor(TOPLEFT, parent, TOPLEFT, 0, info.y)
   ctrl:SetDimensions()
 
-  local back = ExoY.window:CreateControl(name.."Back", ctrl, CT_BACKDROP)
+  local back = WM:CreateControl(name.."Back", ctrl, CT_BACKDROP)
   back:ClearAnchors()
   back:SetAnchor(TOPLEFT, ctrl, TOPLEFT, 0, 0)
   back:SetDimensions(  barWidth, barHeight )
   back:SetCenterColor(0,0,0,0.5)
   back:SetEdgeColor(0,0,0,1)
 
-  local bar = ExoY.window:CreateControl(name.."Bar", ctrl, CT_STATUSBAR)
+  local bar = WM:CreateControl(name.."Bar", ctrl, CT_STATUSBAR)
   bar:ClearAnchors()
   bar:SetAnchor(TOPLEFT, ctrl, TOPLEFT, 0, 0)
   bar:SetDimensions( barWidth, barHeight )
@@ -51,11 +54,11 @@ function UnitFrames.CreateUnitBar( name, parent, info)
 end
 
 local function CreateLabel(power, parent)
-  local label = ExoY.WM:CreateControl("attributeLabel"..power, parent, CT_LABEL)
+  local label = WM:CreateControl("attributeLabel"..power, parent, CT_LABEL)
   label:ClearAnchors()
   label:SetAnchor(CENTER, parent, CENTER, 0, 0)
   label:SetColor(1,1,1,1)
-  label:SetFont( ExoY.GetFont("normal") )
+  label:SetFont( Lib.GetFont() )
   local current, max, effMax = GetUnitPower("player", power)
   local text = string.format( "%.1f k", current/1000)
   label:SetText(text)
@@ -70,7 +73,7 @@ function UnitFrames.InitializePlayerFrame()
   local name = UnitFrames.name.."PlayerFrame"
   UnitFrames.player = {}
 
-  local win = ExoY.window:CreateTopLevelWindow(name.."Win")
+  local win = WM:CreateTopLevelWindow(name.."Win")
   win:ClearAnchors()
   win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, 600, 800)
   win:SetDimensions(200, 90)
@@ -112,8 +115,8 @@ function UnitFrames.InitializePlayerFrame()
 
   end
 
-  ExoY.EM:RegisterForEvent(name.."PowerUpdate", EVENT_POWER_UPDATE, OnPlayerPowerUpdate)
-  ExoY.EM:AddFilterForEvent(name.."PowerUpdate", EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
+  EM:RegisterForEvent(name.."PowerUpdate", EVENT_POWER_UPDATE, OnPlayerPowerUpdate)
+  EM:AddFilterForEvent(name.."PowerUpdate", EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
 end
 
 
@@ -122,7 +125,7 @@ function UnitFrames.InitializeTargetFrame()
   local name = UnitFrames.name.."TargetFrame"
   UnitFrames.player = {}
 
-  local win = ExoY.window:CreateTopLevelWindow(name.."Win")
+  local win = WM:CreateTopLevelWindow(name.."Win")
   win:ClearAnchors()
   win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, 700, 900)
   win:SetDimensions(200, 90)
@@ -149,9 +152,9 @@ function UnitFrames.InitializeTargetFrame()
 
   end
 
-  ExoY.EM:RegisterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, OnPlayerPowerUpdate)
-  ExoY.EM:AddFilterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "reticleover")
-  ExoY.EM:AddFilterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , POWERTYPE_HEALTH)
+  EM:RegisterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, OnPlayerPowerUpdate)
+  EM:AddFilterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "reticleover")
+  EM:AddFilterForEvent(name.."PowerUpdateTarget", EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , POWERTYPE_HEALTH)
 end
 
 
@@ -163,11 +166,11 @@ end
 function UnitFrames.InitializeShield()
   local name = UnitFrames.name.."PlayerShield"
 
-  local label = ExoY.WM:CreateControl(name.."Label", UnitFrames.player.win, CT_LABEL)
+  local label = WM:CreateControl(name.."Label", UnitFrames.player.win, CT_LABEL)
   label:ClearAnchors()
   label:SetAnchor(TOPLEFT, UnitFrames.player.win, TOPLEFT, 70, -30)
   label:SetColor(1,1,1,1)
-  label:SetFont( ExoY.GetFont("header") )
+  label:SetFont( Lib.GetFont(24) )
 
   local function OnShieldUpdate(unitAttributeVisual, value, maxValue)
     if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then
@@ -184,29 +187,29 @@ function UnitFrames.InitializeShield()
     OnShieldUpdate(unitAttributeVisual, value, maxValue)
   end
 
-  ExoY.EM:RegisterForEvent(name.."added", EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, OnAdded)
-  ExoY.EM:AddFilterForEvent(name.."added", EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, REGISTER_FILTER_UNIT_TAG, "player")
+  EM:RegisterForEvent(name.."added", EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, OnAdded)
+  EM:AddFilterForEvent(name.."added", EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, REGISTER_FILTER_UNIT_TAG, "player")
 
 
   local function OnRemoved(eventCode, unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue)
     OnShieldUpdate(unitAttributeVisual, 0, maxValue)
   end
 
-  ExoY.EM:RegisterForEvent(name.."removed", EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, OnRemoved)
-  ExoY.EM:AddFilterForEvent(name.."removed", EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, REGISTER_FILTER_UNIT_TAG, "player")
+  EM:RegisterForEvent(name.."removed", EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, OnRemoved)
+  EM:AddFilterForEvent(name.."removed", EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, REGISTER_FILTER_UNIT_TAG, "player")
 
 
   local function OnUpdated(eventCode, unitTag, unitAttributeVisual, statType, attributeType, powerType, oldValue, newValue, oldMaxValue, newMaxValue)
     OnShieldUpdate(unitAttributeVisual, newValue, newMaxValue)
   end
 
-  ExoY.EM:RegisterForEvent(name.."Updated", EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, OnUpdated)
-  ExoY.EM:AddFilterForEvent(name.."Updated", EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, REGISTER_FILTER_UNIT_TAG, "player")
+  EM:RegisterForEvent(name.."Updated", EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, OnUpdated)
+  EM:AddFilterForEvent(name.."Updated", EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, REGISTER_FILTER_UNIT_TAG, "player")
 
 end
 
 
---[[
+--[[]
 function UnitFrames.InitializePlayerFrame()
   local name = UnitFrames.name.."PlayerFrame"
 
@@ -216,7 +219,7 @@ function UnitFrames.InitializePlayerFrame()
     bars = {width = 200, height = 30},
   }
 
-  local win = ExoY.window:CreateTopLevelWindow(name.."Win")
+  local win = WM:CreateTopLevelWindow(name.."Win")
   win:ClearAnchors()
   win:SetAnchor( TOPLEFT, GuiRoot, TOPLEFT, data.position.x, data.position.y)
   win:SetDimensions(data.dimensions.width, data.dimensions.height)
@@ -238,9 +241,9 @@ function UnitFrames.InitializePlayerFrame()
       bar:SetValue(powerValue)
     end
 
-    ExoY.EM:RegisterForEvent(barName, EVENT_POWER_UPDATE, OnPowerUpdate)
-    ExoY.EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
-    ExoY.EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , info.power)
+    EM:RegisterForEvent(barName, EVENT_POWER_UPDATE, OnPowerUpdate)
+    EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
+    EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , info.power)
   end
 end
 
@@ -300,9 +303,9 @@ function UnitFrames.CreatePlayerFrame()
     end
 
     -- register tracking events
-    ExoY.EM:RegisterForEvent(barName, EVENT_POWER_UPDATE, OnPowerUpdate)
-    ExoY.EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
-    ExoY.EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , barPowerType)
+    EM:RegisterForEvent(barName, EVENT_POWER_UPDATE, OnPowerUpdate)
+    EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_UNIT_TAG, "player")
+    EM:AddFilterForEvent(barName, EVENT_POWER_UPDATE, REGISTER_FILTER_POWER_TYPE , barPowerType)
   end
 
   CreateBar( name.."playerHealth", 1, POWERTYPE_HEALTH,{1,0,0,1} )

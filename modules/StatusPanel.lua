@@ -3,12 +3,13 @@ ExoY.statusPanel = ExoY.statusPanel or {}
 
 local Status = ExoY.statusPanel
 local Lib = LibExoYsUtilities
-
+local EM = GetEventManager()
+local WM = GetWindowManager()
 
 function Status.Initialize()
   Status.name = ExoY.name.."StatusPanel"
   Status.gui = Status.CreateGui()
-  ExoY.EM:RegisterForUpdate(Status.name.."Update", 500, Status.OnUpdate)
+  EM:RegisterForUpdate(Status.name.."Update", 500, Status.OnUpdate)
 end
 
 function Status.OnInitialPlayerActivated()
@@ -54,7 +55,7 @@ end
 function Status.CreateGui()
   local name = Status.name
 
-  local win = ExoY.WM:CreateTopLevelWindow( name.."Window" )
+  local win = WM:CreateTopLevelWindow( name.."Window" )
   win:SetClampedToScreen(true)
   win:SetMouseEnabled(true)
   win:ClearAnchors()
@@ -62,13 +63,13 @@ function Status.CreateGui()
   win:SetDimensions( 200 , 40 )
   win:SetHidden(false)
 
-  local ctrl = ExoY.WM:CreateControl(name.."Control", win, CT_CONTROL )
+  local ctrl = WM:CreateControl(name.."Control", win, CT_CONTROL )
   ctrl:ClearAnchors()
   ctrl:SetAnchor(CENTER , win, CENTER, 0, 0 )
   ctrl:SetDimensions( 120, 40)
 
 
-  local back = ExoY.WM:CreateControl(name.."Back", ctrl, CT_BACKDROP)
+  local back = WM:CreateControl(name.."Back", ctrl, CT_BACKDROP)
   back:ClearAnchors()
   back:SetAnchor(CENTER, ctrl, CENTER, -70, 0)
   back:SetDimensions(930,40)
@@ -77,26 +78,26 @@ function Status.CreateGui()
   back:SetEdgeTexture(nil, 2,2,2)
 
 
-  local clock = ExoY.WM:CreateControl(name.."Clock", ctrl, CT_LABEL)
+  local clock = WM:CreateControl(name.."Clock", ctrl, CT_LABEL)
   clock:ClearAnchors()
   clock:SetAnchor( CENTER, ctrl, CENTER, 0, 0)
   clock:SetColor( 1, 1, 1, 1 )
   clock:SetVerticalAlignment( TEXT_ALIGN_CENTER )
   clock:SetHorizontalAlignment( TEXT_ALIGN_CENTER )
-  clock:SetFont( ExoY.GetFont(30) )
+  clock:SetFont( Lib.GetFont(30) )
 
   local function CreateInfo( name, offsetX, texture, size, gap)
-    local icon = ExoY.WM:CreateControl(name.."icon", ctrl, CT_TEXTURE)
+    local icon = WM:CreateControl(name.."icon", ctrl, CT_TEXTURE)
     icon:ClearAnchors()
     icon:SetAnchor( CENTER, ctrl, CENTER, offsetX, 0)
     icon:SetDimensions(size , size)
     icon:SetTexture( texture )
 
-    local label = ExoY.WM:CreateControl(name.."label", ctrl, CT_LABEL)
+    local label = WM:CreateControl(name.."label", ctrl, CT_LABEL)
     label:ClearAnchors()
     label:SetAnchor( LEFT, icon, RIGHT, gap and gap or 0, 0)
     label:SetColor( 1, 1, 1, 1 )
-    label:SetFont( ExoY.GetFont("normal") )
+    label:SetFont( Lib.GetFont() )
     label:SetVerticalAlignment( TEXT_ALIGN_CENTER )
     label:SetHorizontalAlignment( TEXT_ALIGN_LEFT )
     --label:SetDimensions(80,50)
@@ -115,10 +116,10 @@ function Status.CreateGui()
     bank:SetText( GetNumBagFreeSlots(BAG_SUBSCRIBER_BANK)+GetNumBagFreeSlots(BAG_BANK) )
   end
   UpdateBankSlots()
-  ExoY.EM:RegisterForEvent( name.."SubBankUpdate",  EVENT_INVENTORY_SINGLE_SLOT_UPDATE, UpdateBankSlots)
-  ExoY.EM:AddFilterForEvent( name.."SubBankUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BAG_SUBSCRIBER_BANK)
-  ExoY.EM:RegisterForEvent( name.."BankUpdate",  EVENT_INVENTORY_SINGLE_SLOT_UPDATE, UpdateBankSlots)
-  ExoY.EM:AddFilterForEvent( name.."BankUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BAG_BANK)
+  EM:RegisterForEvent( name.."SubBankUpdate",  EVENT_INVENTORY_SINGLE_SLOT_UPDATE, UpdateBankSlots)
+  EM:AddFilterForEvent( name.."SubBankUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BAG_SUBSCRIBER_BANK)
+  EM:RegisterForEvent( name.."BankUpdate",  EVENT_INVENTORY_SINGLE_SLOT_UPDATE, UpdateBankSlots)
+  EM:AddFilterForEvent( name.."BankUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BAG_BANK)
 
 
   offsetX = offsetX - 80
@@ -139,8 +140,8 @@ function Status.CreateGui()
     endeavor:SetText( zo_strformat("<<1>>/<<2>> - <<3>>/<<4>>", dailyDone, dailyLimit, weeklyDone, weeklyLimit) )
   end
   Status.endeavorUpdate = OnEndeavorUpdate
-  ExoY.EM:RegisterForEvent(name.."EndeavorProgress", EVENT_TIMED_ACTIVITY_PROGRESS_UPDATED, OnEndeavorUpdate)
-  ExoY.EM:RegisterForEvent(name.."EndeavorReset", EVENT_TIMED_ACTIVITY_SYSTEM_STATUS_UPDATED, OnEndeavorUpdate)
+  EM:RegisterForEvent(name.."EndeavorProgress", EVENT_TIMED_ACTIVITY_PROGRESS_UPDATED, OnEndeavorUpdate)
+  EM:RegisterForEvent(name.."EndeavorReset", EVENT_TIMED_ACTIVITY_SYSTEM_STATUS_UPDATED, OnEndeavorUpdate)
 
   offsetX = offsetX - 60
   local eventTicket = CreateInfo(name.."EventTickets", offsetX, "/esoui/art/currency/currency_eventticket.dds", 30)
@@ -158,9 +159,9 @@ function Status.CreateGui()
     bag:SetText( GetNumBagFreeSlots(BAG_BACKPACK) )
   end
   OnBagUpdate()
-  ExoY.EM:RegisterForEvent( name.."BagUpdate",  EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnBagUpdate)
-  ExoY.EM:AddFilterForEvent( name.."BagUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BACK_BAGPACK)
-  ExoY.EM:RegisterForEvent( name.."BuybackUpdate", EVENT_UPDATE_BUYBACK, OnBagUpdate )
+  EM:RegisterForEvent( name.."BagUpdate",  EVENT_INVENTORY_SINGLE_SLOT_UPDATE, OnBagUpdate)
+  EM:AddFilterForEvent( name.."BagUpdate", EVENT_INVENTORY_SINGLE_SLOT_UPDATE, REGISTER_FILTER_BAG_ID, BACK_BAGPACK)
+  EM:RegisterForEvent( name.."BuybackUpdate", EVENT_UPDATE_BUYBACK, OnBagUpdate )
 
   offsetX = offsetX + 75
   local gold = CreateInfo(name.."Gold", offsetX, "esoui/art/loot/icon_goldcoin_pressed.dds", 30)
@@ -184,8 +185,8 @@ function Status.CreateGui()
     location:SetText( output )
   end
   SetLocationString()
-  ExoY.EM:RegisterForEvent( name.."ZoneChange", EVENT_ZONE_CHANGED, SetLocationString )
-  ExoY.EM:RegisterForEvent( name.."Activated", EVENT_PLAYER_ACTIVATED, SetLocationString )
+  EM:RegisterForEvent( name.."ZoneChange", EVENT_ZONE_CHANGED, SetLocationString )
+  EM:RegisterForEvent( name.."Activated", EVENT_PLAYER_ACTIVATED, SetLocationString )
 
 
   -- Currency Update
@@ -206,7 +207,7 @@ function Status.CreateGui()
       end
     end
   end
-  ExoY.EM:RegisterForEvent( name.."CurrencyChange", EVENT_CURRENCY_UPDATE, OnCurrencyUpdate)
+  EM:RegisterForEvent( name.."CurrencyChange", EVENT_CURRENCY_UPDATE, OnCurrencyUpdate)
 
   return {clock = clock, latency = latency, latencyIcon = latencyIcon, frames = frames, framesIcon= framesIcon}
 end
