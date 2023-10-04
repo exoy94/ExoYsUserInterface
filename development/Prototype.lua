@@ -37,3 +37,25 @@ function Prototype.ParentTest()
   
  -- ExoY.testVar = {win=win, ctrl=ctrl, icon=icon}
 end
+
+
+
+--[[ first try at class with local implementation - working 
+
+local ProfileManager = {}
+
+function Lib.GetProfileManager(SV) 
+    return ProfileManager:New(SV) 
+end
+
+ProfileManager.__index = ProfileManager 
+
+function ProfileManager:New(SV) 
+    local newPM = setmetatable({}, ProfileManager )
+    newPM.SV = SV 
+    return newPM
+end
+
+function ProfileManager:GetActiveProfile(charId) 
+    return self.SV.activeProfiles[charId and charId or GetCurrentCharacterId() ]
+end ]]
