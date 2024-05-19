@@ -43,7 +43,7 @@ local moduleList = {
 local function ExecuteForAllModules( funcName, param)
 	local r = {}
 	for _,moduleName in ipairs(moduleList) do
-		r[moduleName] = Lib.ExeFunc( ExoY[moduleName][funcName], param )
+		r[moduleName] = Lib.CallFunc( ExoY[moduleName][funcName], param )
 	end
 	return r
 end
