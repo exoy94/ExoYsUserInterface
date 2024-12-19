@@ -5,18 +5,6 @@ local EM = GetEventManager()
 ExoY.widgets = ExoY.widgets or {}
 local Widgets = ExoY.widgets
 
---[[Assistants
-    Tythis Andromo - 267
-    Nuzhimeh - 301
-    Ghrasharog - 9745
-]]
-
---[[Companions
-    Mirri Elandis - 9353
-    Bastian Hallix - 9245
-    Ember - 9911
-    Isobel Veloise - 9912 
-]]
 
 function Widgets.Initialize()
   Widgets.name = ExoY.name.."Widgets"
@@ -56,7 +44,7 @@ function Widgets.CreateDisplayTab()
   local function OnScry()
     UseCollectible(8006)
     Widgets.scry.label:SetColor(1,0,0,0.7)
-    zo_callLater(function() Widgets.scry.label:SetColor(1,1,1,0.7) end, 30000)
+    zo_callLater(function() Widgets.scry.label:SetColor(1,1,1,0.7) end, 20000)
   end
   Widgets.scry = Display.CreateButton(guiName.."scry", ctrl, {1,3} , line, {text = "Scrying", texture = "esoui/art/journal/journal_tabicon_antiquities", handler = OnScry, })
   if ExoY.festival then
@@ -80,16 +68,18 @@ function Widgets.CreateDisplayTab()
   --Display.CreateButton(guiName.."armory", ctrl, {1,3} , line,  {text = "Ghrasharog", texture = "esoui/art/collections/collections_tabicon_itemsets" , collectible = 9745 })
   Display.CreateButton(guiName.."banker", ctrl, {1,2} , line,  {text = "Tythis Andromo", texture = "esoui/art/inventory/inventory_tabicon_container" , collectible = 267 })
   Display.CreateButton(guiName.."merchant", ctrl, {2,2}, line, {text = "Nuzhimeh", texture = "esoui/art/vendor/vendor_tabicon_sell", collectible = 301 })
-
-  line = line + 0.85
-  Display.CreateDivider(ctrl, line)
-  line = line + 0.85
-
-  Display.CreateButton(guiName.."bastian", ctrl, {1,2} , line, {text = "Bastian Hallix", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9245 })
-Display.CreateButton(guiName.."isobel", ctrl, {2,2} , line,  {text = "Isobel Veloise", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9912})
   line = line + 1
-  Display.CreateButton(guiName.."mirri", ctrl, {1,2} , line,  {text = "Mirri Elandis", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9353})
-  Display.CreateButton(guiName.."ember", ctrl, {2,2} , line,  {text = "Ember", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9911})
+  Display.CreateButton(guiName.."armory", ctrl, {1,2} , line,  {text = "Ghrasharog", texture = "esoui/art/inventory/inventory_tabicon_armorheavy" , collectible = 9745 })
+  Display.CreateButton(guiName.."decon", ctrl, {2,2}, line, {text = "Giladil", texture = "esoui/art/crafting/enchantment_tabicon_deconstruction", collectible = 10184 })
+
+  --line = line + 0.85
+  --Display.CreateDivider(ctrl, line)
+  --line = line + 0.85
+  --Display.CreateButton(guiName.."bastian", ctrl, {1,2} , line, {text = "Bastian Hallix", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9245 })
+  --Display.CreateButton(guiName.."isobel", ctrl, {2,2} , line,  {text = "Isobel Veloise", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9912})
+  --line = line + 1
+  --Display.CreateButton(guiName.."mirri", ctrl, {1,2} , line,  {text = "Mirri Elandis", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9353})
+  --Display.CreateButton(guiName.."ember", ctrl, {2,2} , line,  {text = "Ember", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9911})
 
   line = line + 0.85
   Display.CreateDivider(ctrl, line)
