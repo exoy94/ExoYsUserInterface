@@ -12,14 +12,6 @@ function Widgets.Initialize()
   Widgets.CreateDisplayTab()
   Widgets.SetupDisplayHeaderInfo()
 
-  -- events for tracking festivals buffs
-  if ExoY.festival then
-    Widgets.eventBonusDurationCallbackId = nil
-    Widgets.CheckEventBuffDuration()
-    EM:RegisterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, Widgets.CheckEventBuffDuration)
-    EM:AddFilterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, REGISTER_FILTER_UNIT_TAG, "player")
-    EM:AddFilterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, REGISTER_FILTER_ABILITY_ID, ExoY.festival.buff)
-  end
 end
 
 
@@ -47,9 +39,7 @@ function Widgets.CreateDisplayTab()
     zo_callLater(function() Widgets.scry.label:SetColor(1,1,1,0.7) end, 20000)
   end
   Widgets.scry = Display.CreateButton(guiName.."scry", ctrl, {1,3} , line, {text = "Scrying", texture = "esoui/art/journal/journal_tabicon_antiquities", handler = OnScry, })
-  if ExoY.festival then
-    Widgets.eventBonus = Display.CreateButton(guiName.."event", ctrl, {2,3} , line, {text = "Event", texture = "esoui/art/treeicons/store_indexicon_novelties", collectible = ExoY.festival.collectible})
-  end
+
   --Display.CreateButton(guiName.."FixVisual", ctrl, {3,3}, line, {text = "Fix Visual", texture = "esoui/art/help/help_tabicon_feedback", handler = ExoY.misc.FixVisuals})
 
   line = line + 0.85
