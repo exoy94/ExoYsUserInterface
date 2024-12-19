@@ -1,7 +1,7 @@
-ExoY = ExoY or {}
-ExoY.smartCast = ExoY.smartCast or {}
+ExoyUI = ExoyUI or {}
+ExoyUI.smartCast = ExoyUI.smartCast or {}
 
-local SmartCast = ExoY.smartCast
+local SmartCast = ExoyUI.smartCast
 
 ZO_CreateStringId("SI_BINDING_NAME_EXOY_SKILL_BLOCK_OVERWRITE", "Overwrite Skill-Block")
 
@@ -18,12 +18,12 @@ local skillId = {
 }
 
 function SmartCast.Initialize()
-  SmartCast.name = ExoY.name.."SmartCast"
+  SmartCast.name = ExoyUI.name.."SmartCast"
 
   if not LibSkillBlocker then return end
 
   SmartCast.overwrite = false
-  local indicator = ExoY.display.AddToHeader(   {
+  local indicator = ExoyUI.display.AddToHeader(   {
         name = "overwriteSkillBlock",
         hidden = false,
         texture = "esoui/art/hud/broken_weapon.dds",

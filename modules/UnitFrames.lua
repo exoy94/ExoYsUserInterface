@@ -1,15 +1,15 @@
-ExoY = ExoY or {}
+ExoyUI = ExoyUI or {}
 
-ExoY.unitFrames= ExoY.unitFrames or {}
+ExoyUI.unitFrames= ExoyUI.unitFrames or {}
 
-local UnitFrames = ExoY.unitFrames
+local UnitFrames = ExoyUI.unitFrames
 
 local Lib = LibExoYsUtilities
 local EM = GetEventManager()
 local WM = GetWindowManager()
 
 function UnitFrames.Initialize()
-  UnitFrames.name = ExoY.name.."UnitFrames"
+  UnitFrames.name = ExoyUI.name.."UnitFrames"
   -- hide default frames
 
 

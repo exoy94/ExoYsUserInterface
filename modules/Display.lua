@@ -1,7 +1,7 @@
-ExoY = ExoY or {}
+ExoyUI = ExoyUI or {}
 
-ExoY.display = ExoY.display or {}
-local Display = ExoY.display
+ExoyUI.display = ExoyUI.display or {}
+local Display = ExoyUI.display
 
 local Lib = LibExoYsUtilities
 local WM = GetWindowManager()
@@ -38,7 +38,7 @@ end
 
 
 function Display.Initialize()
-  Display.name = ExoY.name.."Display"
+  Display.name = ExoyUI.name.."Display"
 
   -- creating display menu to control tab
   Display.main = Display.CreateMain()
@@ -51,8 +51,8 @@ end
 
 
 function Display.OnPlayerActivated()
-  local lastTab = ExoY.store.display.currentTab
-  local lastDisplay = ExoY.display.tabs[lastTab]
+  local lastTab = ExoyUI.store.display.currentTab
+  local lastDisplay = ExoyUI.display.tabs[lastTab]
 
   if lastTab ~= 0 and lastDisplay then
     HUD_UI_SCENE:AddFragment( lastDisplay.frag )
@@ -60,7 +60,7 @@ function Display.OnPlayerActivated()
     lastDisplay.button:SetNormalTexture( lastDisplay.icon.."_down.dds")
   else
     -- lastDisplay is nil, when tab positions have been changed
-    ExoY.store.display.currentTab = 0
+    ExoyUI.store.display.currentTab = 0
   end
 end
 
@@ -74,22 +74,22 @@ function Display.Management( new )
 
   -- gets tabNumber if tabName was provided
   if type(new) == "string" then
-    ExoY.chat.Error("tab string given") return
+    ExoyUI.chat.Error("tab string given") return
     --new = ExoY.GetModuleTabNumberByName(new)
   end
 
   -- early out to prevent error if tabNumber is no number
-  if type(new) ~= "number" then ExoY.chat.Error("no tab-number found") return end
+  if type(new) ~= "number" then ExoyUI.chat.Error("no tab-number found") return end
   -- early out if tab doesnt exits
-  if not ExoY.display.tabs[new] then ExoY.chat.Error("tab does not exist", new) return end
+  if not ExoyUI.display.tabs[new] then ExoyUI.chat.Error("tab does not exist", new) return end
 
   -- handles current tab
   -- current = 0 --> no tab was open
-  local currentTab = ExoY.store.display.currentTab
-  local header = ExoY.display.header.frag
+  local currentTab = ExoyUI.store.display.currentTab
+  local header = ExoyUI.display.header.frag
 
   if currentTab ~= 0 then
-    local currentDisplay = ExoY.display.tabs[currentTab]
+    local currentDisplay = ExoyUI.display.tabs[currentTab]
     local currentFrag = currentDisplay.frag
     currentDisplay.button:SetNormalTexture( currentDisplay.icon.."_up.dds")
     HUD_UI_SCENE:RemoveFragment( currentFrag )
@@ -101,9 +101,9 @@ function Display.Management( new )
 
   -- handels new tab
   -- if new equal current, tab just gets hidden and current tab set to zero
-  local newDisplay = ExoY.display.tabs[new]
+  local newDisplay = ExoyUI.display.tabs[new]
   if new ~= currentTab then
-    ExoY.store.display.currentTab = new
+    ExoyUI.store.display.currentTab = new
     local newFrag = newDisplay.frag
     HUD_UI_SCENE:AddFragment( newFrag )
     HUD_SCENE:AddFragment( newFrag )
@@ -112,7 +112,7 @@ function Display.Management( new )
     HUD_UI_SCENE:AddFragment( header )
     HUD_SCENE:AddFragment( header )
   else
-    ExoY.store.display.currentTab = 0
+    ExoyUI.store.display.currentTab = 0
   end
 end
 
@@ -209,7 +209,7 @@ function Display.AddTab( tabSettings )
   header:SetHorizontalAlignment( TEXT_ALIGN_CENTER )
   header:SetText( tabSettings.header and tabSettings.header or "" )
 
-  table.insert( ExoY.display.tabs, tabNo, { ["frag"]=frag, ["button"]=button, ["icon"]=icon } )
+  table.insert( ExoyUI.display.tabs, tabNo, { ["frag"]=frag, ["button"]=button, ["icon"]=icon } )
 
   return ctrl
 end
@@ -303,7 +303,7 @@ function Display.CreateButton( name, parent, column, line, data )
   elseif data.handler then
     button:SetHandler( "OnClicked", function() data.handler() end)
   else
-    button:SetHandler( "OnClicked", function() ExoY.chat.Warning("no function") end)
+    button:SetHandler( "OnClicked", function() ExoyUI.chat.Warning("no function") end)
   end
 
   local label = WM:CreateControl(name.."label", parent, CT_LABEL)
@@ -321,7 +321,7 @@ end
 
 function Display.CreateDivider(parent, line)
   dividerCounter = dividerCounter + 1
-  local name = ExoY.name.."divider"..tostring(dividerCounter)
+  local name = ExoyUI.name.."divider"..tostring(dividerCounter)
   local divider = WM:CreateControl(name , parent, CT_TEXTURE)
   divider:ClearAnchors()
   divider:SetAnchor(TOP, parent, TOP, 0, GetOffsetY(line)+15)

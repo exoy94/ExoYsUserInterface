@@ -1,7 +1,7 @@
-ExoY = ExoY or {}
-ExoY.chat = ExoY.chat or {}
+ExoyUI = ExoyUI or {}
+ExoyUI.chat = ExoyUI.chat or {}
 
-local Chat = ExoY.chat
+local Chat = ExoyUI.chat
 local Lib = LibExoYsUtilities
 local EM = GetEventManager() 
 
@@ -25,7 +25,7 @@ local defaultChatEventDebug =
 -- container.tabGroup:SetClickedButton(container.windows[tabToSet].tab)
 
 function Chat.Initialize()
-  Chat.name = ExoY.name.."Chat"
+  Chat.name = ExoyUI.name.."Chat"
   --increase chat size
   CHAT_SYSTEM.maxContainerWidth, CHAT_SYSTEM.maxContainerHeight = GuiRoot:GetDimensions()
   -- Unregister ZOS handlers for events I dont want notifications of in system chat
@@ -51,7 +51,7 @@ function Chat.Initialize()
     if container.windows[tabToSet].tab==nil then return end
     container.tabGroup:SetClickedButton(container.windows[tabToSet].tab)
   end
-  if ExoY.store.chat.debug then
+  if ExoyUI.store.chat.debug then
     --zo_callLater(function() OpenSystemTab() end, 0)
   end
 end
@@ -93,7 +93,7 @@ function Chat.PlayerContextMenu( playerName )
   if IsFriend(playerName) then
     AddCustomMenuItem( portToPlayerString, function() JumpToFriend( playerName ) end)
       fastTravelOption = true
-  elseif ExoY.group.IsPlayerInSameGroup( playerName ) then
+  elseif ExoyUI.group.IsPlayerInSameGroup( playerName ) then
     AddCustomMenuItem( portToPlayerString, function() JumpToGroupMember(playerName) end)
   else
     local hasCommonGuild = false
@@ -210,7 +210,7 @@ function Chat.OnLootReceived(eventCode, receivedBy, itemLink, quantity, itemSoun
   if lootType ~= LOOT_TYPE_ITEM then return end
 
   -- create player link
-  local accountName = ExoY.group.GetGroupMemberAccountNameByUnitName(receivedBy)
+  local accountName = ExoyUI.group.GetGroupMemberAccountNameByUnitName(receivedBy)
   accountName = string.format("|H0:character:%s|h%s|h", accountName, accountName)
 
   -- only displays items, which are not yet in the sticker book
@@ -240,10 +240,10 @@ end
 SLASH_COMMANDS["/exoy"] = function(options)
   local commandList = {
     ["chat"] = {Chat.ApplySettings, "applies chat settings"},
-    ["testvar"] = {ExoY.dev.DisplayTestVariable, "debug test variable"},
-    ["position"] = {ExoY.screen.TogglePositionIndicator, "toggle mouse position"},
-    ["settings"] = {ExoY.settings.Apply, "applies game settings"},
-    ["centerline"] = {ExoY.screen.ToggleCenterLine, "toggle center line"},
+   -- ["testvar"] = {ExoY.dev.DisplayTestVariable, "debug test variable"},
+    ["position"] = {ExoyUI.screen.TogglePositionIndicator, "toggle mouse position"},
+    ["settings"] = {ExoyUI.settings.Apply, "applies game settings"},
+    ["centerline"] = {ExoyUI.screen.ToggleCenterLine, "toggle center line"},
    -- ["decode"] = {ExoY.combatProtocol.DecodeDatabase, "decode combat protocol database"},
   }
 

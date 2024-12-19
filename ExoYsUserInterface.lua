@@ -1,4 +1,4 @@
-ExoY = ExoY or {}
+ExoyUI = ExoyUI or {}
 
 local Lib = LibExoYsUtilities
 -- currentPowerLevel = GetPlayerStat(STAT_SPELL_POWER)
@@ -9,10 +9,10 @@ local Lib = LibExoYsUtilities
 -- Checkups ( Todo, Question, Idea, Warning )
 
 -- Addon Variables
-ExoY.name = "ExoYsUserInterface"
-ExoY.displayName = "|c00FF00ExoY|rs User Interface"
-ExoY.author = "@|c00FF00ExoY|r94 (PC/EU)"
-ExoY.version = "Infinity"
+ExoyUI.name = "ExoYsUserInterface"
+ExoyUI.displayName = "|c00FF00ExoY|rs User Interface"
+ExoyUI.author = "@|c00FF00ExoY|r94 (PC/EU)"
+ExoyUI.version = "Infinity"
 
 local EM = GetEventManager() 
 local WM = GetWindowManager() 
@@ -41,7 +41,7 @@ local moduleList = {
 local function CallForEachModules( funcName, param)
 	local r = {}
 	for _,moduleName in ipairs(moduleList) do
-		r[moduleName] = Lib.CallFunc( ExoY[moduleName][funcName], param )
+		r[moduleName] = Lib.CallFunc( ExoyUI[moduleName][funcName], param )
 	end
 	return r
 end
@@ -54,7 +54,7 @@ local function Initialize()
 
 	local defaults = CallForEachModules('GetDefaults')
 
-	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
+	ExoyUI.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
 
 	CallForEachModules('Initialize')
 
@@ -67,12 +67,12 @@ end
 
 
 local function OnAddOnLoaded(event, addonName)
-  if addonName == ExoY.name then
+  if addonName == ExoyUI.name then
 		Initialize()
-		EM:UnregisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED)
+		EM:UnregisterForEvent(ExoyUI.name, EVENT_ADD_ON_LOADED)
   end
 end
-EM:RegisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)
+EM:RegisterForEvent(ExoyUI.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)
 
 
 

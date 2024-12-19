@@ -1,7 +1,7 @@
-ExoY = ExoY or {}
-ExoY.characterInfo = ExoY.characterInfo or {}
+ExoyUI = ExoyUI or {}
+ExoyUI.characterInfo = ExoyUI.characterInfo or {}
 
-local CharacterInfo = ExoY.characterInfo
+local CharacterInfo = ExoyUI.characterInfo
 
 local EM = GetEventManager()
 local WM = GetEventManager() 
@@ -14,7 +14,7 @@ local cpData =   {
 
 
 function CharacterInfo.Initialize()
-  CharacterInfo.name = ExoY.name.."CharacterInfo"
+  CharacterInfo.name = ExoyUI.name.."CharacterInfo"
 
   CharacterInfo.CreateDisplayTab()
 
@@ -22,7 +22,7 @@ function CharacterInfo.Initialize()
   EM:RegisterForEvent(CharacterInfo.name.."CpGain", EVENT_CHAMPION_POINT_GAINED, CharacterInfo.UpdateCpUnspendPointsIndicator)
   EM:RegisterForEvent(CharacterInfo.name.."ArmoryBuildChange", EVENT_ARMORY_BUILD_OPERATION_STARTED, CharacterInfo.OnArmoryBuildChange)
 
-  LibSetDetection.RegisterForCustomSlotUpdateEvent("ExoYUICharacterInfo", CharacterInfo.OnCustomSlotUpdate)
+  LibSetDetection.RegisterForCustomSlotUpdateEvent("ExoyUI_CharacterInfo", CharacterInfo.OnCustomSlotUpdate)
 
 end
 
@@ -35,7 +35,7 @@ function CharacterInfo.CreateDisplayTab()
     ["header"] = "Character Info",
   }
   local guiName = CharacterInfo.name.."Tab"
-  local Display = ExoY.display
+  local Display = ExoyUI.display
   local ctrl = Display.AddTab( tabSettings )
   local line = 0
 
@@ -111,13 +111,13 @@ end
 
 function CharacterInfo.SetLastKnownArmoryBuildNum( numBuild )
   local charId = GetCurrentCharacterId()
-  local lastArmoryBuild = ExoY.store.characterInfo.armoryBuild
+  local lastArmoryBuild = ExoyUI.store.characterInfo.armoryBuild
   lastArmoryBuild[charId] = numBuild
 end
 
 function CharacterInfo.GetLastKnownArmoryBuildNum()
   local charId = GetCurrentCharacterId()
-  local lastArmoryBuild = ExoY.store.characterInfo.armoryBuild
+  local lastArmoryBuild = ExoyUI.store.characterInfo.armoryBuild
   return lastArmoryBuild[charId]
 end
 

@@ -1,13 +1,13 @@
-ExoY = ExoY or {}
-ExoY.group = ExoY.group or {}
+ExoyUI = ExoyUI or {}
+ExoyUI.group = ExoyUI.group or {}
 
 local Lib = LibExoYsUtilities
-local Group = ExoY.group
+local Group = ExoyUI.group
 
 local EM = GetEventManager()
 
 function Group.Initialize()
-  Group.name = ExoY.name.."Group"
+  Group.name = ExoyUI.name.."Group"
 
   Group.unitList = {}
 

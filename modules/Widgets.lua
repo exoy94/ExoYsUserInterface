@@ -1,13 +1,13 @@
-ExoY = ExoY or {}
+ExoyUI = ExoyUI or {}
 
 local EM = GetEventManager()
 
-ExoY.widgets = ExoY.widgets or {}
-local Widgets = ExoY.widgets
+ExoyUI.widgets = ExoyUI.widgets or {}
+local Widgets = ExoyUI.widgets
 
 
 function Widgets.Initialize()
-  Widgets.name = ExoY.name.."Widgets"
+  Widgets.name = ExoyUI.name.."Widgets"
 
   Widgets.CreateDisplayTab()
   Widgets.SetupDisplayHeaderInfo()
@@ -26,11 +26,11 @@ function Widgets.CreateDisplayTab()
   }
   local guiName = Widgets.name.."Tab"
 
-  local Display = ExoY.display
+  local Display = ExoyUI.display
   local ctrl = Display.AddTab( tabSettings )
 
 
-  local Display = ExoY.display
+  local Display = ExoyUI.display
   local line = 0
 
   -- Utilities
@@ -139,7 +139,7 @@ function Widgets.SetupDisplayHeaderInfo()
         dimensionX = 50,
         dimensionY = 50,
     }
-  local esologIndicator = ExoY.display.AddToHeader( esologIndicatorSettings )
+  local esologIndicator = ExoyUI.display.AddToHeader( esologIndicatorSettings )
 
   -- Hook into encounterlog toogle and update indicator accordingly
   ZO_PostHook("SetEncounterLogEnabled", function()
