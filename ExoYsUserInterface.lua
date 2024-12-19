@@ -38,7 +38,7 @@ local moduleList = {
 	"worldMap",
 }
 
-local function ExecuteForAllModules( funcName, param)
+local function CallForEachModules( funcName, param)
 	local r = {}
 	for _,moduleName in ipairs(moduleList) do
 		r[moduleName] = Lib.CallFunc( ExoY[moduleName][funcName], param )
@@ -52,17 +52,17 @@ end
 
 local function Initialize()
 
-	local defaults = ExecuteForAllModules('GetDefaults')
+	local defaults = CallForEachModules('GetDefaults')
 
 	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
 
-	ExecuteForAllModules('Initialize')
+	CallForEachModules('Initialize')
 
-	Lib.RegisterCombatStart(function() ExecuteForAllModules('OnCombatStart') end)
-	Lib.RegisterCombatEnd(function() ExecuteForAllModules('OnCombatEnd') end)
+	Lib.RegisterCombatStart(function() CallForEachModules('OnCombatStart') end)
+	Lib.RegisterCombatEnd(function() CallForEachModules('OnCombatEnd') end)
 	
-	Lib.RegisterForInitialPlayerActivated(function() ExecuteForAllModules('OnInitialPlayerActivated') end) 
-	Lib.RegisterForPlayerActivated(function() ExecuteForAllModules('OnPlayerActivated') end)
+	Lib.RegisterForInitialPlayerActivated(function() CallForEachModules('OnInitialPlayerActivated') end) 
+	Lib.RegisterForPlayerActivated(function() CallForEachModules('OnPlayerActivated') end)
 end
 
 
