@@ -36,9 +36,7 @@ local moduleList = {
 	"unitFrames",
 	"widgets",
 	"worldMap",
-	"dev",
 }
---"dev",
 
 local function ExecuteForAllModules( funcName, param)
 	local r = {}

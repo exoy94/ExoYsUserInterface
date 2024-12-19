@@ -34,13 +34,6 @@
 \modules\Widgets.lua
 \modules\WorldMap.lua
 
-\development\DecodeGlobalVariables.lua
-\development\Events.lua
-\development\CombatProtocol.lua
-\development\Development.lua
-\development\Prototype.lua
-\development\abilityIgnolist.lua
-
 \modules\bindings.xml
 
 ExoYsUserInterface.lua
