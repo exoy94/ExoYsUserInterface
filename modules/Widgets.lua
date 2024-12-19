@@ -12,6 +12,8 @@ function Widgets.Initialize()
   Widgets.CreateDisplayTab()
   Widgets.SetupDisplayHeaderInfo()
 
+
+
 end
 
 
@@ -145,31 +147,4 @@ function Widgets.SetupDisplayHeaderInfo()
     return false
   end)
 
-end
-
-
---TODO include this in Buffs/Debuffs
--------------------------
--- Event Buff Tracking --
--------------------------
-
-function Widgets.CheckEventBuffDuration()
-  if Widgets.eventBonusDurationCallbackId then zo_removeCallLater(Widgets.eventBonusDurationCallbackId) end
-  local buffId = ExoY.festival.buff
-  local duration = 0
-  local color = {1,0,0,0.7}
-  for i=1, GetNumBuffs("player") do
-    local buffInfo = { GetUnitBuffInfo("player", i) }
-    --buffInfo[3] = endTime
-    --buffInfo[11] = abilityId
-    if buffInfo[11] == buffId then
-      duration = zo_max(0, buffInfo[3]-GetGameTimeSeconds() )
-    end
-  end
-  if duration > 600 then
-    color = {0,1,0,0.7}
-    Widgets.eventBonusDurationCallbackId = zo_callLater(function() Widgets.CheckEventBuffDuration() end, (duration - 600)*1000 )
-  end
-  if duration < 600 and duration ~= 0 then color = {1,1,0,0.7} end
-  Widgets.eventBonus.label:SetColor( unpack(color) )
 end
