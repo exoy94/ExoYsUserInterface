@@ -1,7 +1,7 @@
 ## Title: |c00FF00ExoY|rs User Interface
 ## Author: @|c00FF00ExoY|r94 (PC/EU)
 ## Description: Numquam Desperare! Numquam Dedere! Lupus Es!
-## APIVersion: 101032
+## APIVersion: 101044
 ## Version: Infinity
 ## SavedVariables: ExoYSaveVariables
 
