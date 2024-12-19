@@ -18,8 +18,6 @@
 ## OptionalDependsOn: CombatMetrics
 ## OptionalDependsOn: WizardsWardrobe
 
-\data\vars.lua
-
 \modules\CharacterInfo.lua
 \modules\Chat.lua
 \modules\Cyrodiil.lua

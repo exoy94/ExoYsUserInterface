@@ -7,6 +7,16 @@ ZO_CreateStringId("SI_BINDING_NAME_EXOY_SKILL_BLOCK_OVERWRITE", "Overwrite Skill
 
 --GetSlotBoundId() to find AbilityId's
 
+local skillId = {
+  ["innerFire"] = 39475,
+  ["innerRage"] = 42056,
+  ["pierceArmor"] = 38250,
+  ["frostClench"] = 38989,
+  ["revealingFlare"] = 61489,
+  ["innerLight"] = 40478,
+  ["temporalGuard"] = 103564,
+}
+
 function SmartCast.Initialize()
   SmartCast.name = ExoY.name.."SmartCast"
 
@@ -57,7 +67,6 @@ local tauntAbilities = {
 }
 
 function SmartCast.Taunt()
-  local skillId = ExoY.vars.skillId
   local function TauntBlockCriteria()
     if SmartCast.IsOverwriteActive() then return false end
     local targetName = GetUnitName("reticleover")
@@ -81,7 +90,6 @@ end
 
 
 function SmartCast.UselessSkills()
-  local skillId = ExoY.vars.skillId
   local function SkillBlockCriteria()
     if SmartCast.IsOverwriteActive() then return false end
     return true
