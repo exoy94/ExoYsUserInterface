@@ -2,28 +2,6 @@ ExoY = ExoY or {}
 ExoY.vars = ExoY.vars or {}
 local Variables = ExoY.vars
 
--- disciplineIndex as key
--- GetChampionDisciplineId( index )
-Variables.cpData =
-  {
-    [1] = --craft
-      {
-        iconName = "stamina",
-        actionBarName = "world",
-      },
-    [2] = --warfare
-      {
-        iconName = "magicka",
-        actionBarName = "combat",
-      },
-    [3] = --fitness
-      {
-        iconName = "health",
-        actionBarName = "conditioning",
-      },
-  }
-
-
 Variables.skillId = {
   ["innerFire"] = 39475,
   ["innerRage"] = 42056,
