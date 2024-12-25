@@ -1,37 +1,19 @@
-ExoY = ExoY or {}
+ExoyUI = ExoyUI or {}
 
 local EM = GetEventManager()
 
-ExoY.widgets = ExoY.widgets or {}
-local Widgets = ExoY.widgets
+ExoyUI.widgets = ExoyUI.widgets or {}
+local Widgets = ExoyUI.widgets
 
---[[Assistants
-    Tythis Andromo - 267
-    Nuzhimeh - 301
-    Ghrasharog - 9745
-]]
-
---[[Companions
-    Mirri Elandis - 9353
-    Bastian Hallix - 9245
-    Ember - 9911
-    Isobel Veloise - 9912 
-]]
 
 function Widgets.Initialize()
-  Widgets.name = ExoY.name.."Widgets"
+  Widgets.name = ExoyUI.name.."Widgets"
 
   Widgets.CreateDisplayTab()
   Widgets.SetupDisplayHeaderInfo()
 
-  -- events for tracking festivals buffs
-  if ExoY.festival then
-    Widgets.eventBonusDurationCallbackId = nil
-    Widgets.CheckEventBuffDuration()
-    EM:RegisterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, Widgets.CheckEventBuffDuration)
-    EM:AddFilterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, REGISTER_FILTER_UNIT_TAG, "player")
-    EM:AddFilterForEvent(Widgets.name.."EventBuff", EVENT_EFFECT_CHANGED, REGISTER_FILTER_ABILITY_ID, ExoY.festival.buff)
-  end
+
+
 end
 
 
@@ -44,11 +26,11 @@ function Widgets.CreateDisplayTab()
   }
   local guiName = Widgets.name.."Tab"
 
-  local Display = ExoY.display
+  local Display = ExoyUI.display
   local ctrl = Display.AddTab( tabSettings )
 
 
-  local Display = ExoY.display
+  local Display = ExoyUI.display
   local line = 0
 
   -- Utilities
@@ -56,12 +38,10 @@ function Widgets.CreateDisplayTab()
   local function OnScry()
     UseCollectible(8006)
     Widgets.scry.label:SetColor(1,0,0,0.7)
-    zo_callLater(function() Widgets.scry.label:SetColor(1,1,1,0.7) end, 30000)
+    zo_callLater(function() Widgets.scry.label:SetColor(1,1,1,0.7) end, 20000)
   end
   Widgets.scry = Display.CreateButton(guiName.."scry", ctrl, {1,3} , line, {text = "Scrying", texture = "esoui/art/journal/journal_tabicon_antiquities", handler = OnScry, })
-  if ExoY.festival then
-    Widgets.eventBonus = Display.CreateButton(guiName.."event", ctrl, {2,3} , line, {text = "Event", texture = "esoui/art/treeicons/store_indexicon_novelties", collectible = ExoY.festival.collectible})
-  end
+
   --Display.CreateButton(guiName.."FixVisual", ctrl, {3,3}, line, {text = "Fix Visual", texture = "esoui/art/help/help_tabicon_feedback", handler = ExoY.misc.FixVisuals})
 
   line = line + 0.85
@@ -80,16 +60,18 @@ function Widgets.CreateDisplayTab()
   --Display.CreateButton(guiName.."armory", ctrl, {1,3} , line,  {text = "Ghrasharog", texture = "esoui/art/collections/collections_tabicon_itemsets" , collectible = 9745 })
   Display.CreateButton(guiName.."banker", ctrl, {1,2} , line,  {text = "Tythis Andromo", texture = "esoui/art/inventory/inventory_tabicon_container" , collectible = 267 })
   Display.CreateButton(guiName.."merchant", ctrl, {2,2}, line, {text = "Nuzhimeh", texture = "esoui/art/vendor/vendor_tabicon_sell", collectible = 301 })
-
-  line = line + 0.85
-  Display.CreateDivider(ctrl, line)
-  line = line + 0.85
-
-  Display.CreateButton(guiName.."bastian", ctrl, {1,2} , line, {text = "Bastian Hallix", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9245 })
-Display.CreateButton(guiName.."isobel", ctrl, {2,2} , line,  {text = "Isobel Veloise", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9912})
   line = line + 1
-  Display.CreateButton(guiName.."mirri", ctrl, {1,2} , line,  {text = "Mirri Elandis", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9353})
-  Display.CreateButton(guiName.."ember", ctrl, {2,2} , line,  {text = "Ember", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9911})
+  Display.CreateButton(guiName.."armory", ctrl, {1,2} , line,  {text = "Ghrasharog", texture = "esoui/art/inventory/inventory_tabicon_armorheavy" , collectible = 9745 })
+  Display.CreateButton(guiName.."decon", ctrl, {2,2}, line, {text = "Giladil", texture = "esoui/art/crafting/enchantment_tabicon_deconstruction", collectible = 10184 })
+
+  --line = line + 0.85
+  --Display.CreateDivider(ctrl, line)
+  --line = line + 0.85
+  --Display.CreateButton(guiName.."bastian", ctrl, {1,2} , line, {text = "Bastian Hallix", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9245 })
+  --Display.CreateButton(guiName.."isobel", ctrl, {2,2} , line,  {text = "Isobel Veloise", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9912})
+  --line = line + 1
+  --Display.CreateButton(guiName.."mirri", ctrl, {1,2} , line,  {text = "Mirri Elandis", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9353})
+  --Display.CreateButton(guiName.."ember", ctrl, {2,2} , line,  {text = "Ember", texture = "esoui/art/companion/keyboard/category_u30_allies", collectible = 9911})
 
   line = line + 0.85
   Display.CreateDivider(ctrl, line)
@@ -157,7 +139,7 @@ function Widgets.SetupDisplayHeaderInfo()
         dimensionX = 50,
         dimensionY = 50,
     }
-  local esologIndicator = ExoY.display.AddToHeader( esologIndicatorSettings )
+  local esologIndicator = ExoyUI.display.AddToHeader( esologIndicatorSettings )
 
   -- Hook into encounterlog toogle and update indicator accordingly
   ZO_PostHook("SetEncounterLogEnabled", function()
@@ -165,31 +147,4 @@ function Widgets.SetupDisplayHeaderInfo()
     return false
   end)
 
-end
-
-
---TODO include this in Buffs/Debuffs
--------------------------
--- Event Buff Tracking --
--------------------------
-
-function Widgets.CheckEventBuffDuration()
-  if Widgets.eventBonusDurationCallbackId then zo_removeCallLater(Widgets.eventBonusDurationCallbackId) end
-  local buffId = ExoY.festival.buff
-  local duration = 0
-  local color = {1,0,0,0.7}
-  for i=1, GetNumBuffs("player") do
-    local buffInfo = { GetUnitBuffInfo("player", i) }
-    --buffInfo[3] = endTime
-    --buffInfo[11] = abilityId
-    if buffInfo[11] == buffId then
-      duration = zo_max(0, buffInfo[3]-GetGameTimeSeconds() )
-    end
-  end
-  if duration > 600 then
-    color = {0,1,0,0.7}
-    Widgets.eventBonusDurationCallbackId = zo_callLater(function() Widgets.CheckEventBuffDuration() end, (duration - 600)*1000 )
-  end
-  if duration < 600 and duration ~= 0 then color = {1,1,0,0.7} end
-  Widgets.eventBonus.label:SetColor( unpack(color) )
 end

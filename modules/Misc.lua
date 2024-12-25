@@ -1,13 +1,13 @@
-ExoY = ExoY or {}
-ExoY.misc = ExoY.misc or {}
+ExoyUI = ExoyUI or {}
+ExoyUI.misc = ExoyUI.misc or {}
 
 local Lib = LibExoYsUtilities
 local EM = GetEventManager()
 local WM = GetWindowManager()
-local Misc = ExoY.misc
+local Misc = ExoyUI.misc
 
 function Misc.Initialize()
-  Misc.name = ExoY.name.."Misc"
+  Misc.name = ExoyUI.name.."Misc"
 
   Misc.SearchForItemOnTTCWebsite()
   Misc.InitiateCpSlotableChangeCooldown()
@@ -57,15 +57,15 @@ function Misc.CreateDisplayTab()
     ["header"] = "Miscellaneous",
   }
   local guiName = Misc.name.."Tab"
-  local Display = ExoY.display
+  local Display = ExoyUI.display
   local ctrl = Display.AddTab( tabSettings )
   local line = 0
 
   line = line + 1
   Misc.stopwatch = { ["gui"]={} }
   local labelStartStop
-  if ExoY.store.misc.stopwatch.running then labelStartStop = "Pause"
-  elseif ExoY.store.misc.stopwatch.lastStart == 0 then labelStartStop = "Start"
+  if ExoyUI.store.misc.stopwatch.running then labelStartStop = "Pause"
+  elseif ExoyUI.store.misc.stopwatch.lastStart == 0 then labelStartStop = "Start"
   else labelStartStop = "Resume" end
 
   Misc.stopwatch.gui.label = Display.CreateLabel(guiName.."StopWatchLabel", ctrl, {1,2}, line, {font = 20, align = TEXT_ALIGN_CENTER} )
@@ -134,7 +134,7 @@ end
 
 
 function Misc.OnUpdateStopwatch()
-  local store = ExoY.store.misc.stopwatch
+  local store = ExoyUI.store.misc.stopwatch
   local label = Misc.stopwatch.gui.label
   local duration
   if store.running then
@@ -147,12 +147,12 @@ function Misc.OnUpdateStopwatch()
 end
 
 function Misc.OnStopwatchStartStop()
-  local store = ExoY.store.misc.stopwatch
+  local store = ExoyUI.store.misc.stopwatch
   if store.running then
-    ExoY.chat.Debug("Stopwatch stopped")
+    ExoyUI.chat.Debug("Stopwatch stopped")
     store.timeSaved = GetTimeStamp() - store.lastStart
   else
-    ExoY.chat.Debug("Stopwatch started")
+    ExoyUI.chat.Debug("Stopwatch started")
     store.lastStart = GetTimeStamp()
   end
   store.running = not store.running
@@ -160,10 +160,10 @@ function Misc.OnStopwatchStartStop()
 end
 
 function Misc.OnStopwatchReset()
-  ExoY.chat.Debug("Stopwatch reset")
-  ExoY.store.misc.stopwatch.timeSaved = 0
-  ExoY.store.misc.stopwatch.lastStart = GetTimeStamp()
-  if not ExoY.store.misc.stopwatch.running then
+  ExoyUI.chat.Debug("Stopwatch reset")
+  ExoyUI.store.misc.stopwatch.timeSaved = 0
+  ExoyUI.store.misc.stopwatch.lastStart = GetTimeStamp()
+  if not ExoyUI.store.misc.stopwatch.running then
     Misc.stopwatch.gui.buttonStartStop.label:SetText("Start")
   end
 end
@@ -323,7 +323,7 @@ function Misc.InitiateCpSlotableChangeCooldown()
 
   local function OnChampionPurchaseResult()
     if GetGameTimeMilliseconds() - lastHotbarUpdate > 100 then return end
-    ExoY.chat.Debug("cp slotable changed")
+    ExoyUI.chat.Debug("cp slotable changed")
     cooldownEnd = GetGameTimeMilliseconds() + 30000
     win:SetHidden(false)
     local function OnCooldown()
@@ -331,9 +331,9 @@ function Misc.InitiateCpSlotableChangeCooldown()
       if timeRemaining < 0 then
         local output = tostring( math.floor((-1)*timeRemaining/1000) )
         label:SetText( output )
-        ExoY.characterInfo.cp.cooldown:SetText( output )
+        ExoyUI.characterInfo.cp.cooldown:SetText( output )
       else
-        ExoY.characterInfo.cp.cooldown:SetText( "" )
+        ExoyUI.characterInfo.cp.cooldown:SetText( "" )
         label:SetText( "" )
         EM:UnregisterForUpdate(name.."cooldown")
       end

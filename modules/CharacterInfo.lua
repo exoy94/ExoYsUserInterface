@@ -1,13 +1,23 @@
-ExoY = ExoY or {}
-ExoY.characterInfo = ExoY.characterInfo or {}
+ExoyUI = ExoyUI or {}
+ExoyUI.characterInfo = ExoyUI.characterInfo or {}
 
-local CharacterInfo = ExoY.characterInfo
+local CharacterInfo = ExoyUI.characterInfo
+
+local EM = GetEventManager()
+local WM = GetEventManager() 
+
+local cpData =   {
+  [1] = { iconName = "stamina", actionBarName = "world"}, --craft
+  [2] = { iconName = "magicka", actionBarName = "combat"}, --warfare
+  [3] = { iconName = "health", actionBarName = "conditioning"}, --fitness
+}
+
 
 local EM = GetEventManager()
 local WM = GetEventManager() 
 
 function CharacterInfo.Initialize()
-  CharacterInfo.name = ExoY.name.."CharacterInfo"
+  CharacterInfo.name = ExoyUI.name.."CharacterInfo"
 
   CharacterInfo.CreateDisplayTab()
 
@@ -15,9 +25,10 @@ function CharacterInfo.Initialize()
   EM:RegisterForEvent(CharacterInfo.name.."CpGain", EVENT_CHAMPION_POINT_GAINED, CharacterInfo.UpdateCpUnspendPointsIndicator)
   EM:RegisterForEvent(CharacterInfo.name.."ArmoryBuildChange", EVENT_ARMORY_BUILD_OPERATION_STARTED, CharacterInfo.OnArmoryBuildChange)
 
-  LibSetDetection.RegisterForCustomSlotUpdateEvent("ExoYUICharacterInfo", CharacterInfo.OnCustomSlotUpdate)
+  LibSetDetection.RegisterForCustomSlotUpdateEvent("ExoyUI_CharacterInfo", CharacterInfo.OnCustomSlotUpdate)
 
 end
+
 
 function CharacterInfo.CreateDisplayTab()
   local tabSettings = {
@@ -27,7 +38,7 @@ function CharacterInfo.CreateDisplayTab()
     ["header"] = "Character Info",
   }
   local guiName = CharacterInfo.name.."Tab"
-  local Display = ExoY.display
+  local Display = ExoyUI.display
   local ctrl = Display.AddTab( tabSettings )
   local line = 0
 
@@ -50,6 +61,11 @@ function CharacterInfo.CreateDisplayTab()
     --wizard.label:SetColor(1,0,0,1)
   end
 
+  
+  --[[  Displays Equipped Champion Points ]]
+
+
+
   line = line + 0.7
   Display.CreateDivider(ctrl, line)
   CharacterInfo.cp = { ["unspend"]={}, ["slotable"]={} }
@@ -63,7 +79,7 @@ function CharacterInfo.CreateDisplayTab()
     end
     for slotable = 1,4 do
       local index = (discipline-1)*4 + slotable
-      CharacterInfo.cp.slotable[index] = Display.CreateChampionSlotableIndicator(guiName.."cpSlot"..tostring(index), ctrl, ExoY.vars.cpData[discipline].actionBarName, index, GetOffsetX(slotable), cpLine+0.6)
+      CharacterInfo.cp.slotable[index] = Display.CreateChampionSlotableIndicator(guiName.."cpSlot"..tostring(index), ctrl, cpData[discipline].actionBarName, index, GetOffsetX(slotable), cpLine+0.6)
     end
   end
 
@@ -98,13 +114,13 @@ end
 
 function CharacterInfo.SetLastKnownArmoryBuildNum( numBuild )
   local charId = GetCurrentCharacterId()
-  local lastArmoryBuild = ExoY.store.characterInfo.armoryBuild
+  local lastArmoryBuild = ExoyUI.store.characterInfo.armoryBuild
   lastArmoryBuild[charId] = numBuild
 end
 
 function CharacterInfo.GetLastKnownArmoryBuildNum()
   local charId = GetCurrentCharacterId()
-  local lastArmoryBuild = ExoY.store.characterInfo.armoryBuild
+  local lastArmoryBuild = ExoyUI.store.characterInfo.armoryBuild
   return lastArmoryBuild[charId]
 end
 
@@ -139,7 +155,7 @@ end
 function CharacterInfo.UpdateCpUnspendPointsIndicator()
   for index = 1,3 do
     local unspendPoints = GetNumUnspentChampionPoints( GetChampionDisciplineId( index ) )
-    local icon = "|t24:24:esoui/art/champion/champion_points_"..ExoY.vars.cpData[index].iconName.."_icon.dds|t"
+    local icon = "|t24:24:esoui/art/champion/champion_points_"..cpData[index].iconName.."_icon.dds|t"
     local text = zo_strformat("<<1>> <<2>>", icon,  unspendPoints)
     CharacterInfo.cp.unspend[index]:SetText( text )
   end

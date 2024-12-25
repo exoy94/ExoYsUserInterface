@@ -1,9 +1,9 @@
 -- SetSetting()
 
-ExoY = ExoY or {}
-ExoY.settings = ExoY.settings or {}
+ExoyUI = ExoyUI or {}
+ExoyUI.settings = ExoyUI.settings or {}
 
-local Settings = ExoY.settings
+local Settings = ExoyUI.settings
 
 
 function Settings.Apply()

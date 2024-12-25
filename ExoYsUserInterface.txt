@@ -1,7 +1,7 @@
 ## Title: |c00FF00ExoY|rs User Interface
 ## Author: @|c00FF00ExoY|r94 (PC/EU)
 ## Description: Numquam Desperare! Numquam Dedere! Lupus Es!
-## APIVersion: 101032
+## APIVersion: 101044
 ## Version: Infinity
 ## SavedVariables: ExoYSaveVariables
 
@@ -18,8 +18,6 @@
 ## OptionalDependsOn: CombatMetrics
 ## OptionalDependsOn: WizardsWardrobe
 
-\data\vars.lua
-
 \modules\CharacterInfo.lua
 \modules\Chat.lua
 \modules\Cyrodiil.lua
@@ -33,13 +31,6 @@
 \modules\UnitFrames.lua
 \modules\Widgets.lua
 \modules\WorldMap.lua
-
-\development\DecodeGlobalVariables.lua
-\development\Events.lua
-\development\CombatProtocol.lua
-\development\Development.lua
-\development\Prototype.lua
-\development\abilityIgnolist.lua
 
 \modules\bindings.xml
 
