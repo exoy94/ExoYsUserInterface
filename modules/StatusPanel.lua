@@ -1,13 +1,13 @@
-ExoY = ExoY or {}
-ExoY.statusPanel = ExoY.statusPanel or {}
+ExoyUI = ExoyUI or {}
+ExoyUI.statusPanel = ExoyUI.statusPanel or {}
 
-local Status = ExoY.statusPanel
+local Status = ExoyUI.statusPanel
 local Lib = LibExoYsUtilities
 local EM = GetEventManager()
 local WM = GetWindowManager()
 
 function Status.Initialize()
-  Status.name = ExoY.name.."StatusPanel"
+  Status.name = ExoyUI.name.."StatusPanel"
   Status.gui = Status.CreateGui()
   EM:RegisterForUpdate(Status.name.."Update", 500, Status.OnUpdate)
 end

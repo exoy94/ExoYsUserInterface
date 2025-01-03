@@ -1,4 +1,4 @@
-ExoY = ExoY or {}
+ExoyUI = ExoyUI or {}
 
 local Lib = LibExoYsUtilities
 -- currentPowerLevel = GetPlayerStat(STAT_SPELL_POWER)
@@ -9,10 +9,10 @@ local Lib = LibExoYsUtilities
 -- Checkups ( Todo, Question, Idea, Warning )
 
 -- Addon Variables
-ExoY.name = "ExoYsUserInterface"
-ExoY.displayName = "|c00FF00ExoY|rs User Interface"
-ExoY.author = "@|c00FF00ExoY|r94 (PC/EU)"
-ExoY.version = "Infinity"
+ExoyUI.name = "ExoYsUserInterface"
+ExoyUI.displayName = "|c00FF00ExoY|rs User Interface"
+ExoyUI.author = "@|c00FF00ExoY|r94 (PC/EU)"
+ExoyUI.version = "Infinity"
 
 local EM = GetEventManager() 
 local WM = GetWindowManager() 
@@ -40,10 +40,10 @@ local moduleList = {
 }
 --"dev",
 
-local function ExecuteForAllModules( funcName, param)
+local function CallForEachModules( funcName, param)
 	local r = {}
 	for _,moduleName in ipairs(moduleList) do
-		r[moduleName] = Lib.CallFunc( ExoY[moduleName][funcName], param )
+		r[moduleName] = Lib.CallFunc( ExoyUI[moduleName][funcName], param )
 	end
 	return r
 end
@@ -54,31 +54,31 @@ end
 
 local function Initialize()
 
-	local defaults = ExecuteForAllModules('GetDefaults')
+	local defaults = CallForEachModules('GetDefaults')
 
-	ExoY.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
+	ExoyUI.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
 
-	--TODO graphical interface
- 	--ExoY.festival = ExoY.vars.festivals["anniversary"]
+	CallForEachModules('Initialize')
 
-	ExecuteForAllModules('Initialize')
-
-	Lib.RegisterCombatStart(function() ExecuteForAllModules('OnCombatStart') end)
-	Lib.RegisterCombatEnd(function() ExecuteForAllModules('OnCombatEnd') end)
+	Lib.RegisterCombatStart(function() CallForEachModules('OnCombatStart') end)
+	Lib.RegisterCombatEnd(function() CallForEachModules('OnCombatEnd') end)
 	
-	Lib.RegisterInitialPlayerActivation(function() ExecuteForAllModules('OnInitialPlayerActivated') end) 
-	Lib.RegisterPlayerActivation(function() ExecuteForAllModules('OnPlayerActivated') end)
+	Lib.RegisterForInitialPlayerActivated(function() CallForEachModules('OnInitialPlayerActivated') end) 
+	Lib.RegisterForPlayerActivated(function() CallForEachModules('OnPlayerActivated') end)
 end
 
 
 local function OnAddOnLoaded(event, addonName)
-  if addonName == ExoY.name then
+  if addonName == ExoyUI.name then
 		Initialize()
-		EM:UnregisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED)
+		EM:UnregisterForEvent(ExoyUI.name, EVENT_ADD_ON_LOADED)
   end
 end
-EM:RegisterForEvent(ExoY.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)
+EM:RegisterForEvent(ExoyUI.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)
 
+--[[ -------------------- ]]
+--[[ -- Initialization -- ]]
+--[[ -------------------- ]]
 
 
 --IDEA for purge Tracking (gameuiart/siege)

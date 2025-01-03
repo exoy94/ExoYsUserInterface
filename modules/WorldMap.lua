@@ -1,11 +1,12 @@
-ExoY = ExoY or {}
+ExoyUI = ExoyUI or {}
 
-ExoY.worldMap = ExoY.worldMap or {}
-local WorldMap = ExoY.worldMap
+ExoyUI.worldMap = ExoyUI.worldMap or {}
+local WorldMap = ExoyUI.worldMap
+
 
 
 function WorldMap.Initialize()
-  WorldMap.name = ExoY.name.."WorldMap"
+  WorldMap.name = ExoyUI.name.."WorldMap"
   WorldMap.HidePoI()
 end
 

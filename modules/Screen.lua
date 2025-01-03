@@ -1,12 +1,12 @@
-ExoY = ExoY or {}
-ExoY.screen = ExoY.screen or {}
+ExoyUI = ExoyUI or {}
+ExoyUI.screen = ExoyUI.screen or {}
 
-local Screen = ExoY.screen
+local Screen = ExoyUI.screen
 local Lib = LibExoYsUtilities
 
 
 function Screen.Initialize()
-  Screen.name = ExoY.name.."Screen"
+  Screen.name = ExoyUI.name.."Screen"
 
   ZO_PreHook(PLAYER_PROGRESS_BAR, "Show", function() --esoui/ingame/playerprogressbar/playerprogressbar.lua: 582
     if SCENE_MANAGER:GetCurrentScene():GetName() == "hud" then
