@@ -36,6 +36,12 @@ local function GetOffsetY( line )
   return lineHeight*line + 20
 end
 
+local function GetColumnWidth( data ) 
+  local startP = (DISPLAY_WIDTH*(data[1]-1) / data[2] ) + 10
+  local endP = (DISPLAY_WIDTH*(data[1]) / data[2] )
+  return endP - startP
+end
+
 
 function Display.Initialize()
   Display.name = ExoyUI.name.."Display"
@@ -319,6 +325,36 @@ function Display.CreateButton( name, parent, column, line, data )
 end
 
 
+function Display.CreateEditbox(name, parent, column, line)
+
+
+
+  local back = WM:CreateControl(name.."bg", parent, CT_BACKDROP)
+  back:ClearAnchors() 
+  back:SetAnchor(TOPLEFT, parent, TOPLEFT, GetOffsetX(column), GetOffsetY(line) )
+  back:SetCenterColor(0.2,0.2,0.2,0.8)
+  back:SetEdgeColor(0,0,0,0.9)
+
+  local edit = WM:CreateControl(name.."edit", parent, CT_EDITBOX)
+  edit:ClearAnchors()
+  edit:SetAnchor(TOPLEFT, parent, TOPLEFT, GetOffsetX(column)+5, GetOffsetY(line) )
+  edit:SetFont( Lib.GetFont() )
+  edit:SetText()
+  edit:SetMouseEnabled(true)
+  edit:SetTextType(TEXT_TYPE_ALL)
+  edit:SetHandler("OnMouseDown", function() edit:TakeFocus() end)
+  --edit:SetHandler("OnFocusLost", function() d(edit:GetText() ) end)
+
+
+  local height = edit:GetFontHeight()
+  local width = GetColumnWidth(column) 
+  back:SetDimensions( width, height )
+  edit:SetDimensions( width-10, height)
+
+  return edit
+end
+
+
 function Display.CreateDivider(parent, line)
   dividerCounter = dividerCounter + 1
   local name = ExoyUI.name.."divider"..tostring(dividerCounter)
@@ -328,7 +364,7 @@ function Display.CreateDivider(parent, line)
   divider:SetDimensions(DISPLAY_WIDTH+80, 7)
   divider:SetTexture("esoui/art/interaction/conversation_divider.dds")
   return divider
-end
+end 
 
 
 
