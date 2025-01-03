@@ -67,6 +67,33 @@ local function Initialize()
 	Lib.RegisterForPlayerActivated(function() CallForEachModules('OnPlayerActivated') end)
 end
 
+local function CallForEachModules( funcName, param)
+	local r = {}
+	for _,moduleName in ipairs(moduleList) do
+		r[moduleName] = Lib.CallFunc( ExoyUI[moduleName][funcName], param )
+	end
+	return r
+end
+
+--[[ -------------------- ]]
+--[[ -- Initialization -- ]]
+--[[ -------------------- ]]
+
+local function Initialize()
+
+	local defaults = CallForEachModules('GetDefaults')
+
+	ExoyUI.store = ZO_SavedVars:NewAccountWide("ExoYSaveVariables", 0, nil, defaults, "Settings")
+
+	CallForEachModules('Initialize')
+
+	Lib.RegisterCombatStart(function() CallForEachModules('OnCombatStart') end)
+	Lib.RegisterCombatEnd(function() CallForEachModules('OnCombatEnd') end)
+	
+	Lib.RegisterForInitialPlayerActivated(function() CallForEachModules('OnInitialPlayerActivated') end) 
+	Lib.RegisterForPlayerActivated(function() CallForEachModules('OnPlayerActivated') end)
+end
+
 
 local function OnAddOnLoaded(event, addonName)
   if addonName == ExoyUI.name then
@@ -76,9 +103,6 @@ local function OnAddOnLoaded(event, addonName)
 end
 EM:RegisterForEvent(ExoyUI.name, EVENT_ADD_ON_LOADED, OnAddOnLoaded)
 
---[[ -------------------- ]]
---[[ -- Initialization -- ]]
---[[ -------------------- ]]
 
 
 --IDEA for purge Tracking (gameuiart/siege)

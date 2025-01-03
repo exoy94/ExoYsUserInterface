@@ -4,7 +4,6 @@ ExoyUI.worldMap = ExoyUI.worldMap or {}
 local WorldMap = ExoyUI.worldMap
 
 
-
 function WorldMap.Initialize()
   WorldMap.name = ExoyUI.name.."WorldMap"
   WorldMap.HidePoI()

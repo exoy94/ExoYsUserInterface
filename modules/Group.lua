@@ -6,8 +6,6 @@ local Group = ExoyUI.group
 
 local EM = GetEventManager()
 
-local EM = GetEventManager()
-
 function Group.Initialize()
   Group.name = ExoyUI.name.."Group"
 

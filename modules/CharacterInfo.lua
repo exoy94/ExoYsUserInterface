@@ -13,9 +13,6 @@ local cpData =   {
 }
 
 
-local EM = GetEventManager()
-local WM = GetEventManager() 
-
 function CharacterInfo.Initialize()
   CharacterInfo.name = ExoyUI.name.."CharacterInfo"
 
