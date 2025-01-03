@@ -36,9 +36,7 @@ local moduleList = {
 	"unitFrames",
 	"widgets",
 	"worldMap",
-	"dev",
 }
---"dev",
 
 local function CallForEachModules( funcName, param)
 	local r = {}
