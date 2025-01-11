@@ -280,7 +280,7 @@ end
 function Misc.SoundOnKillingBlow()
   local function OnKill(event, result, isError, abilityName, abilityGraphic, abilityActionSlotType, sourceName, sourceType, targetName, targetType, hitValue, powerType, damageType, log, sourceUnitId, targetUnitId, abilityId, overflow)
     if GetUnitName("player") == zo_strformat("<<1>>", sourceName) and abilityName ~= "" then
-      ExoY.chat.Debug("Killing Blow")
+      --ExoY.chat.Debug("Killing Blow")
       PlaySound(SOUNDS.LOCKPICKING_UNLOCKED)
     end
   end
