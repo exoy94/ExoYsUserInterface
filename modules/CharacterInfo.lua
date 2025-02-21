@@ -22,7 +22,7 @@ function CharacterInfo.Initialize()
   EM:RegisterForEvent(CharacterInfo.name.."CpGain", EVENT_CHAMPION_POINT_GAINED, CharacterInfo.UpdateCpUnspendPointsIndicator)
   EM:RegisterForEvent(CharacterInfo.name.."ArmoryBuildChange", EVENT_ARMORY_BUILD_OPERATION_STARTED, CharacterInfo.OnArmoryBuildChange)
 
-  LibSetDetection.RegisterForCustomSlotUpdateEvent("ExoyUI_CharacterInfo", CharacterInfo.OnCustomSlotUpdate)
+  --LibSetDetection.RegisterForCustomSlotUpdateEvent("ExoyUI_CharacterInfo", CharacterInfo.OnCustomSlotUpdate)
 
 end
 
@@ -57,10 +57,8 @@ function CharacterInfo.CreateDisplayTab()
     wizard.button:SetEnabled(false)
     --wizard.label:SetColor(1,0,0,1)
   end
-
-  
-  --[[  Displays Equipped Champion Points ]]
-
+ 
+--[[  Displays Equipped Champion Points ]]
 
 
   line = line + 0.7
@@ -173,6 +171,7 @@ function CharacterInfo.UpdateCpSlotableIndicator()
 end
 
 -- Set Changes
+--[[
 function CharacterInfo.OnCustomSlotUpdate()
   local mapBarSet = LibSetDetection.GetBarActiveSetIdMap()
   local completeSets = LibSetDetection.GetCompleteSetsList()
@@ -211,3 +210,4 @@ function CharacterInfo.OnCustomSlotUpdate()
   CharacterInfo.sets.left:SetText( textLeft )
   CharacterInfo.sets.right:SetText( textRight )
 end
+]]
